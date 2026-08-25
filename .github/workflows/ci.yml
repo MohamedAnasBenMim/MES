@@ -1,0 +1,85 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    name: Django Backend CI
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: mes_test_db
+          POSTGRES_USER: mes_user
+          POSTGRES_PASSWORD: mes_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: MES-Backend/requirements.txt
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+          pip install -r MES-Backend/requirements.txt
+
+      - name: Lint Code with Ruff
+        run: |
+          ruff check MES-Backend/
+
+      - name: Run Django System Checks
+        env:
+          DB_NAME: mes_test_db
+          DB_USER: mes_user
+          DB_PASSWORD: mes_password
+          DB_HOST: localhost
+          DB_PORT: 5432
+          SECRET_KEY: test-secret-key
+        run: |
+          cd MES-Backend
+          python manage.py check
+
+  frontend-tests:
+    name: Angular Frontend CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: MES-Frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: |
+          cd MES-Frontend
+          npm ci
+
+      - name: Build Angular Application
+        run: |
+          cd MES-Frontend
+          npm run build -- --configuration production
