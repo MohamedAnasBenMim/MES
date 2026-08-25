@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: mes_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mes_db}
+      POSTGRES_USER: ${POSTGRES_USER:-mes_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mes_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./mes_backup.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # 2. Django Backend Service
+  backend:
+    build:
+      context: ./MES-Backend
+      dockerfile: Dockerfile
+    container_name: mes_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DB_NAME: ${POSTGRES_DB:-mes_db}
+      DB_USER: ${POSTGRES_USER:-mes_user}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-mes_password}
+      DB_HOST: db
+      DB_PORT: 5432
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-secret-key-change-in-prod}
+      DEBUG: "True"
+    depends_on:
+      - db
+    volumes:
+      - ./MES-Backend/media:/app/media
+
+  # 3. Angular + Nginx Frontend Service
+  frontend:
+    build:
+      context: ./MES-Frontend
+      dockerfile: Dockerfile
+    container_name: mes_frontend
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
