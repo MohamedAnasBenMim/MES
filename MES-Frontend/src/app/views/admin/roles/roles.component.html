@@ -1,0 +1,103 @@
+<section class="roles-page">
+  <div class="page-header">
+    <div>
+      <h2>Roles</h2>
+      <p>View system roles and current user assignments.</p>
+    </div>
+
+    <button type="button" class="refresh-button" (click)="loadUsers()">
+      Refresh
+    </button>
+  </div>
+
+  <div class="summary-grid">
+    <article>
+      <span>Roles</span>
+      <strong>{{ roles.length }}</strong>
+    </article>
+
+    <article>
+      <span>Assigned Users</span>
+      <strong>{{ totalAssignedUsers }}</strong>
+    </article>
+
+    <article>
+      <span>Active Users</span>
+      <strong>{{ activeUsers }}</strong>
+    </article>
+
+    <article>
+      <span>Inactive Users</span>
+      <strong>{{ inactiveUsers }}</strong>
+    </article>
+  </div>
+
+  <div class="roles-panel">
+    <div class="toolbar">
+      <input
+        type="search"
+        placeholder="Search roles or modules"
+        [(ngModel)]="searchTerm"
+      />
+
+      <select [(ngModel)]="selectedRole">
+        <option value="all">All roles</option>
+        <option *ngFor="let role of roles" [value]="role.key">
+          {{ role.name }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="isLoading" class="state-message">
+      Loading roles...
+    </div>
+
+    <div *ngIf="!isLoading && errorMessage" class="state-message error">
+      {{ errorMessage }}
+    </div>
+
+    <div
+      *ngIf="!isLoading && !errorMessage && filteredRoles.length === 0"
+      class="state-message"
+    >
+      No roles match the current filters.
+    </div>
+
+    <div
+      *ngIf="!isLoading && !errorMessage && filteredRoles.length > 0"
+      class="table-wrap"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Description</th>
+            <th>Access</th>
+            <th>Users</th>
+            <th>Active</th>
+            <th>Modules</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let role of filteredRoles">
+            <td>
+              <strong>{{ role.name }}</strong>
+            </td>
+            <td>{{ role.description }}</td>
+            <td>
+              <span class="access-pill">{{ role.accessLevel }}</span>
+            </td>
+            <td>{{ getRoleUserCount(role.key) }}</td>
+            <td>{{ getRoleActiveCount(role.key) }}</td>
+            <td>
+              <div class="module-list">
+                <span *ngFor="let module of role.modules">{{ module }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

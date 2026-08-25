@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* @import "@coreui/coreui/css/coreui"  with (
+  $enable-deprecation-messages: false
+); */
+@import "@coreui/coreui/dist/css/coreui.min.css";
+
+/* @import "@coreui/chartjs/css/coreui-chartjs"; */
+
+@import "_theme.css";
+
+/* /* @import "fixes"; */
+
+@import "_custom.css";
+
+@import "_examples.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,85 @@
+<div *ngIf="activeOperations.length > 0; else noData">
+  <div class="filter-container">
+    <input
+      type="text"
+      [(ngModel)]="orderFilter"
+      (ngModelChange)="currentPage = 1"
+      placeholder="Filter by order"
+      class="filter-input"
+    />
+
+    <input
+      type="date"
+      [(ngModel)]="finishDateFilter"
+      (ngModelChange)="currentPage = 1"
+      aria-label="Filter by planned finish date"
+      class="filter-input date-input"
+    />
+  </div>
+
+  <div class="table-container">
+    <table [striped]="true" cTable>
+      <thead>
+        <tr>
+          <th class="header-cell">Order</th>
+          <th class="header-cell">Operation</th>
+          <th class="header-cell">Item</th>
+          <th class="header-cell">Machine Type</th>
+          <th class="header-cell">Quantity Ordered</th>
+          <th class="header-cell">Planned Start Date</th>
+          <th class="header-cell">Planned Finish Date</th>
+          <th class="header-cell">Work Center</th>
+          <th class="header-cell">Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let op of paginatedData()"
+          (click)="goToOperationExecution(op)"
+          class="clickable-row"
+        >
+          <td>{{ op.Order }}</td>
+          <td>{{ op.Operation }}</td>
+          <td>{{ op.OperatedItem }}</td>
+          <td>{{ op.ReferenceOperationMachineType }}</td>
+          <td>{{ op.RoutingQuantity }}</td>
+          <td>{{ op.PlannedStartDate | date : "short" }}</td>
+          <td>{{ op.PlannedFinishDate | date : "short" }}</td>
+          <td>{{ op.ReferenceOperationWorkCenter }}</td>
+          <td>
+            {{
+              op.OperationStatus === 'ReadyToStart'
+                ? 'Ready To Start'
+                : op.OperationStatus
+            }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button
+      type="button"
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+    >
+      Previous
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages() }}</span>
+
+    <button
+      type="button"
+      (click)="nextPage()"
+      [disabled]="currentPage >= totalPages()"
+    >
+      Next
+    </button>
+  </div>
+</div>
+
+<ng-template #noData>
+  <p>No active operations were found for this user.</p>
+</ng-template>

@@ -1,0 +1,56 @@
+<div *ngIf="!loading && productData.length > 0; else loadingOrEmpty">
+  <div class="filter-container">
+    <input
+      type="text"
+      [(ngModel)]="productFilter"
+      (ngModelChange)="currentPage = 1"
+      placeholder="Filter by item, description, group"
+      class="filter-input"
+    />
+  </div>
+
+  <table [striped]="true" cTable>
+    <thead>
+      <tr>
+        <th class="header-cell">Item</th>
+        <th class="header-cell">Description</th>
+        <th class="header-cell">Item Type</th>
+        <th class="header-cell">Item Group</th>
+        <th class="header-cell">Product Type</th>
+        <th class="header-cell">Inventory Unit</th>
+        <th class="header-cell">Unit Set</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of paginatedData()">
+        <td>{{ item.Item }}</td>
+        <td>{{ item.Description }}</td>
+        <td>{{ item.ItemType }}</td>
+        <td>{{ item.ItemGroup }}</td>
+        <td>{{ item.ProductType }}</td>
+        <td>{{ item.InventoryUnit }}</td>
+        <td>{{ item.UnitSet }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages() }}</span>
+
+    <button (click)="nextPage()" [disabled]="currentPage >= totalPages()">
+      Next
+    </button>
+  </div>
+</div>
+
+<ng-template #loadingOrEmpty>
+  <p *ngIf="loading">Loading data ...</p>
+  <p *ngIf="!loading && errorMessage">{{ errorMessage }}</p>
+  <p *ngIf="!loading && !errorMessage && productData.length === 0">
+    No product data available.
+  </p>
+</ng-template>

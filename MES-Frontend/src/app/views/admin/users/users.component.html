@@ -1,0 +1,594 @@
+<c-card class="mb-4">
+  <h5 class="card-header">User List</h5>
+
+  <c-card-body>
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th style="min-width: 260px">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of users; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+
+          <td>
+            <span class="badge" [ngClass]="getStatusBadgeClass(user)">
+              {{ getStatusText(user) }}
+            </span>
+          </td>
+
+          <td>
+            <button
+              cButton
+              color="warning"
+              size="sm"
+              class="me-2"
+              (click)="editUser(user)"
+            >
+              <svg cIcon name="cil-pencil" class="me-1"></svg>
+              Edit
+            </button>
+
+            <button
+              cButton
+              [color]="getToggleButtonColor(user)"
+              size="sm"
+              class="me-2"
+              (click)="openStatusConfirmModal(user)"
+            >
+              {{ getToggleButtonText(user) }}
+            </button>
+
+            <button
+              cButton
+              color="danger"
+              size="sm"
+              (click)="openDeleteConfirmModal(user)"
+            >
+              <svg cIcon name="cil-trash" class="me-1"></svg>
+              Delete
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="users.length === 0">
+          <td colspan="6" class="text-center text-muted">
+            No users found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </c-card-body>
+
+  <div class="d-flex justify-content-end mt-3 mb-3 me-3">
+    <button cButton color="primary" (click)="openRegisterPopup()">
+      ➕ Add User
+    </button>
+  </div>
+</c-card>
+
+<!-- Create / Edit User Modal -->
+<c-modal
+  [visible]="showRegisterForm"
+  (close)="closeRegisterPopup()"
+  size="lg"
+  backdrop="static"
+  keyboard="false"
+>
+  <c-modal-header>
+    <h5 class="modal-title">
+      {{ formData.id ? "Edit User" : "Create User" }}
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeRegisterPopup()"
+    ></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <form cForm #myForm="ngForm" (ngSubmit)="create_account()" novalidate>
+      <p class="text-body-secondary">
+        {{
+          formData.id
+            ? "Update user account"
+            : "Create new account. A verification code will be sent to the email before creation."
+        }}
+      </p>
+
+      <!-- Username -->
+      <c-input-group class="mb-3">
+        <span
+          cInputGroupText
+          style="
+            font-size: 1.4em;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+          "
+        >
+          <svg cIcon name="cil-user"></svg>
+        </span>
+
+        <input
+          cFormControl
+          type="text"
+          name="username"
+          autocomplete="username"
+          placeholder="Username"
+          [(ngModel)]="formData.username"
+          required
+          #username="ngModel"
+        />
+      </c-input-group>
+
+      <div
+        *ngIf="username.invalid && username.touched"
+        class="text-danger mb-2"
+      >
+        Username is required.
+      </div>
+
+      <!-- Email -->
+      <c-input-group class="mb-3">
+        <span
+          cInputGroupText
+          style="
+            font-size: 1.4em;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+          "
+        >
+          &#64;
+        </span>
+
+        <input
+          cFormControl
+          type="email"
+          name="email"
+          autocomplete="email"
+          placeholder="Email"
+          [(ngModel)]="formData.email"
+          required
+          #email="ngModel"
+        />
+      </c-input-group>
+
+      <div *ngIf="email.invalid && email.touched" class="text-danger mb-2">
+        Valid email is required.
+      </div>
+
+      <!-- Role -->
+      <c-input-group class="mb-3">
+        <span
+          cInputGroupText
+          style="
+            font-size: 1.4em;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+          "
+        >
+          👨🏻‍💼
+        </span>
+
+        <select
+          cFormControl
+          class="form-control"
+          name="role"
+          [(ngModel)]="formData.role"
+          required
+          #role="ngModel"
+        >
+          <option value="" disabled>Select role</option>
+          <option value="admin">Admin</option>
+          <option value="operator">Operator</option>
+          <option value="supervisor">Supervisor</option>
+          <option value="quality">Quality</option>
+        </select>
+      </c-input-group>
+
+      <div *ngIf="role.invalid && role.touched" class="text-danger mb-2">
+        Role is required.
+      </div>
+
+      <!-- Language -->
+      <c-input-group class="mb-3">
+        <span
+          cInputGroupText
+          style="
+            font-size: 1.4em;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+          "
+        >
+          <svg cIcon name="cil-language"></svg>
+        </span>
+
+        <select
+          cFormControl
+          class="form-control"
+          name="language"
+          [(ngModel)]="formData.language"
+          required
+          #language="ngModel"
+        >
+          <option value="" disabled>Select language</option>
+          <option value="en">English</option>
+        </select>
+      </c-input-group>
+
+      <div
+        *ngIf="language.invalid && language.touched"
+        class="text-danger mb-2"
+      >
+        Language is required.
+      </div>
+
+      <!-- Phone Number -->
+      <c-input-group class="mb-3">
+        <span
+          cInputGroupText
+          style="
+            color: black;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+          "
+        >
+          🕻
+        </span>
+
+        <select
+          cFormControl
+          class="form-select"
+          name="country_code"
+          [(ngModel)]="selectedCountryCode"
+          (ngModelChange)="syncPhoneNumber()"
+          style="max-width: 240px"
+          [disabled]="countriesLoading"
+          required
+        >
+          <option value="+216" *ngIf="countriesLoading">
+            Loading countries...
+          </option>
+
+          <option *ngFor="let country of countryCodes" [value]="country.code">
+            {{ country.flag }} {{ country.country }} {{ country.code }}
+          </option>
+        </select>
+
+        <input
+          cFormControl
+          type="tel"
+          name="phoneLocalNumber"
+          autocomplete="tel"
+          placeholder="Phone Number"
+          [(ngModel)]="phoneLocalNumber"
+          (ngModelChange)="syncPhoneNumber()"
+          required
+          #phone_number="ngModel"
+        />
+      </c-input-group>
+
+      <div
+        *ngIf="phone_number.invalid && phone_number.touched"
+        class="text-danger mb-2"
+      >
+        Phone number is required.
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid mt-4">
+        <button
+          cButton
+          color="success"
+          type="submit"
+          [disabled]="myForm.invalid || isSendingVerificationCode"
+        >
+          {{ getSubmitButtonText() }}
+        </button>
+      </div>
+    </form>
+  </c-modal-body>
+</c-modal>
+
+<!-- Activate / Deactivate Confirmation Modal -->
+<c-modal
+  [visible]="showStatusConfirmModal"
+  (close)="closeStatusConfirmModal()"
+  backdrop="static"
+  keyboard="false"
+>
+  <c-modal-header>
+    <h5 class="modal-title">
+      {{
+        selectedUserForStatus?.is_active
+          ? "Deactivate Account"
+          : "Reactivate Account"
+      }}
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeStatusConfirmModal()"
+    ></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <p *ngIf="selectedUserForStatus?.is_active">
+      Are you sure you want to deactivate
+      <strong>{{ selectedUserForStatus?.username }}</strong>?
+    </p>
+
+    <p *ngIf="!selectedUserForStatus?.is_active">
+      Are you sure you want to reactivate
+      <strong>{{ selectedUserForStatus?.username }}</strong>?
+    </p>
+
+    <div class="alert alert-warning" *ngIf="selectedUserForStatus?.is_active">
+      This user will not be able to login until the account is reactivated.
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button
+        cButton
+        color="secondary"
+        type="button"
+        (click)="closeStatusConfirmModal()"
+        [disabled]="isTogglingStatus"
+      >
+        Cancel
+      </button>
+
+      <button
+        cButton
+        [color]="selectedUserForStatus?.is_active ? 'danger' : 'success'"
+        type="button"
+        (click)="confirmToggleUserStatus()"
+        [disabled]="isTogglingStatus"
+      >
+        {{
+          isTogglingStatus
+            ? "Processing..."
+            : selectedUserForStatus?.is_active
+            ? "Deactivate"
+            : "Reactivate"
+        }}
+      </button>
+    </div>
+  </c-modal-body>
+</c-modal>
+
+<!-- Delete Confirmation Modal -->
+<c-modal
+  [visible]="showDeleteConfirmModal"
+  (close)="closeDeleteConfirmModal()"
+  backdrop="static"
+  keyboard="false"
+>
+  <c-modal-header>
+    <h5 class="modal-title text-danger">
+      Delete User
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeDeleteConfirmModal()"
+    ></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <p>
+      Are you sure you want to delete
+      <strong>{{ selectedUserForDelete?.username }}</strong>?
+    </p>
+
+    <div class="alert alert-danger">
+      This action will remove the user account and cannot be undone.
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button
+        cButton
+        color="secondary"
+        type="button"
+        (click)="closeDeleteConfirmModal()"
+        [disabled]="isDeletingUser"
+      >
+        Cancel
+      </button>
+
+      <button
+        cButton
+        color="danger"
+        type="button"
+        (click)="confirmDeleteUser()"
+        [disabled]="isDeletingUser"
+      >
+        {{ isDeletingUser ? "Deleting..." : "Delete User" }}
+      </button>
+    </div>
+  </c-modal-body>
+</c-modal>
+
+<!-- Email Verification Code Modal -->
+<c-modal
+  [visible]="showVerificationModal"
+  (close)="closeVerificationModal()"
+  backdrop="static"
+  keyboard="false"
+>
+  <c-modal-header>
+    <h5 class="modal-title">Verify Email</h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeVerificationModal()"
+    ></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <p class="mb-2">A verification code was sent to:</p>
+
+    <p class="fw-bold mb-3">
+      {{ verificationEmail }}
+    </p>
+
+    <label for="verificationCode" class="form-label">
+      Verification Code
+    </label>
+
+    <input
+      cFormControl
+      type="text"
+      id="verificationCode"
+      name="verificationCode"
+      [(ngModel)]="verificationCode"
+      class="form-control"
+      placeholder="Enter 6-digit code"
+      maxlength="6"
+      autocomplete="one-time-code"
+    />
+
+    <div *ngIf="verificationError" class="alert alert-danger mt-3">
+      {{ verificationError }}
+    </div>
+
+    <small class="text-muted">
+      The code expires after 10 minutes.
+    </small>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button
+        cButton
+        color="secondary"
+        type="button"
+        (click)="closeVerificationModal()"
+        [disabled]="isVerifyingCode"
+      >
+        Cancel
+      </button>
+
+      <button
+        cButton
+        color="info"
+        type="button"
+        (click)="resendVerificationCode()"
+        [disabled]="isSendingVerificationCode || isVerifyingCode"
+      >
+        {{ isSendingVerificationCode ? "Sending..." : "Resend Code" }}
+      </button>
+
+      <button
+        cButton
+        color="success"
+        type="button"
+        (click)="confirmVerificationAndCreate()"
+        [disabled]="isVerifyingCode"
+      >
+        {{ isVerifyingCode ? "Verifying..." : "Verify & Create" }}
+      </button>
+    </div>
+  </c-modal-body>
+</c-modal>
+
+<!-- Success Modal -->
+<c-modal
+  [visible]="showSuccessModal"
+  (close)="closeSuccessModal()"
+  backdrop="static"
+  keyboard="false"
+>
+  <c-modal-header>
+    <h5 class="modal-title text-success">
+      ✅ {{ successModalTitle }}
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeSuccessModal()"
+    ></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <p class="mb-3">
+      {{ successModalMessage }}
+    </p>
+
+    <div class="alert alert-success" *ngIf="successModalExtraMessage">
+      {{ successModalExtraMessage }}
+    </div>
+
+    <div class="d-flex justify-content-end mt-4">
+      <button
+        cButton
+        color="success"
+        type="button"
+        (click)="closeSuccessModal()"
+      >
+        OK
+      </button>
+    </div>
+  </c-modal-body>
+</c-modal>
+
+<!-- Error Modal -->
+<c-modal
+  [visible]="showErrorModal"
+  (close)="closeErrorModal()"
+  backdrop="static"
+  keyboard="false"
+>
+  <c-modal-header>
+    <h5 class="modal-title text-danger">
+      ❌ {{ errorModalTitle }}
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeErrorModal()"
+    ></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <div class="alert alert-danger mb-3">
+      {{ errorModalMessage }}
+    </div>
+
+    <div class="d-flex justify-content-end mt-4">
+      <button
+        cButton
+        color="danger"
+        type="button"
+        (click)="closeErrorModal()"
+      >
+        OK
+      </button>
+    </div>
+  </c-modal-body>
+</c-modal>

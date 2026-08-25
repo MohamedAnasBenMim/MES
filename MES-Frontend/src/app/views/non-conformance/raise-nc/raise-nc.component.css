@@ -1,0 +1,350 @@
+:host {
+  display: block;
+}
+
+.raise-nc-page {
+  padding: 0;
+}
+
+.nc-toast {
+  position: fixed;
+  top: 82px;
+  right: 24px;
+  z-index: 1900;
+  max-width: 420px;
+}
+
+.form-container {
+  border: 1px solid #d8dbe0;
+  background: #ffffff;
+}
+
+.form-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background-color: #00aeef;
+  color: white;
+}
+
+.form-card-header strong {
+  font-size: 16px;
+}
+
+.required-note {
+  font-size: 13px;
+}
+
+.nc-form {
+  padding: 16px;
+}
+
+:host ::ng-deep .nc-form > * {
+  margin-bottom: 14px;
+}
+
+:host ::ng-deep .nc-form label {
+  margin-bottom: 6px;
+  color: #212529;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+:host ::ng-deep
+  .nc-form .form-control {
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 1px solid #b8c1cc;
+  border-radius: 0;
+  color: #212529;
+  background: #ffffff;
+}
+
+:host ::ng-deep
+  .nc-form textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+:host ::ng-deep
+  .nc-form .form-control:focus {
+  border-color: #00aeef;
+  box-shadow: 0 0 0 2px rgba(0, 174, 239, 0.16);
+}
+
+:host ::ng-deep
+  .nc-form input[type="file"] {
+  padding: 5px;
+}
+
+:host ::ng-deep
+  .nc-form
+  input[type="file"]
+  ::file-selector-button {
+  margin-right: 8px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 4px;
+  color: white;
+  background: #00aeef;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.field-help {
+  display: block;
+  margin-top: 6px;
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.button-group {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 3px 0 0 !important;
+  padding-top: 16px;
+  border-top: 1px solid #d8dbe0;
+}
+
+.cancel-button,
+.submit-button {
+  min-width: 110px;
+  min-height: 38px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  border: 1px solid #b0bec5;
+  color: #212529;
+  background: white;
+}
+
+.submit-button {
+  border: none;
+  color: #ffffff;
+  background: #00aeef;
+}
+
+.cancel-button:hover {
+  background: #f2f4f6;
+}
+
+.submit-button:hover {
+  background: #0059c1;
+}
+
+@media (
+  max-width: 767.98px
+) {
+  .raise-nc-page {
+    padding: 0;
+  }
+
+  .form-card-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .nc-form {
+    padding: 18px;
+  }
+
+  .button-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cancel-button,
+  .submit-button {
+    min-width: 0;
+  }
+}
+
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.custom-dialog {
+  width: min(100%, 460px);
+  padding: 0;
+  border: 1px solid #d8dbe0;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.24);
+  text-align: center;
+  overflow: hidden;
+  animation:
+    dialog-enter 0.2s ease-out;
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform:
+      translateY(12px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.dialog-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  margin: 22px auto 12px;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.validation-dialog
+  .dialog-icon {
+  background: #00aeef;
+}
+
+.success-dialog
+  .dialog-icon {
+  background: #00aeef;
+}
+
+.error-dialog
+  .dialog-icon {
+  background: #00aeef;
+}
+
+.custom-dialog h2 {
+  margin: 0 24px;
+  color: #212529;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.custom-dialog > p {
+  margin: 10px 28px 0;
+  color: #6c757d;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.missing-fields {
+  display: grid;
+  gap: 0;
+  margin: 18px 26px 0;
+  padding: 0;
+  border: 1px solid #d8dbe0;
+  border-radius: 0;
+  background: #ffffff;
+  text-align: left;
+  overflow: hidden;
+}
+
+.missing-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 12px;
+  color: #212529;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.missing-field:nth-child(odd) {
+  background: #f0f0f0;
+}
+
+.missing-field + .missing-field {
+  border-top: 1px solid #d8dbe0;
+}
+
+.missing-field span {
+  color: #00aeef;
+  font-size: 1rem;
+}
+
+.dialog-button {
+  width: calc(100% - 52px);
+  min-height: 40px;
+  margin: 20px 26px 24px;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  background: #00aeef;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dialog-button:hover {
+  background: #0059c1;
+}
+
+.validation-dialog
+  .dialog-button {
+  background: #00aeef;
+}
+
+.validation-dialog
+  .dialog-button:hover {
+  background: #0059c1;
+}
+
+.success-dialog
+  .dialog-button {
+  background: #00aeef;
+}
+
+.success-dialog
+  .dialog-button:hover {
+  background: #0059c1;
+}
+
+.error-dialog
+  .dialog-button {
+  background: #00aeef;
+}
+
+.error-dialog
+  .dialog-button:hover {
+  background: #0059c1;
+}
+
+.submit-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+:host-context(
+  [data-coreui-theme="dark"]
+) .missing-fields {
+  border-color: #42516a;
+  background: #182235;
+}
+
+:host-context(
+  [data-coreui-theme="dark"]
+) .missing-field {
+  color: #eef4fb;
+}

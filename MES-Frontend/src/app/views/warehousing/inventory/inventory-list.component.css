@@ -1,0 +1,61 @@
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.filter-input {
+  padding: 4px;
+  width: 260px;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  min-width: 1120px;
+}
+
+.header-cell {
+  background-color: #00aeef !important;
+  color: white !important;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #00aeef;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button:hover:not([disabled]) {
+  background-color: #0059c1;
+}
+
+.pagination button[disabled] {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  color: #00aeef !important;
+}
+
+@media (max-width: 640px) {
+  .filter-input {
+    width: 100%;
+  }
+}

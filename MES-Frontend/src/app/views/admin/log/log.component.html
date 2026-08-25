@@ -1,0 +1,112 @@
+<section class="log-page">
+  <div class="log-header">
+    <div>
+      <h2>System Activity Log</h2>
+      <p>Review recent user sessions, activity status, and connection details.</p>
+    </div>
+
+    <button type="button" class="refresh-button" (click)="loadLogs()">
+      Refresh
+    </button>
+  </div>
+
+  <div class="summary-grid">
+    <article class="summary-card">
+      <span>Total Sessions</span>
+      <strong>{{ logs.length }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Active</span>
+      <strong>{{ activeSessions }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Idle</span>
+      <strong>{{ idleSessions }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Closed</span>
+      <strong>{{ closedSessions }}</strong>
+    </article>
+  </div>
+
+  <div class="log-panel">
+    <div class="toolbar">
+      <input
+        type="search"
+        placeholder="Search by user, role, email, or IP"
+        [(ngModel)]="searchTerm"
+      />
+
+      <select [(ngModel)]="statusFilter">
+        <option value="all">All statuses</option>
+        <option value="Active">Active</option>
+        <option value="Idle">Idle</option>
+        <option value="Closed">Closed</option>
+      </select>
+    </div>
+
+    <div *ngIf="isLoading" class="state-message">
+      Loading session activity...
+    </div>
+
+    <div *ngIf="!isLoading && errorMessage" class="state-message error">
+      {{ errorMessage }}
+    </div>
+
+    <div
+      *ngIf="!isLoading && !errorMessage && filteredLogs.length === 0"
+      class="state-message"
+    >
+      No activity records match the current filters.
+    </div>
+
+    <div
+      *ngIf="!isLoading && !errorMessage && filteredLogs.length > 0"
+      class="table-wrap"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Login Time</th>
+            <th>Last Activity</th>
+            <th>Logout Time</th>
+            <th>Duration</th>
+            <th>IP Address</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let log of filteredLogs">
+            <td>
+              <div class="user-cell">
+                <strong>{{ log.username || '-' }}</strong>
+                <span>{{ log.email || 'No email recorded' }}</span>
+              </div>
+            </td>
+            <td>{{ log.role || '-' }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="getStatusClass(log.status)">
+                {{ log.status }}
+              </span>
+            </td>
+            <td>{{ log.login_time | date : 'medium' }}</td>
+            <td>
+              {{ log.last_activity ? (log.last_activity | date : 'medium') : '-' }}
+            </td>
+            <td>
+              {{ log.logout_time ? (log.logout_time | date : 'medium') : '-' }}
+            </td>
+            <td>{{ log.duration_display || '-' }}</td>
+            <td>{{ log.ip_address || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,137 @@
+<div class="popup-overlay">
+  <section class="popup-content" role="dialog" aria-modal="true" aria-labelledby="nc-title">
+    <header class="popup-header">
+      <div>
+        <span class="popup-eyebrow">Quality management</span>
+        <h2 id="nc-title">Raise Non Conformance</h2>
+        <p>Record the production issue with the existing LN submission flow.</p>
+      </div>
+
+      <button class="close-btn" type="button" (click)="onClose()" aria-label="Close">
+        ✕
+      </button>
+    </header>
+
+    <form (ngSubmit)="onSubmit()" #ncForm="ngForm" class="nc-form">
+      <div class="form-grid">
+        <div class="field-group">
+          <label for="ncSubject">NC Subject</label>
+          <input
+            class="form-control"
+            required
+            type="text"
+            name="ncSubject"
+            id="ncSubject"
+            [(ngModel)]="ncSubject"
+            placeholder="Enter NC Subject"
+          />
+        </div>
+
+        <div class="field-group readonly-field">
+          <label for="productionOrder">Production Order No</label>
+          <input
+            class="form-control"
+            required
+            type="text"
+            name="productionOrder"
+            id="productionOrder"
+            [(ngModel)]="productionOrder"
+            placeholder="Enter Order No"
+            readonly
+          />
+        </div>
+
+        <div class="field-group readonly-field">
+          <label for="operationNo">Operation No</label>
+          <input
+            class="form-control"
+            required
+            type="text"
+            name="operationNo"
+            id="operationNo"
+            [(ngModel)]="operationNo"
+            placeholder="Enter Operation No"
+            readonly
+          />
+        </div>
+
+        <div class="field-group readonly-field">
+          <label for="itemCode">Parent Item Code</label>
+          <input
+            class="form-control"
+            required
+            type="text"
+            name="itemCode"
+            id="itemCode"
+            [(ngModel)]="itemCode"
+            placeholder="Enter Item Code"
+            readonly
+          />
+        </div>
+
+        <div class="field-group readonly-field">
+          <label for="bomitem">BOM Item</label>
+          <input
+            class="form-control"
+            aria-label="file example"
+            id="bomitem"
+            required
+            type="text"
+            name="bomitem"
+            [(ngModel)]="bomitem"
+            placeholder="Enter Item Code"
+            readonly
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="Quantity">Quantity</label>
+          <input
+            class="form-control"
+            required
+            type="text"
+            name="Quantity"
+            id="Quantity"
+            [(ngModel)]="Quantity"
+            placeholder="Enter Item Quantity"
+          />
+        </div>
+
+        <div class="field-group full-width">
+          <label for="attachment">Attachments</label>
+          <input
+            class="form-control file-input"
+            aria-label="file example"
+            id="attachment"
+            required
+            type="file"
+            name="attachment"
+          />
+        </div>
+
+        <div class="field-group full-width">
+          <label for="description">NC Description</label>
+          <textarea
+            class="form-control"
+            required
+            name="description"
+            id="description"
+            [(ngModel)]="description"
+            rows="4"
+            placeholder="Enter Description"
+          ></textarea>
+        </div>
+      </div>
+
+      <footer class="button-group">
+        <button class="btn-cancel" type="button" (click)="onCancel()">
+          Cancel
+        </button>
+
+        <button class="btn-submit" type="submit">
+          Submit
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

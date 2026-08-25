@@ -1,0 +1,197 @@
+<ng-container>
+  <c-container
+    [fluid]="true"
+    class="border-bottom px-4 header-main-row"
+  >
+    <button
+      [cSidebarToggle]="sidebarId()"
+      cHeaderToggler
+      class="btn"
+      toggle="visible"
+      style="margin-inline-start: -14px"
+      [attr.aria-label]="text.toggleSidebar"
+    >
+      <svg cIcon name="cilMenu" size="lg"></svg>
+    </button>
+<c-header-nav class="d-none d-md-flex">
+  <c-nav-item>
+    <a
+      cNavLink
+      routerLink="/dashboard"
+      routerLinkActive="active"
+    >
+      {{ text.dashboard }}
+    </a>
+  </c-nav-item>
+</c-header-nav>
+
+<div
+  class="header-datetime d-none d-lg-flex"
+  [attr.title]="userCountryLabel + ' · ' + userTimezone"
+>
+  <div class="header-date">
+    {{ currentDateText }}
+  </div>
+
+  <div class="header-time">
+    <span>{{ currentHourMinute }}</span>
+    <span>:</span>
+    <span class="header-seconds">{{ currentSecond }}</span>
+    <span class="header-period">
+      {{ currentPeriod ? ' ' + currentPeriod : '' }}
+    </span>
+  </div>
+
+  <div class="header-location-line">
+    <span class="header-country">
+      {{ userCountryLabel }}
+    </span>
+
+    <span class="header-separator">·</span>
+
+    <span class="header-timezone">
+      {{ userTimezone }}
+    </span>
+  </div>
+</div>
+
+    <c-header-nav class="d-none d-md-flex ms-auto">
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
+      </a>
+
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilEnvelopeOpen" size="lg"></svg>
+      </a>
+    </c-header-nav>
+
+    <c-header-nav class="ms-auto ms-md-0">
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+
+      <ng-container *ngTemplateOutlet="themeDropdown"></ng-container>
+
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+    </c-header-nav>
+
+    <c-header-nav class="mx-0">
+      <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
+    </c-header-nav>
+  </c-container>
+</ng-container>
+
+<ng-template #userDropdown>
+  <c-dropdown
+    [popperOptions]="{ placement: 'bottom-start' }"
+    variant="nav-item"
+  >
+    <button
+      [caret]="false"
+      cDropdownToggle
+      class="py-0 pe-0"
+      [attr.aria-label]="text.openUserMenu"
+    >
+      <c-avatar
+        shape="rounded-1"
+        [size]="'md'"
+        [src]="imagePreviewUrl || 'assets/default-avatar.png'"
+        status="success"
+        textColor="primary"
+        alt="User avatar"
+      />
+    </button>
+
+    <ul cDropdownMenu class="pt-0 user-menu">
+      <li>
+        <h6
+          cDropdownHeader
+          class="bg-body-secondary text-body-secondary fw-semibold py-2 rounded-top"
+        >
+          {{ text.account }}
+        </h6>
+      </li>
+
+      <li>
+        <button type="button" cDropdownItem class="user-menu-item">
+          <span class="user-menu-label">
+            <svg cIcon class="me-2" name="cilBell"></svg>
+            {{ text.updates }}
+          </span>
+          <c-badge class="user-menu-badge" color="info">27</c-badge>
+        </button>
+      </li>
+
+      <li>
+        <a cDropdownItem routerLink="/apps/email/inbox" class="user-menu-item">
+          <span class="user-menu-label">
+            <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
+            {{ text.messages }}
+          </span>
+          <c-badge class="user-menu-badge" color="success">42</c-badge>
+        </a>
+      </li>
+
+      <li>
+        <h6
+          cDropdownHeader
+          class="bg-body-secondary text-body-secondary fw-semibold py-2"
+        >
+          {{ text.settings }}
+        </h6>
+      </li>
+
+      <li>
+        <button type="button" cDropdownItem (click)="editprofile()">
+          <svg cIcon class="me-2" name="cilUser"></svg>
+          {{ text.profile }}
+        </button>
+      </li>
+
+      <li>
+        <a cDropdownItem routerLink="/settings">
+          <svg cIcon class="me-2" name="cilSettings"></svg>
+          {{ text.settings }}
+        </a>
+      </li>
+
+      <li><hr cDropdownDivider /></li>
+
+      <li>
+        <button type="button" cDropdownItem (click)="logout()">
+          <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+          {{ text.logout }}
+        </button>
+      </li>
+    </ul>
+  </c-dropdown>
+</ng-template>
+
+<ng-template #themeDropdown>
+  <c-dropdown alignment="end" variant="nav-item">
+    <button
+      [caret]="false"
+      cDropdownToggle
+      [attr.aria-label]="text.openThemePicker"
+    >
+      <svg cIcon [name]="icons()" size="lg"></svg>
+    </button>
+
+    <div cDropdownMenu>
+      @for (mode of colorModes; track mode.name) {
+        <button
+          type="button"
+          (click)="colorMode.set(mode.name)"
+          [active]="colorMode() === mode.name"
+          cDropdownItem
+          class="d-flex align-items-center"
+        >
+          <svg cIcon class="me-2" [name]="mode.icon" size="lg"></svg>
+          {{ getColorModeLabel(mode.name) }}
+        </button>
+      }
+    </div>
+  </c-dropdown>
+</ng-template>

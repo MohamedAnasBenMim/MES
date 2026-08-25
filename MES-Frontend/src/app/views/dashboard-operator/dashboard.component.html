@@ -1,0 +1,639 @@
+<div class="operator-dashboard">
+  <div
+    *ngIf="loading"
+    class="dashboard-state"
+  >
+    {{ text.loading }}
+  </div>
+
+  <div
+    *ngIf="!loading && loadingError"
+    class="dashboard-state error-state"
+  >
+    <strong>
+      {{ text.unavailable }}
+    </strong>
+
+    <span>
+      {{ loadingError }}
+    </span>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="
+        loadingError === text.noOperatorFound
+          ? openCorrectDashboard()
+          : loadDashboard()
+      "
+    >
+      {{
+        loadingError === text.noOperatorFound
+          ? text.noOperatorAction
+          : text.retry
+      }}
+    </button>
+  </div>
+
+  <ng-container
+    *ngIf="!loading && !loadingError"
+  >
+    <section class="welcome-section">
+      <div>
+        <span class="eyebrow">
+          {{ text.workspace }}
+        </span>
+
+        <h1>
+          {{ greetingText }},
+          {{ operatorName }}
+        </h1>
+
+        <p>
+          {{ text.welcomeDescription }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="activeOperations.length === 0"
+        (click)="
+          activeOperations.length > 0
+            ? openReportModal(activeOperations[0])
+            : null
+        "
+      >
+        {{ text.reportNextOperation }}
+      </button>
+    </section>
+
+    <div class="dashboard-grid">
+      <main class="dashboard-main">
+        <section class="summary-grid">
+          <article class="summary-card">
+            <span class="summary-icon blue">
+              ⚙
+            </span>
+
+            <div>
+              <span class="summary-label">
+                {{ text.activeOperations }}
+              </span>
+
+              <strong>
+                {{ statistics.active_operations }}
+              </strong>
+            </div>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-icon green">
+              ✓
+            </span>
+
+            <div>
+              <span class="summary-label">
+                {{ text.completedThisWeek }}
+              </span>
+
+              <strong>
+                {{ statistics.completed_this_week }}
+              </strong>
+            </div>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-icon purple">
+              ◆
+            </span>
+
+            <div>
+              <span class="summary-label">
+                {{ text.deliveredQuantity }}
+              </span>
+
+              <strong>
+                {{ statistics.delivered_quantity }}
+              </strong>
+            </div>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-icon orange">
+              ★
+            </span>
+
+            <div>
+              <span class="summary-label">
+                {{ text.weeklyPoints }}
+              </span>
+
+              <strong>
+                {{ statistics.points }}
+              </strong>
+            </div>
+          </article>
+        </section>
+
+        <section class="analytics-grid">
+          <article class="panel productivity-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">
+                  {{ text.weeklyOutput }}
+                </span>
+
+                <h2>
+                  {{ text.productivity }}
+                </h2>
+              </div>
+
+              <span class="period-badge">
+                {{ text.thisWeek }}
+              </span>
+            </div>
+
+            <div class="productivity-chart">
+              <c-chart
+                *ngIf="productivityChart"
+                [data]="productivityChart.data"
+                [options]="productivityChart.options"
+                [type]="productivityChart.type"
+              />
+            </div>
+          </article>
+
+          <article class="panel status-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">
+                  {{ text.qualityPerformance }}
+                </span>
+
+                <h2>
+                  {{ text.productionStatus }}
+                </h2>
+              </div>
+            </div>
+
+            <div class="quality-layout">
+              <div
+                class="quality-ring"
+                [style.--quality-angle]="getGaugeRotation()"
+              >
+                <div class="quality-ring-inner">
+                  <strong>
+                    {{ qualityGaugeValue }}%
+                  </strong>
+
+                  <span>
+                    {{ text.quality }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="quality-data">
+                <div>
+                  <span>
+                    {{ text.delivered }}
+                  </span>
+
+                  <strong>
+                    {{ statistics.delivered_quantity }}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    {{ text.rejected }}
+                  </span>
+
+                  <strong>
+                    {{ statistics.rejected_quantity }}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    {{ text.yourRank }}
+                  </span>
+
+                  <strong>
+                    {{
+                      currentOperatorRank
+                        ? '#' + currentOperatorRank
+                        : '—'
+                    }}
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel operations-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">
+                {{ text.currentWorkload }}
+              </span>
+
+              <h2>
+                {{ text.productionOperations }}
+              </h2>
+            </div>
+
+            <span class="operation-count">
+              {{ activeOperations.length }}
+              {{ text.active }}
+            </span>
+          </div>
+
+          <div
+            *ngIf="activeOperations.length > 0; else noOperations"
+            class="operation-cards"
+          >
+            <article
+              *ngFor="let operation of activeOperations"
+              class="operation-card"
+            >
+              <div class="operation-card-top">
+                <span class="operation-document">
+                  ▣
+                </span>
+
+                <span class="status-pill">
+                  {{ operation.status }}
+                </span>
+              </div>
+
+              <span class="operation-number">
+                {{ text.order }}
+                {{ operation.order }}
+              </span>
+
+              <h3>
+                {{
+                  operation.item
+                    || text.productionItem
+                }}
+              </h3>
+
+              <div class="operation-meta">
+                <span>
+                  {{ text.operation }}
+                  {{ operation.operation }}
+                </span>
+
+                <span>
+                  {{
+                    operation.work_center
+                      || text.workCenter
+                  }}
+                </span>
+              </div>
+
+              <div class="quantity-row">
+                <span>
+                  {{ text.plannedQuantity }}
+                </span>
+
+                <strong>
+                  {{ operation.routing_quantity }}
+                </strong>
+              </div>
+
+              <button
+                type="button"
+                class="operation-button"
+                (click)="openReportModal(operation)"
+              >
+                {{ text.reportOperation }}
+              </button>
+            </article>
+          </div>
+
+          <ng-template #noOperations>
+            <div class="empty-state">
+              <span>
+                ✓
+              </span>
+
+              <h3>
+                {{ text.noActiveOperations }}
+              </h3>
+
+              <p>
+                {{ text.operationsAppearHere }}
+              </p>
+            </div>
+          </ng-template>
+        </section>
+      </main>
+
+      <aside class="dashboard-sidebar">
+        <section class="panel operator-profile">
+          <img
+            [src]="operatorImage"
+            [alt]="operatorName"
+          />
+
+          <div>
+            <h2>
+              {{ operatorName }}
+            </h2>
+
+            <span>
+              {{ operatorRole }}
+            </span>
+          </div>
+
+          <div class="profile-tags">
+            <span>
+              {{ text.production }}
+            </span>
+
+            <span>
+              {{ text.quality }}
+            </span>
+          </div>
+        </section>
+
+        <section class="panel champions-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">
+                {{ text.weeklyCompetition }}
+              </span>
+
+              <h2>
+                {{ text.championsBoard }}
+              </h2>
+            </div>
+
+            <span class="trophy">
+              🏆
+            </span>
+          </div>
+
+          <div
+            *ngIf="champions.length > 0; else noChampions"
+            class="champions-list"
+          >
+            <article
+              *ngFor="let champion of champions"
+              class="champion-row"
+              [class.current-operator]="
+                isCurrentOperator(champion.username)
+              "
+            >
+              <span
+                class="rank-badge"
+                [ngClass]="getRankClass(champion.rank)"
+              >
+                {{ champion.rank }}
+              </span>
+
+              <img
+                [src]="
+                  champion.avatar
+                    || 'assets/default-avatar.png'
+                "
+                [alt]="champion.display_name"
+              />
+
+              <div class="champion-info">
+                <strong>
+                  {{ champion.display_name }}
+                </strong>
+
+                <span>
+                  {{ champion.completed_operations }}
+                  {{ text.operations }}
+                  ·
+                  {{ champion.quality_score }}%
+                </span>
+              </div>
+
+              <strong class="champion-points">
+                {{ champion.points }}
+
+                <small>
+                  {{ text.points }}
+                </small>
+              </strong>
+            </article>
+          </div>
+
+          <ng-template #noChampions>
+            <p class="empty-small">
+              {{ text.noChampions }}
+            </p>
+          </ng-template>
+        </section>
+
+        <section class="productivity-score-card">
+          <span>
+            {{ text.productivityScore }}
+          </span>
+
+          <div class="score-gauge">
+            <strong>
+              {{ statistics.points }}
+            </strong>
+
+            <small>
+              {{ text.weeklyPointsSmall }}
+            </small>
+          </div>
+        </section>
+
+        <section class="panel issues-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">
+                {{ text.quality }}
+              </span>
+
+              <h2>
+                {{ text.recentIssues }}
+              </h2>
+            </div>
+          </div>
+
+          <div
+            *ngIf="recentIssues.length > 0; else noIssues"
+            class="issue-list"
+          >
+            <article
+              *ngFor="let issue of recentIssues"
+            >
+              <span class="issue-dot">
+              </span>
+
+              <div>
+                <strong>
+                  {{ text.order }}
+                  {{ issue.order }}
+                </strong>
+
+                <span>
+                  {{ text.operation }}
+                  {{ issue.operation }}
+                  ·
+                  {{ issue.rejected_quantity }}
+                  {{ text.rejected }}
+                </span>
+              </div>
+            </article>
+          </div>
+
+          <ng-template #noIssues>
+            <p class="empty-small">
+              {{ text.noRejectedQuantities }}
+            </p>
+          </ng-template>
+        </section>
+      </aside>
+    </div>
+  </ng-container>
+</div>
+
+<div
+  *ngIf="reportModalVisible"
+  class="custom-modal-backdrop"
+>
+  <div class="custom-modal-box">
+    <div class="custom-modal-header">
+      <div>
+        <span class="eyebrow">
+          {{ text.productionReporting }}
+        </span>
+
+        <h3>
+          {{ text.completeOperation }}
+        </h3>
+      </div>
+
+      <button
+        type="button"
+        class="modal-close-button"
+        (click)="closeReportModal()"
+        [disabled]="reporting"
+      >
+        ×
+      </button>
+    </div>
+
+    <div
+      *ngIf="selectedOperation"
+      class="custom-modal-body"
+    >
+      <div class="operation-summary">
+        <div>
+          <span>
+            {{ text.order }}
+          </span>
+
+          <strong>
+            {{ selectedOperation.order }}
+          </strong>
+        </div>
+
+        <div>
+          <span>
+            {{ text.operation }}
+          </span>
+
+          <strong>
+            {{ selectedOperation.operation }}
+          </strong>
+        </div>
+
+        <div>
+          <span>
+            {{ text.plannedQuantity }}
+          </span>
+
+          <strong>
+            {{ selectedOperation.routing_quantity }}
+          </strong>
+        </div>
+
+        <div>
+          <span>
+            {{ text.workCenter }}
+          </span>
+
+          <strong>
+            {{
+              selectedOperation.work_center
+                || '—'
+            }}
+          </strong>
+        </div>
+      </div>
+
+      <label>
+        {{ text.deliveredQuantity }}
+      </label>
+
+      <input
+        type="number"
+        [(ngModel)]="deliveredQuantity"
+        min="0"
+        [disabled]="reporting"
+      />
+
+      <label>
+        {{ text.rejectedQuantity }}
+      </label>
+
+      <input
+        type="number"
+        [(ngModel)]="rejectedQuantity"
+        min="0"
+        [disabled]="reporting"
+      />
+
+      <div
+        *ngIf="reportError"
+        class="modal-message error"
+      >
+        {{ reportError }}
+      </div>
+
+      <div
+        *ngIf="reportSuccess"
+        class="modal-message success"
+      >
+        {{ reportSuccess }}
+      </div>
+    </div>
+
+    <div class="custom-modal-footer">
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="closeReportModal()"
+        [disabled]="reporting"
+      >
+        {{ text.cancel }}
+      </button>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="confirmReport()"
+        [disabled]="reporting"
+      >
+        {{
+          reporting
+            ? text.reporting
+            : text.confirmOperation
+        }}
+      </button>
+    </div>
+  </div>
+</div>

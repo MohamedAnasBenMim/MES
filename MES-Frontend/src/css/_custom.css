@@ -1,0 +1,11 @@
+@import "_charts.css";
+
+@import "_scrollbar.css";
+
+.calendar-cell.today {
+  --cui-calendar-cell-today-color: var(--cui-info) !important;
+}
+
+.select-week .calendar-row.current {
+  cursor: pointer;
+}

@@ -1,0 +1,177 @@
+<div class="filter-panel">
+  <div class="filter-container">
+    <input
+      id="warehouseSearch"
+      type="text"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange()"
+      placeholder="Filter by warehouse or description"
+      autocomplete="off"
+      class="filter-input search-input"
+    />
+
+    <select
+      [(ngModel)]="selectedWarehouseType"
+      (ngModelChange)="onFilterChange()"
+      [disabled]="isLoading || isLoadingFilterOptions"
+      class="filter-input select-input"
+      aria-label="Filter by warehouse type"
+    >
+      <option value="">All Types</option>
+      <option
+        *ngFor="let type of warehouseTypeOptions"
+        [value]="type"
+      >
+        {{ type }}
+      </option>
+    </select>
+
+    <select
+      [(ngModel)]="selectedMesControlled"
+      (ngModelChange)="onFilterChange()"
+      [disabled]="isLoading"
+      class="filter-input select-input"
+      aria-label="Filter by MES controlled"
+    >
+      <option value="">MES: All</option>
+      <option value="yes">MES: Yes</option>
+      <option value="no">MES: No</option>
+    </select>
+
+    <select
+      [(ngModel)]="selectedWmsControlled"
+      (ngModelChange)="onFilterChange()"
+      [disabled]="isLoading"
+      class="filter-input select-input"
+      aria-label="Filter by WMS controlled"
+    >
+      <option value="">WMS: All</option>
+      <option value="yes">WMS: Yes</option>
+      <option value="no">WMS: No</option>
+    </select>
+
+    <select
+      [(ngModel)]="selectedInventoryManagement"
+      (ngModelChange)="onFilterChange()"
+      [disabled]="isLoading"
+      class="filter-input select-input"
+      aria-label="Filter by inventory management"
+    >
+      <option value="">Inventory: All</option>
+      <option value="yes">Inventory: Yes</option>
+      <option value="no">Inventory: No</option>
+    </select>
+
+    <button
+      type="button"
+      class="filter-button secondary-button"
+      (click)="clearAllFilters()"
+      [disabled]="!hasActiveFilters || isLoading"
+    >
+      Reset
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      (click)="refresh()"
+      [disabled]="isLoading"
+    >
+      {{ isLoading ? 'Loading...' : 'Refresh' }}
+    </button>
+  </div>
+</div>
+
+<p *ngIf="isLoading">Loading warehouses ...</p>
+
+<div
+  *ngIf="!isLoading && errorMessage"
+  class="state-message error-message"
+>
+  <span>{{ errorMessage }}</span>
+
+  <button type="button" (click)="loadWarehouses()">
+    Try again
+  </button>
+</div>
+
+<p
+  *ngIf="
+    !isLoading &&
+    !errorMessage &&
+    displayedWarehouses.length === 0
+  "
+>
+  No warehouses found matching the selected criteria.
+</p>
+
+<div
+  *ngIf="
+    !isLoading &&
+    !errorMessage &&
+    displayedWarehouses.length > 0
+  "
+>
+  <div class="table-container">
+    <table [striped]="true" cTable>
+      <thead>
+        <tr>
+          <th class="header-cell">Warehouse</th>
+          <th class="header-cell">Description</th>
+          <th class="header-cell">Warehouse Type</th>
+          <th class="header-cell">MES Controlled</th>
+          <th class="header-cell">WMS Controlled</th>
+          <th class="header-cell">Inventory Management</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="
+            let warehouse of displayedWarehouses;
+            trackBy: trackByWarehouse
+          "
+        >
+          <td>{{ warehouse.warehouse }}</td>
+          <td>{{ warehouse.description }}</td>
+          <td>{{ warehouse.warehouseType }}</td>
+          <td>
+            <span [class]="getStatusClass(warehouse.mesControlled)">
+              {{ warehouse.mesControlled }}
+            </span>
+          </td>
+          <td>
+            <span [class]="getStatusClass(warehouse.wmsControlled)">
+              {{ warehouse.wmsControlled }}
+            </span>
+          </td>
+          <td>
+            <span [class]="getStatusClass(warehouse.inventoryManagement)">
+              {{ warehouse.inventoryManagement }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button
+      type="button"
+      (click)="previousPage()"
+      [disabled]="isLoading || !hasPrevious"
+    >
+      Previous
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button
+      type="button"
+      (click)="nextPage()"
+      [disabled]="isLoading || !hasNext"
+    >
+      Next
+    </button>
+  </div>
+</div>

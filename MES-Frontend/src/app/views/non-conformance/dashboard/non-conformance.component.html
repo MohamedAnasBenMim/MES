@@ -1,0 +1,69 @@
+<div *ngIf="ncData && ncData.length > 0; else loadingOrEmpty">
+  <div class="filter-container">
+    <input
+      type="text"
+      [(ngModel)]="ncNumberFilter"
+      (ngModelChange)="currentPage = 1"
+      placeholder="Filter by NC number"
+      class="filter-input"
+    />
+  </div>
+
+  <div class="table-container">
+    <table [striped]="true" cTable>
+      <thead>
+        <tr>
+          <th class="header-cell">NC Number</th>
+          <th class="header-cell">Description</th>
+          <th class="header-cell">Item</th>
+          <th class="header-cell">Origin Order</th>
+          <th class="header-cell">Operation</th>
+          <th class="header-cell">Status</th>
+          <th class="header-cell">Creation Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of paginatedData()">
+          <td>{{ item.NonConformanceReport }}</td>
+          <td>{{ item.Description }}</td>
+          <td>{{ item.Item }}</td>
+          <td>{{ item.OriginOrder }}</td>
+          <td>{{ item.Operation }}</td>
+          <td>{{ item.NonConformingMaterialReportStatus }}</td>
+          <td>{{ item.ReportedDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button
+      type="button"
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+    >
+      Previous
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages() }}</span>
+
+    <button
+      type="button"
+      (click)="nextPage()"
+      [disabled]="currentPage >= totalPages()"
+    >
+      Next
+    </button>
+  </div>
+</div>
+
+<ng-template #loadingOrEmpty>
+  <p>
+    {{
+      loading
+        ? 'Loading non-conformance reports ...'
+        : 'No non-conformance reports were found.'
+    }}
+  </p>
+</ng-template>

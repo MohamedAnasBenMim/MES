@@ -1,0 +1,203 @@
+:host::ng-deep {
+  .ng-scrollbar {
+    --scrollbar-padding: 1px;
+    --scrollbar-size: 5px;
+    --scrollbar-thumb-color: var(--cui-gray-500, #aab3c5);
+    --scrollbar-thumb-hover-color: var(--cui-gray-400, #cfd4de);
+    --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);
+    --scrollbar-border-radius: 5px;
+  }
+
+  .ng-scroll-content {
+    display: flex;
+    min-height: 100%;
+  }
+
+  /* .sidebar-nav { */
+  /*   scrollbar-color: var(--cui-gray-500, #444) transparent; */
+  /* } */
+}
+
+/*  ng-scrollbar css variables */
+/* .cui-scrollbar { */
+/*   --scrollbar-border-radius: 7px; */
+/*   --scrollbar-padding: 1px; */
+/*   --scrollbar-viewport-margin: 0; */
+/*   --scrollbar-track-color: transparent; */
+/*   --scrollbar-wrapper-color: transparent; */
+/*   --scrollbar-thumb-color: rgba(0, 0, 0, 0.2); */
+/*   --scrollbar-thumb-hover-color: var(--scrollbar-thumb-color); */
+/*   --scrollbar-size: 5px; */
+/*   --scrollbar-hover-size: var(--scrollbar-size); */
+/*   --scrollbar-thumb-transition: height ease-out 150ms, width ease-out 150ms; */
+/*   --scrollbar-track-transition: height ease-out 150ms, width ease-out 150ms; */
+/* } */
+.custom-sidebar-header {
+  height: 148px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.custom-sidebar-brand {
+  height: 100% !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-logo-img {
+  height: 100% !important;
+  width: auto;
+  max-height: 148px !important;
+  object-fit: contain;
+}
+.idle-timeout-backdrop {
+  position: fixed;
+  z-index: 99999;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(3px);
+}
+
+.idle-timeout-modal {
+  width: min(100%, 470px);
+
+  padding: 34px;
+
+  border: 1px solid #dfe5ec;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 24px 70px
+    rgba(15, 23, 42, 0.25);
+
+  color: #172033;
+  text-align: center;
+
+  animation:
+    idle-modal-appear
+    0.2s ease-out;
+}
+
+.idle-timeout-icon {
+  display: flex;
+  width: 64px;
+  height: 64px;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: #fff3cd;
+  color: #b78103;
+
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.idle-timeout-modal h2 {
+  margin: 0 0 16px;
+
+  color: #172033;
+
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.idle-timeout-modal p {
+  margin: 7px 0;
+
+  color: #667085;
+
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.idle-countdown {
+  margin: 24px 0;
+
+  padding: 14px 18px;
+
+  border-radius: 10px;
+
+  background: #f3f8fb;
+  color: #475467;
+
+  font-size: 15px;
+}
+
+.idle-countdown strong {
+  margin-left: 4px;
+
+  color: #00aeef;
+
+  font-size: 21px;
+}
+
+.continue-session-button {
+  width: 100%;
+  min-height: 49px;
+
+  padding: 11px 20px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #00aeef;
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.continue-session-button:hover:not(:disabled) {
+  background: #009bd6;
+}
+
+.continue-session-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@keyframes idle-modal-appear {
+  from {
+    opacity: 0;
+    transform:
+      translateY(12px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .idle-timeout-modal {
+    padding: 26px 20px;
+  }
+
+  .idle-timeout-modal h2 {
+    font-size: 23px;
+  }
+}

@@ -1,0 +1,153 @@
+.filter-panel {
+  margin-bottom: 10px;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-input {
+  padding: 4px;
+  width: 260px;
+}
+
+.search-input {
+  width: 300px;
+}
+
+.select-input {
+  width: 150px;
+}
+
+.filter-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #00aeef;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.filter-button:hover:not([disabled]) {
+  background-color: #0059c1;
+}
+
+.secondary-button {
+  background-color: white;
+  color: #212529;
+  border: 1px solid #b0bec5;
+}
+
+.secondary-button:hover:not([disabled]) {
+  color: white;
+}
+
+.filter-button[disabled] {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  min-width: 1120px;
+}
+
+.header-cell {
+  background-color: #00aeef !important;
+  color: white !important;
+}
+
+.status-badge {
+  display: inline-flex;
+  min-width: 38px;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.status-yes {
+  color: #16875a;
+  background: #eaf7f0;
+}
+
+.status-no {
+  color: #d92d20;
+  background: #fff0ee;
+}
+
+.status-unknown {
+  color: #667085;
+  background: #eef2f6;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #00aeef;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button:hover:not([disabled]) {
+  background-color: #0059c1;
+}
+
+.pagination button[disabled] {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  color: #00aeef !important;
+}
+
+.state-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  min-height: 120px;
+  text-align: center;
+}
+
+.error-message {
+  color: #d92d20;
+}
+
+.error-message button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #00aeef;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .filter-input,
+  .search-input,
+  .select-input,
+  .filter-button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,45 @@
+<div class="settings-page">
+  <div class="settings-shell">
+    <header class="settings-header">
+      <div>
+        <h1>{{ t('SETTINGS_PAGE.TITLE') }}</h1>
+        <p>{{ t('SETTINGS_PAGE.SUBTITLE') }}</p>
+      </div>
+    </header>
+
+    <div *ngIf="isLoading" class="state-message">{{ t('COMMON.LOADING') }}</div>
+
+    <form *ngIf="!isLoading" (ngSubmit)="save()">
+      <section class="settings-section">
+        <div class="section-heading"><div><h2>{{ t('SETTINGS_PAGE.LANGUAGE_REGION') }}</h2><p>{{ t('SETTINGS_PAGE.LANGUAGE_REGION_HELP') }}</p></div></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="language">{{ t('COMMON.LANGUAGE') }}</label>
+            <select id="language" name="language" [(ngModel)]="form.language" (ngModelChange)="previewLanguage()">
+              <option *ngFor="let language of languages" [value]="language.code">{{ languageLabel(language.key) }}</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="country">{{ t('SETTINGS_PAGE.COUNTRY') }}</label><select id="country" name="country" [(ngModel)]="form.country"><option *ngFor="let country of countries" [value]="country.code">{{ country.label }}</option></select></div>
+          <div class="form-group"><label for="timezone">{{ t('SETTINGS_PAGE.TIMEZONE') }}</label><select id="timezone" name="timezone" [(ngModel)]="form.timezone"><option *ngFor="let timezone of timezones" [value]="timezone">{{ timezone }}</option></select></div>
+          <div class="form-group"><label for="dateFormat">{{ t('SETTINGS_PAGE.DATE_FORMAT') }}</label><select id="dateFormat" name="dateFormat" [(ngModel)]="form.date_format"><option value="dd/MM/yyyy">dd/MM/yyyy</option><option value="MM/dd/yyyy">MM/dd/yyyy</option><option value="yyyy-MM-dd">yyyy-MM-dd</option></select></div>
+          <div class="form-group"><label for="timeFormat">{{ t('SETTINGS_PAGE.TIME_FORMAT') }}</label><select id="timeFormat" name="timeFormat" [(ngModel)]="form.time_format"><option value="24h">{{ t('SETTINGS_PAGE.HOUR_24') }}</option><option value="12h">{{ t('SETTINGS_PAGE.HOUR_12') }}</option></select></div>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <div class="section-heading"><div><h2>{{ t('SETTINGS_PAGE.APPEARANCE') }}</h2><p>{{ t('SETTINGS_PAGE.APPEARANCE_HELP') }}</p></div></div>
+        <div class="theme-options">
+          <label *ngFor="let item of [{value:'light',key:'COMMON.LIGHT'},{value:'dark',key:'COMMON.DARK'}]" class="theme-card" [class.selected]="form.theme === item.value">
+            <input type="radio" name="theme" [value]="item.value" [(ngModel)]="form.theme" (ngModelChange)="previewTheme()" />
+            <span class="theme-symbol">{{ item.value === 'light' ? '☀' : '☾' }}</span>
+            <strong>{{ t(item.key) }}</strong>
+          </label>
+        </div>
+      </section>
+
+      <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+      <div class="actions"><button type="submit" [disabled]="isSaving">{{ isSaving ? t('COMMON.SAVING') : t('COMMON.SAVE') }}</button></div>
+    </form>
+  </div>
+</div>

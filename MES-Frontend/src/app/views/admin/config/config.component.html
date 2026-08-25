@@ -1,0 +1,213 @@
+<!-- Upload .ionapi File -->
+<form class="form-grid" (ngSubmit)="onSubmit()" #credentialsForm="ngForm">
+  <input type="file" (change)="onFileSelected($event)" />
+  <input
+    type="file"
+    id="fileInput"
+    (change)="onFileSelected($event)"
+    style="display: none"
+    [(ngModel)]="formData.filename"
+  />
+
+  <!-- Styled label that shows the selected file name -->
+  <label for="fileInput" class="form-group file-upload-label">
+    <input type="text" [value]="selectedFileName || ' .ionapi file'" disabled />
+  </label>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>ci</label>
+    <input
+      type="text"
+      name="ci"
+      [(ngModel)]="formData.ci"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>cn</label>
+    <input
+      type="text"
+      name="cn"
+      [(ngModel)]="formData.cn"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>cs</label>
+    <input
+      type="text"
+      name="cs"
+      [(ngModel)]="formData.cs"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>dt</label>
+    <input
+      type="text"
+      name="dt"
+      [(ngModel)]="formData.dt"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>ev</label>
+    <input
+      type="text"
+      name="ev"
+      [(ngModel)]="formData.ev"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>iu</label>
+    <input
+      type="text"
+      name="iu"
+      [(ngModel)]="formData.iu"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>oa</label>
+    <input
+      type="text"
+      name="oa"
+      [(ngModel)]="formData.oa"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>or</label>
+    <input
+      type="text"
+      name="or"
+      [(ngModel)]="formData.or"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>ot</label>
+    <input
+      type="text"
+      name="ot"
+      [(ngModel)]="formData.ot"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>pu</label>
+    <input
+      type="text"
+      name="pu"
+      [(ngModel)]="formData.pu"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>saak</label>
+    <input
+      type="text"
+      name="saak"
+      [(ngModel)]="formData.saak"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>sask</label>
+    <input
+      type="text"
+      name="sask"
+      [(ngModel)]="formData.sask"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>sc</label>
+    <input
+      type="text"
+      name="sc"
+      [(ngModel)]="formData.sc"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>ti</label>
+    <input
+      type="text"
+      name="ti"
+      [(ngModel)]="formData.ti"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group" *ngIf="!hiddenFields.ci">
+    <label>v</label>
+    <input
+      type="text"
+      name="v"
+      [(ngModel)]="formData.v"
+      [disabled]="formDisabled"
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Company</label>
+    <input type="text" name="company" [(ngModel)]="formData.company" />
+  </div>
+
+  <div class="button-group">
+    <button type="submit">Submit</button>
+    <button type="button">Cancel</button>
+  </div>
+</form>
+
+<div
+  class="position-fixed top-0 start-50 translate-middle-x p-3"
+  style="z-index: 1200"
+>
+  <!-- SUCCESS TOAST -->
+  <c-toast
+    [visible]="showSuccess"
+    (hidden)="showSuccess = false"
+    [autohide]="true"
+    [delay]="3000"
+  >
+    <c-toast-header>
+      <toast-sample-icon color="#28a745"></toast-sample-icon>
+      <strong class="me-auto">Success</strong>
+    </c-toast-header>
+    <c-toast-body>
+      {{ successMessage }}
+    </c-toast-body>
+  </c-toast>
+
+  <!-- ERROR TOAST -->
+  <c-toast
+    [visible]="showError"
+    (hidden)="showError = false"
+    [autohide]="true"
+    [delay]="3000"
+  >
+    <c-toast-header>
+      <toast-sample-icon color="#dc3545"></toast-sample-icon>
+      <strong class="me-auto">Error</strong>
+    </c-toast-header>
+    <c-toast-body>
+      {{ errorMessage }}
+    </c-toast-body>
+  </c-toast>
+</div>

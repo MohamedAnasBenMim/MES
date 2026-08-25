@@ -1,0 +1,268 @@
+<section class="raise-nc-page">
+  <c-toast
+    #toast
+    [autohide]="false"
+    [visible]="true"
+    class="
+      align-items-center
+      text-white
+      border-0
+      nc-toast
+    "
+    color="primary"
+    style="display: none"
+  >
+    <div class="d-flex">
+      <c-toast-body>
+        <span>
+          {{ toastMessage }}
+        </span>
+      </c-toast-body>
+
+      <button
+        aria-label="close"
+        cButtonClose
+        white
+        class="me-2 m-auto"
+        (click)="closeToast()"
+      ></button>
+    </div>
+  </c-toast>
+
+  <div class="form-container">
+    <div class="form-card-header">
+      <strong>Raise Non-Conformance</strong>
+      <span class="required-note">
+        * Required fields
+      </span>
+    </div>
+
+    <form
+      [gutter]="3"
+      cForm
+      cRow
+      class="nc-form"
+      novalidate
+      (ngSubmit)="onSubmit()"
+    >
+      <c-col [md]="6">
+        <label
+          cLabel
+          for="ncSubject"
+        >
+          NC Subject
+        </label>
+
+        <input
+          id="ncSubject"
+          cFormControl
+          type="text"
+          name="ncSubject"
+          [(ngModel)]="ncSubject"
+          maxlength="30"
+          placeholder="Enter NC subject, max 30 characters"
+        />
+      </c-col>
+
+      <c-col [md]="6">
+        <label
+          cLabel
+          for="productionOrder"
+        >
+          Production Order No
+        </label>
+
+        <input
+          id="productionOrder"
+          cFormControl
+          type="text"
+          name="productionOrder"
+          [(ngModel)]="productionOrder"
+          placeholder="Enter order number"
+        />
+      </c-col>
+
+      <c-col [md]="6">
+        <label
+          cLabel
+          for="operationNo"
+        >
+          Operation No
+        </label>
+
+        <input
+          id="operationNo"
+          cFormControl
+          type="number"
+          name="operationNo"
+          [(ngModel)]="operationNo"
+          placeholder="Enter operation number"
+        />
+      </c-col>
+
+      <c-col [md]="6">
+        <label
+          cLabel
+          for="itemCode"
+        >
+          Parent Item Code
+        </label>
+
+        <input
+          id="itemCode"
+          cFormControl
+          type="text"
+          name="itemCode"
+          [(ngModel)]="itemCode"
+          placeholder="Enter item code"
+        />
+      </c-col>
+
+      <c-col [md]="6">
+        <label
+          cLabel
+          for="attachment"
+        >
+          Attachment
+        </label>
+
+        <input
+          id="attachment"
+          aria-label="file example"
+          cFormControl
+          type="file"
+          (change)="onFileSelected($event)"
+        />
+
+        <small class="field-help">
+          Add a photo or document
+          supporting this report.
+        </small>
+      </c-col>
+
+      <c-col [md]="6">
+        <label
+          cLabel
+          for="Quantity"
+        >
+          Quantity
+        </label>
+
+        <input
+          id="Quantity"
+          cFormControl
+          type="number"
+          min="1"
+          name="Quantity"
+          [(ngModel)]="Quantity"
+          placeholder="Enter item quantity"
+        />
+      </c-col>
+
+      <c-col [md]="12">
+        <label
+          cLabel
+          for="description"
+        >
+          NC Description
+        </label>
+
+        <textarea
+          id="description"
+          cFormControl
+          name="description"
+          [(ngModel)]="description"
+          rows="5"
+          placeholder="Describe the non-conformance, observed condition and impact"
+        ></textarea>
+      </c-col>
+
+      <div class="button-group">
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isSubmitting"
+        >
+          {{
+            isSubmitting
+              ? 'Submitting...'
+              : 'Submit NC'
+          }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div
+    *ngIf="showDialog"
+    class="dialog-backdrop"
+    (click)="closeDialog()"
+  >
+    <section
+      class="custom-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="dialog-title"
+      [class.validation-dialog]="dialogType === 'validation'"
+      [class.success-dialog]="dialogType === 'success'"
+      [class.error-dialog]="dialogType === 'error'"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="dialog-icon">
+        <span *ngIf="dialogType === 'validation'">
+          !
+        </span>
+
+        <span *ngIf="dialogType === 'success'">
+          ✓
+        </span>
+
+        <span *ngIf="dialogType === 'error'">
+          ×
+        </span>
+      </div>
+
+      <h2 id="dialog-title">
+        {{ dialogTitle }}
+      </h2>
+
+      <p>
+        {{ dialogMessage }}
+      </p>
+
+      <div
+        *ngIf="dialogDetails.length > 0"
+        class="missing-fields"
+      >
+        <div
+          *ngFor="let field of dialogDetails"
+          class="missing-field"
+        >
+          <span>•</span>
+          {{ field }}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="dialog-button"
+        (click)="closeDialog()"
+      >
+        {{
+          dialogType === 'validation'
+            ? 'Complete the form'
+            : 'Close'
+        }}
+      </button>
+    </section>
+  </div>
+</section>

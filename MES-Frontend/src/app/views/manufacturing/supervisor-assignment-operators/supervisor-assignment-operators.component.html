@@ -1,0 +1,294 @@
+<h2>Supervisor Assignment Operators</h2>
+<div *ngIf="successMessage" class="message success-message">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="message error-message">
+  {{ errorMessage }}
+</div>
+<div *ngIf="!loading; else loadingTemplate">
+  <div class="filter-container">
+    <input
+      type="text"
+      [(ngModel)]="searchFilter"
+      (ngModelChange)="resetPage()"
+      placeholder="Search operator or employee ID"
+      class="filter-input"
+    />
+
+    <select [(ngModel)]="departmentFilter" (ngModelChange)="resetPage()" class="filter-input">
+      <option value="">All Departments</option>
+      <option *ngFor="let department of uniqueDepartments()" [value]="department">
+        {{ department }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="workcenterFilter" (ngModelChange)="resetPage()" class="filter-input">
+      <option value="">All Workcenters</option>
+      <option *ngFor="let workcenter of uniqueWorkcenters()" [value]="workcenter">
+        {{ workcenter }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="shiftFilter" (ngModelChange)="resetPage()" class="filter-input">
+      <option value="">All Shifts</option>
+      <option *ngFor="let shift of uniqueShifts()" [value]="shift">
+        {{ shift }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="skillFilter" (ngModelChange)="resetPage()" class="filter-input">
+      <option value="">All Skills</option>
+      <option *ngFor="let skill of uniqueSkills()" [value]="skill">
+        {{ skill }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="availabilityFilter" (ngModelChange)="resetPage()" class="filter-input">
+      <option value="">All Availability</option>
+      <option *ngFor="let status of uniqueStatuses()" [value]="status">
+        {{ status }}
+      </option>
+    </select>
+  </div>
+
+  <table [striped]="true" cTable>
+    <thead>
+      <tr>
+        <th class="header-cell">Operator</th>
+        <th class="header-cell">Employee ID</th>
+        <th class="header-cell">Department</th>
+        <th class="header-cell">Workcenter</th>
+        <th class="header-cell">Shift</th>
+        <th class="header-cell">Skill</th>
+        <th class="header-cell">Status</th>
+        <th class="header-cell">Current Operation</th>
+        <th class="header-cell">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let operator of paginatedData(); trackBy: trackOperatorRow">
+        <td>{{ operator.username }}</td>
+        <td>{{ getEmployeeId(operator) }}</td>
+        <td>{{ getDepartment(operator) }}</td>
+        <td>{{ getWorkcenter(operator) }}</td>
+        <td>{{ getShift(operator) }}</td>
+        <td>{{ getSkill(operator) }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="getStatus(operator).toLowerCase()">
+            {{ getStatus(operator) }}
+          </span>
+        </td>
+        <td>{{ getCurrentOperation(operator) }}</td>
+        <td class="action-cell">
+          <button
+            *ngIf="canAssign(operator)"
+            class="action-btn"
+            (click)="assignOperator(operator)"
+          >
+            Assign
+          </button>
+
+          <button
+            *ngIf="canReassign(operator)"
+            class="action-btn warning"
+            (click)="reassignOperator(operator)"
+          >
+            Reassign
+          </button>
+
+          <button
+            *ngIf="canReassign(operator)"
+            class="action-btn danger"
+            (click)="removeAssignment(operator)"
+          >
+            Remove
+          </button>
+
+          <button class="action-btn secondary" (click)="viewHistory(operator)">
+            History
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+
+    <span class="page-info">
+      Page {{ currentPage }} of {{ totalPages() }}
+    </span>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages()">
+      Next
+    </button>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <p>Loading operators...</p>
+</ng-template>
+
+<div class="modal-overlay" *ngIf="assignmentModalOpen">
+  <div class="modal-content assignment-modal">
+    <div class="modal-header">
+      <h3>
+        {{ assignmentMode === 'assign' ? 'Assign Operation' : 'Reassign Operation' }}
+        <span *ngIf="selectedOperator">- {{ selectedOperator.username }}</span>
+      </h3>
+
+      <button class="modal-close-btn" type="button" (click)="closeAssignmentModal()">
+        x
+      </button>
+    </div>
+
+    <div class="modal-filters">
+      <input
+        type="text"
+        [(ngModel)]="operationSearchFilter"
+        placeholder="Search order, operation, item, workcenter"
+        class="filter-input"
+      />
+
+      <select [(ngModel)]="operationWorkcenterFilter" class="filter-input">
+        <option value="">All Workcenters</option>
+        <option
+          *ngFor="let workcenter of uniqueOperationWorkcenters()"
+          [value]="workcenter"
+        >
+          {{ workcenter }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="operationLoading">
+      <p>Loading active operations...</p>
+    </div>
+
+    <div *ngIf="!operationLoading">
+      <table [striped]="true" cTable>
+        <thead>
+          <tr>
+            <th class="header-cell">Order</th>
+            <th class="header-cell">Operation</th>
+            <th class="header-cell">Item</th>
+            <th class="header-cell">Description</th>
+            <th class="header-cell">Workcenter</th>
+            <th class="header-cell">Planned Qty</th>
+            <th class="header-cell">Remaining Qty</th>
+            <th class="header-cell">Priority</th>
+            <th class="header-cell">Due Date</th>
+            <th class="header-cell">Estimated Hours</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let operation of filteredOperations()"
+            (click)="chooseOperation(operation)"
+            [class.selected-row]="selectedOperation?.id === operation.id"
+          >
+            <td>{{ operation.Order }}</td>
+            <td>{{ operation.Operation }}</td>
+            <td>{{ operation.OperatedItem || '-' }}</td>
+            <td>{{ getOperationDescription(operation) }}</td>
+            <td>{{ getOperationWorkcenter(operation) }}</td>
+            <td>{{ operation.RoutingQuantity || '-' }}</td>
+            <td>{{ getOperationRemainingQuantity(operation) }}</td>
+            <td>{{ getOperationPriority(operation) }}</td>
+            <td>{{ getOperationDueDate(operation) | date : 'short' }}</td>
+            <td>{{ getOperationEstimatedHours(operation) }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p *ngIf="filteredOperations().length === 0">
+        No available operations found.
+      </p>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        class="action-btn secondary"
+        type="button"
+        (click)="closeAssignmentModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="action-btn"
+        type="button"
+        [disabled]="!selectedOperation || assignmentSubmitting"
+        (click)="confirmAssignment()"
+      >
+        {{ assignmentSubmitting ? 'Saving...' : 'Confirm Assignment' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="historyModalOpen">
+  <div class="modal-content history-modal">
+    <div class="modal-header">
+      <h3>
+        Assignment History
+        <span *ngIf="historyOperator">- {{ historyOperator.username }}</span>
+      </h3>
+
+      <button class="modal-close-btn" type="button" (click)="closeHistoryModal()">
+        x
+      </button>
+    </div>
+
+    <div *ngIf="historyLoading">
+      <p>Loading assignment history...</p>
+    </div>
+
+    <div *ngIf="!historyLoading">
+      <table [striped]="true" cTable>
+        <thead>
+          <tr>
+            <th class="header-cell">Operation</th>
+            <th class="header-cell">Assigned By</th>
+            <th class="header-cell">Assigned At</th>
+            <th class="header-cell">Closed At</th>
+            <th class="header-cell">Reason</th>
+            <th class="header-cell">Status</th>
+            <th class="header-cell">Notes</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let record of historyRecords">
+            <td>{{ getHistoryOperation(record) }}</td>
+            <td>{{ record.assigned_by_name }}</td>
+            <td>{{ getHistoryAssignedAt(record) | date : 'short' }}</td>
+            <td>{{ getHistoryClosedAt(record) | date : 'short' }}</td>
+            <td>{{ getHistoryReason(record) }}</td>
+            <td>{{ record.status }}</td>
+            <td>{{ getHistoryNotes(record) }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p *ngIf="historyRecords.length === 0">
+        No assignment history found.
+      </p>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        class="action-btn secondary"
+        type="button"
+        (click)="closeHistoryModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,239 @@
+<section class="operation-execution-container">
+  <header class="operation-header">
+    <div>
+      <span class="operation-eyebrow">Infor LN · Operation execution</span>
+      <h1>
+        Order {{ selectedItem?.Order || "P00P00080" }}
+        <span>/ Operation {{ selectedItem?.Operation || "0" }}</span>
+      </h1>
+      <p>{{ selectedItem?.OperatedItem || "0" }}</p>
+    </div>
+
+    <div class="operation-status">
+      <span></span>
+      Execution workspace
+    </div>
+  </header>
+
+  <div class="instruction-card">
+    <c-tabs [activeItemKey]="1">
+      <c-tabs-list variant="pills">
+        <button cTab [itemKey]="0" onclick="showTab('work-instruction')">
+          Proplanner
+        </button>
+
+        <button cTab [itemKey]="1">
+          Work instructions
+        </button>
+      </c-tabs-list>
+
+      <c-tabs-content>
+        <c-tab-panel class="p-3" [itemKey]="0">
+          <strong>Proplanner</strong> tab content
+        </c-tab-panel>
+
+        <c-tab-panel class="p-3" [itemKey]="1">
+          <strong>Work instructions</strong> tab content
+        </c-tab-panel>
+      </c-tabs-content>
+    </c-tabs>
+  </div>
+
+  <div id="work-instruction" class="tab-content">
+    <p>This is the Work Instruction Documents tab content.</p>
+  </div>
+
+  <div class="main-content">
+    <main class="center-content">
+      <div class="workspace-intro">
+        <span class="workspace-icon" aria-hidden="true">MES</span>
+
+        <h2>Manufacturing Execution Systems</h2>
+
+        <p>
+          Proplanner’s MES solution helps manage operations with real-time
+          control and traceability.
+        </p>
+
+        <a
+          href="https://www.proplanner.com/solutions/manufacturing-execution-systems"
+          target="_blank"
+          rel="noopener"
+        >
+          Read more on Proplanner
+        </a>
+      </div>
+    </main>
+
+    <aside class="right-panel">
+      <section class="info-section order-info">
+        <button class="info-button" type="button" (click)="showOrderDetails()">
+          <span class="circle-icon">≡</span>
+          <span class="button-label">Order Details</span>
+          <span class="action-chevron">›</span>
+        </button>
+
+        <div class="order-number">
+          <strong>
+            {{ selectedItem?.Order || "P00P00080" }}
+            /
+            {{ selectedItem?.Operation || "0" }}
+          </strong>
+
+          <p>{{ selectedItem?.OperatedItem || "0" }}</p>
+        </div>
+
+        <div class="machine-info">
+          <div class="time-info">
+            <div class="time-row">
+              <span class="time-label">Machine</span>
+              <span class="time-value">
+                {{ selectedItem?.machineId || "MLOW010" }}
+              </span>
+            </div>
+
+            <div class="time-row">
+              <span class="time-label">Elapsed Time</span>
+              <span class="time-value">
+                {{ selectedItem?.elapsedTime || "56460" }} min
+              </span>
+            </div>
+
+            <div class="time-row">
+              <span class="time-label">Time Left</span>
+              <span class="time-value">
+                {{ selectedItem?.timeLeft || "0" }} min
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section material-info">
+        <button
+          class="info-button"
+          type="button"
+          (click)="
+            showMaterialConsumption(
+              selectedItem?.Order,
+              selectedItem?.Operation
+            )
+          "
+        >
+          <span class="circle-icon">≡</span>
+          <span class="button-label">Material Consumption</span>
+          <span class="action-chevron">›</span>
+        </button>
+
+        <div class="material-values">
+          <strong>{{ totalToIssue || "0" }}</strong>
+          <span>/ {{ totalEstimatedQuantity || "0" }}</span>
+        </div>
+      </section>
+
+      <app-material-popup
+        *ngIf="popupVisible"
+        [selectedItem]="selectedItem"
+        (closed)="closePopup()"
+      ></app-material-popup>
+
+      <section class="info-section material-info">
+        <div class="info-button static-info">
+          <span class="circle-icon">≡</span>
+          <span class="button-label">Process Variables</span>
+        </div>
+
+        <div class="material-values">
+          <strong>{{ selectedItem?.consumed || "0" }}</strong>
+          <span>/ {{ selectedItem?.total || "0" }}</span>
+        </div>
+      </section>
+
+      <section class="info-section rework-info">
+        <div class="info-button static-info">
+          <span class="circle-icon">≡</span>
+          <span class="button-label">Non Conformances</span>
+        </div>
+
+        <div class="nc-summary">
+          <div *ngIf="ncData?.length > 0; else noData">
+            <div *ngFor="let item of ncData" class="nc-record">
+              <strong>{{ item.NonConformanceReport }}</strong>
+              <span>{{ item.NonConformingMaterialReportStatus }}</span>
+            </div>
+          </div>
+
+          <ng-template #noData>
+            <div class="clean-state">No related NCs found.</div>
+          </ng-template>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="footer-controls">
+    <div class="footer-copy">
+      <strong>Operation controls</strong>
+      <span>Use the existing actions to pause, complete or report quality issues.</span>
+    </div>
+
+    <div class="control-group">
+      <button class="control-btn pause-btn" type="button" aria-label="Pause operation">
+        <span class="control-symbol pause-symbol" aria-hidden="true"></span>
+        <span class="control-label">Pause</span>
+      </button>
+
+      <button
+        class="control-btn complete-btn"
+        type="button"
+        (click)="completeOperation()"
+        aria-label="Complete operation"
+      >
+        <span class="control-symbol complete-symbol" aria-hidden="true">✓</span>
+        <span class="control-label">Complete</span>
+      </button>
+
+      <button
+        class="control-btn nc-btn"
+        type="button"
+        (click)="toggleNcPopup()"
+        aria-label="Report non conformance"
+      >
+        <span class="control-symbol nc-symbol" aria-hidden="true">!</span>
+        <span class="control-label">Report NC</span>
+      </button>
+    </div>
+
+    <div *ngIf="showCompletePopup" class="popup-overlay">
+      <section class="popup-box" role="dialog" aria-modal="true">
+        <div class="confirm-icon">✓</div>
+
+        <h2>Complete operation?</h2>
+
+        <p>Confirm completion of this operation?</p>
+
+        <div class="popup-actions">
+          <button class="confirm-btn" type="button" (click)="submitConfirmed()">
+            Confirm
+          </button>
+
+          <button
+            class="cancel-btn"
+            type="button"
+            (click)="toggleCompletePopup()"
+          >
+            Cancel
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <app-nc-popup
+      *ngIf="showPopup"
+      [dataFromParent]="productionData"
+      (close)="toggleNcPopup()"
+      (submitted)="handleNcSubmit($event)"
+    >
+    </app-nc-popup>
+  </footer>
+</section>

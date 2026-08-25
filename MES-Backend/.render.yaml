@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: zumx-backend
+    runtime: python
+    rootDir: ZUM-X Backend/ZUM-X Backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn zumx.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        value: "!2c@2bb#1vvd@_(%fjez0^l-5-c_26v2u+cvo((u9lzwety2w^"
+      - key: ALLOWED_HOSTS
+        value: "http://localhost:8000"

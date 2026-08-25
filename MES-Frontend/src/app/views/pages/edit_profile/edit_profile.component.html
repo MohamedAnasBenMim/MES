@@ -1,0 +1,445 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-6">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            <h3 class="fw-bold mb-2">
+              Edit Profile
+            </h3>
+
+            <p class="text-muted mb-0">
+              Update your personal information and account security.
+            </p>
+          </div>
+
+          <form
+            (ngSubmit)="onSubmit()"
+            #editForm="ngForm"
+            enctype="multipart/form-data"
+          >
+            <div class="mb-4 text-center">
+              <div class="mb-3">
+                <img
+                  *ngIf="imagePreviewUrl"
+                  [src]="imagePreviewUrl"
+                  alt="Profile Image"
+                  class="rounded-circle border shadow-sm"
+                  width="120"
+                  height="120"
+                  style="object-fit: cover"
+                />
+
+                <div
+                  *ngIf="!imagePreviewUrl"
+                  class="rounded-circle border shadow-sm mx-auto d-flex align-items-center justify-content-center bg-light"
+                  style="width: 120px; height: 120px"
+                >
+                  <span class="text-muted">
+                    No Image
+                  </span>
+                </div>
+              </div>
+
+              <label
+                for="imageUpload"
+                class="form-label fw-semibold"
+              >
+                Profile Image
+              </label>
+
+              <input
+                type="file"
+                id="imageUpload"
+                name="profile_image"
+                (change)="onImageSelected($event)"
+                class="form-control"
+                accept="image/*"
+              />
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="fw-bold mb-3">
+              Personal Information
+            </h5>
+
+            <div class="mb-3">
+              <label
+                for="username"
+                class="form-label"
+              >
+                Username
+              </label>
+
+              <input
+                type="text"
+                id="username"
+                name="username"
+                [(ngModel)]="formData.username"
+                class="form-control"
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label
+                for="email"
+                class="form-label"
+              >
+                Email
+              </label>
+
+              <input
+                type="email"
+                id="email"
+                name="email"
+                [(ngModel)]="formData.email"
+                class="form-control bg-light"
+                placeholder="Email cannot be modified"
+                readonly
+              />
+
+              <small class="text-muted">
+                Email cannot be changed.
+              </small>
+            </div>
+
+            <div class="mb-3">
+              <label
+                for="phoneLocalNumber"
+                class="form-label"
+              >
+                Phone
+              </label>
+
+              <div class="input-group">
+                <select
+                  class="form-select"
+                  name="country_code"
+                  [(ngModel)]="selectedCountryCode"
+                  (ngModelChange)="syncPhoneNumber()"
+                  style="max-width: 240px"
+                  [disabled]="countriesLoading"
+                  required
+                >
+                  <option
+                    value="+216"
+                    *ngIf="countriesLoading"
+                  >
+                    Loading countries...
+                  </option>
+
+                  <option
+                    *ngFor="let country of countryCodes"
+                    [value]="country.code"
+                  >
+                    {{ country.flag }}
+                    {{ country.country }}
+                    {{ country.code }}
+                  </option>
+                </select>
+
+                <input
+                  type="tel"
+                  id="phoneLocalNumber"
+                  name="phoneLocalNumber"
+                  [(ngModel)]="phoneLocalNumber"
+                  (ngModelChange)="syncPhoneNumber()"
+                  class="form-control"
+                  placeholder="Enter your phone number"
+                  autocomplete="tel"
+                />
+              </div>
+
+
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="fw-bold mb-2">
+              Change Password
+            </h5>
+
+            <p class="text-muted small mb-3">
+              Leave these fields empty if you do not want to change your password.
+            </p>
+
+            <div class="mb-3">
+              <label
+                for="oldPassword"
+                class="form-label"
+              >
+                Old Password
+              </label>
+
+              <input
+                type="password"
+                id="oldPassword"
+                name="oldPassword"
+                [(ngModel)]="formData.oldPassword"
+                class="form-control"
+                placeholder="Enter your old password"
+                autocomplete="current-password"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label
+                for="newPassword"
+                class="form-label"
+              >
+                New Password
+              </label>
+
+              <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                [(ngModel)]="formData.newPassword"
+                class="form-control"
+                placeholder="Enter your new password"
+                autocomplete="new-password"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label
+                for="confirmNewPassword"
+                class="form-label"
+              >
+                Confirm New Password
+              </label>
+
+              <input
+                type="password"
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                [(ngModel)]="formData.confirmNewPassword"
+                class="form-control"
+                placeholder="Rewrite your new password"
+                autocomplete="new-password"
+              />
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button
+                type="submit"
+                class="btn text-white px-4"
+                style="
+                  background-color: #00aeef;
+                  border-color: #00aeef
+                "
+                [disabled]="
+                  isSaving ||
+                  isSendingVerificationCode ||
+                  isVerifyingCode
+                "
+              >
+                <span
+                  *ngIf="
+                    !isSaving &&
+                    !isSendingVerificationCode
+                  "
+                >
+                  Save Changes
+                </span>
+
+                <span
+                  *ngIf="
+                    isSaving ||
+                    isSendingVerificationCode
+                  "
+                >
+                  Processing...
+                </span>
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary px-4"
+                (click)="goBack()"
+                [disabled]="
+                  isSaving ||
+                  isSendingVerificationCode ||
+                  isVerifyingCode
+                "
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Password verification modal -->
+<div
+  *ngIf="verificationModalVisible"
+  class="profile-modal-backdrop"
+>
+  <div
+    class="profile-modal-box"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="password-verification-title"
+  >
+    <div class="modal-icon verification-icon">
+      ✉
+    </div>
+
+    <h3 id="password-verification-title">
+      Verify Password Change
+    </h3>
+
+    <p class="modal-description">
+      We sent a 6-digit verification code to:
+    </p>
+
+    <p class="verification-email">
+      {{ verificationEmail }}
+    </p>
+
+    <p class="modal-help">
+      This code expires in
+      {{ verificationExpiresInMinutes }}
+      minutes.
+    </p>
+
+    <label
+      for="verificationCode"
+      class="verification-label"
+    >
+      Verification Code
+    </label>
+
+    <input
+      id="verificationCode"
+      type="text"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      maxlength="6"
+      name="verificationCode"
+      [(ngModel)]="verificationCode"
+      (ngModelChange)="onVerificationCodeInput()"
+      class="verification-code-input"
+      placeholder="000000"
+      [disabled]="isVerifyingCode"
+    />
+
+    <div class="verification-actions">
+      <button
+        type="button"
+        class="modal-secondary-button"
+        (click)="closeVerificationModal()"
+        [disabled]="isVerifyingCode"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="modal-primary-button"
+        (click)="verifyPasswordCode()"
+        [disabled]="
+          isVerifyingCode ||
+          verificationCode.length !== 6
+        "
+      >
+        {{
+          isVerifyingCode
+            ? 'Verifying...'
+            : 'Verify Code'
+        }}
+      </button>
+    </div>
+
+    <button
+      type="button"
+      class="resend-code-button"
+      (click)="resendVerificationCode()"
+      [disabled]="
+        isVerifyingCode ||
+        isSendingVerificationCode
+      "
+    >
+      {{
+        isSendingVerificationCode
+          ? 'Sending...'
+          : 'Resend verification code'
+      }}
+    </button>
+  </div>
+</div>
+
+<!-- Confirmation, success and error modal -->
+<div
+  *ngIf="messageModalVisible"
+  class="profile-modal-backdrop"
+>
+  <div
+    class="profile-modal-box"
+    role="alertdialog"
+    aria-modal="true"
+  >
+    <div
+      class="modal-icon"
+      [class.success-icon]="
+        messageModalType === 'success'
+      "
+      [class.error-icon]="
+        messageModalType === 'error'
+      "
+      [class.info-icon]="
+        messageModalType === 'info'
+      "
+    >
+      <span
+        *ngIf="
+          messageModalType === 'success'
+        "
+      >
+        ✓
+      </span>
+
+      <span
+        *ngIf="
+          messageModalType === 'error'
+        "
+      >
+        !
+      </span>
+
+      <span
+        *ngIf="
+          messageModalType === 'info'
+        "
+      >
+        i
+      </span>
+    </div>
+
+    <h3>
+      {{ messageModalTitle }}
+    </h3>
+
+    <p class="modal-description">
+      {{ messageModalMessage }}
+    </p>
+
+    <button
+      type="button"
+      class="modal-primary-button full-width-button"
+      (click)="closeMessageModal()"
+    >
+      {{
+        redirectToLoginAfterMessage
+          ? 'Go to Login'
+          : 'OK'
+      }}
+    </button>
+  </div>
+</div>

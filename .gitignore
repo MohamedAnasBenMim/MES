@@ -1,0 +1,33 @@
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Python / Django
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+*.sqlite3
+db.sqlite3
+mes_backup.sql
+staticfiles/
+media/
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Windows
+Thumbs.db
+desktop.ini
