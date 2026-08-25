@@ -186,7 +186,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_0hafal#t73@!b0ori-!e(gq*l$!_9hqzr+838q1!=#g@govx0'
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # ---------------------------------------------------------
 # INSTALLED APPS
@@ -241,15 +241,14 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mes_anas',        # local database name
-        'USER': 'medanas',         # local user
-        'PASSWORD': '',            # local socket authentication
-        'HOST': '',                # use local PostgreSQL socket
-        'PORT': '',                # default PostgreSQL socket port
-        
+        'NAME': os.getenv('DB_NAME', 'mes_anas'),
+        'USER': os.getenv('DB_USER', 'medanas'),
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
-    
 }
+
 # ---------------------------------------------------------
 # PASSWORD VALIDATION
 # ---------------------------------------------------------
