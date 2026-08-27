@@ -1,17 +1,16 @@
+import requests  # type: ignore
 from django.core.cache import cache
+from rest_framework import status
 from rest_framework.decorators import api_view  # type: ignore
 from rest_framework.response import Response  # type: ignore
-from rest_framework import status
-import requests  # type: ignore
-
 
 TOKEN_CACHE_KEY = "infor_access_token_cache"
 COMPANY_CACHE_KEY = "infor_company_code_cache"
 DISPATCH_CACHE_KEY = "infor_dispatch_data_cache"
 
-TOKEN_CACHE_TIMEOUT = 50 * 60      # 50 minutes
-COMPANY_CACHE_TIMEOUT = 10 * 60    # 10 minutes
-DISPATCH_CACHE_TIMEOUT = 5 * 60    # 5 minutes
+TOKEN_CACHE_TIMEOUT = 50 * 60  # 50 minutes
+COMPANY_CACHE_TIMEOUT = 10 * 60  # 10 minutes
+DISPATCH_CACHE_TIMEOUT = 5 * 60  # 5 minutes
 
 
 def get_cached_access_token(force_refresh=False):
@@ -20,10 +19,7 @@ def get_cached_access_token(force_refresh=False):
         if cached_token:
             return cached_token
 
-    token_response = requests.get(
-        "http://localhost:8000/api/get-token/",
-        timeout=20
-    )
+    token_response = requests.get("http://localhost:8000/api/get-token/", timeout=20)
 
     if token_response.status_code != 200:
         raise Exception("Failed to get token")
@@ -45,8 +41,7 @@ def get_cached_company_code(force_refresh=False):
             return cached_company
 
     company_response = requests.get(
-        "http://127.0.0.1:8000/api/get_ionapi_credential/",
-        timeout=20
+        "http://127.0.0.1:8000/api/get_ionapi_credential/", timeout=20
     )
 
     company_response.raise_for_status()
@@ -64,17 +59,13 @@ def get_cached_company_code(force_refresh=False):
 def get_active_operations_set(username):
     active_response = requests.get(
         f"http://127.0.0.1:8000/api/get_operation_active_list/?username={username}",
-        timeout=20
+        timeout=20,
     )
 
     active_data = active_response.json() if active_response.status_code == 200 else []
 
     active_set = set(
-        (
-            str(item.get("Order")),
-            str(item.get("Operation"))
-        )
-        for item in active_data
+        (str(item.get("Order")), str(item.get("Operation"))) for item in active_data
     )
 
     return active_set
@@ -99,7 +90,9 @@ def fetch_dispatch_data_from_infor(headers):
             raise PermissionError("Infor token expired or unauthorized")
 
         if response.status_code != 200:
-            raise Exception(f"Failed to fetch dispatch data from Infor: {response.status_code}")
+            raise Exception(
+                f"Failed to fetch dispatch data from Infor: {response.status_code}"
+            )
 
         json_data = response.json()
         all_results.extend(json_data.get("value", []))
@@ -115,8 +108,7 @@ def get_dispatch_data(request):
 
     if not username:
         return Response(
-            {"error": "Username is required"},
-            status=status.HTTP_400_BAD_REQUEST
+            {"error": "Username is required"}, status=status.HTTP_400_BAD_REQUEST
         )
 
     refresh = request.query_params.get("refresh", "false").lower() == "true"
@@ -159,11 +151,9 @@ def get_dispatch_data(request):
             source = "infor"
 
         filtered_results = [
-            item for item in all_results
-            if (
-                str(item.get("Order")),
-                str(item.get("Operation"))
-            ) not in active_set
+            item
+            for item in all_results
+            if (str(item.get("Order")), str(item.get("Operation"))) not in active_set
         ]
 
         return Response(
@@ -172,7 +162,7 @@ def get_dispatch_data(request):
                 "count": len(filtered_results),
                 "data": filtered_results,
             },
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
 
     except Exception as e:
@@ -181,5 +171,5 @@ def get_dispatch_data(request):
                 "error": "Failed to fetch dispatch data",
                 "details": str(e),
             },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

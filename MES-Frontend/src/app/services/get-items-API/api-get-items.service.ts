@@ -22,7 +22,7 @@ export class ApiGetItems {
         }
 
         return res?.value || res?.data || [];
-      })
+      }),
     );
   }
 }

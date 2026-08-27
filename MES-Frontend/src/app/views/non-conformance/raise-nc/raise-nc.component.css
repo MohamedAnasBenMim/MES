@@ -52,8 +52,7 @@
   font-weight: 600;
 }
 
-:host ::ng-deep
-  .nc-form .form-control {
+:host ::ng-deep .nc-form .form-control {
   min-height: 36px;
   padding: 6px 8px;
   border: 1px solid #b8c1cc;
@@ -62,27 +61,21 @@
   background: #ffffff;
 }
 
-:host ::ng-deep
-  .nc-form textarea.form-control {
+:host ::ng-deep .nc-form textarea.form-control {
   min-height: 120px;
   resize: vertical;
 }
 
-:host ::ng-deep
-  .nc-form .form-control:focus {
+:host ::ng-deep .nc-form .form-control:focus {
   border-color: #00aeef;
   box-shadow: 0 0 0 2px rgba(0, 174, 239, 0.16);
 }
 
-:host ::ng-deep
-  .nc-form input[type="file"] {
+:host ::ng-deep .nc-form input[type="file"] {
   padding: 5px;
 }
 
-:host ::ng-deep
-  .nc-form
-  input[type="file"]
-  ::file-selector-button {
+:host ::ng-deep .nc-form input[type="file"] ::file-selector-button {
   margin-right: 8px;
   padding: 6px 10px;
   border: 0;
@@ -139,9 +132,7 @@
   background: #0059c1;
 }
 
-@media (
-  max-width: 767.98px
-) {
+@media (max-width: 767.98px) {
   .raise-nc-page {
     padding: 0;
   }
@@ -166,7 +157,6 @@
   }
 }
 
-
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -186,23 +176,18 @@
   box-shadow: 0 16px 42px rgba(15, 23, 42, 0.24);
   text-align: center;
   overflow: hidden;
-  animation:
-    dialog-enter 0.2s ease-out;
+  animation: dialog-enter 0.2s ease-out;
 }
 
 @keyframes dialog-enter {
   from {
     opacity: 0;
-    transform:
-      translateY(12px)
-      scale(0.98);
+    transform: translateY(12px) scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform:
-      translateY(0)
-      scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -218,18 +203,15 @@
   font-weight: 900;
 }
 
-.validation-dialog
-  .dialog-icon {
+.validation-dialog .dialog-icon {
   background: #00aeef;
 }
 
-.success-dialog
-  .dialog-icon {
+.success-dialog .dialog-icon {
   background: #00aeef;
 }
 
-.error-dialog
-  .dialog-icon {
+.error-dialog .dialog-icon {
   background: #00aeef;
 }
 
@@ -300,33 +282,27 @@
   background: #0059c1;
 }
 
-.validation-dialog
-  .dialog-button {
+.validation-dialog .dialog-button {
   background: #00aeef;
 }
 
-.validation-dialog
-  .dialog-button:hover {
+.validation-dialog .dialog-button:hover {
   background: #0059c1;
 }
 
-.success-dialog
-  .dialog-button {
+.success-dialog .dialog-button {
   background: #00aeef;
 }
 
-.success-dialog
-  .dialog-button:hover {
+.success-dialog .dialog-button:hover {
   background: #0059c1;
 }
 
-.error-dialog
-  .dialog-button {
+.error-dialog .dialog-button {
   background: #00aeef;
 }
 
-.error-dialog
-  .dialog-button:hover {
+.error-dialog .dialog-button:hover {
   background: #0059c1;
 }
 
@@ -336,15 +312,11 @@
   cursor: not-allowed;
 }
 
-:host-context(
-  [data-coreui-theme="dark"]
-) .missing-fields {
+:host-context([data-coreui-theme="dark"]) .missing-fields {
   border-color: #42516a;
   background: #182235;
 }
 
-:host-context(
-  [data-coreui-theme="dark"]
-) .missing-field {
+:host-context([data-coreui-theme="dark"]) .missing-field {
   color: #eef4fb;
 }

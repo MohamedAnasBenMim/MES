@@ -49,30 +49,21 @@
 
 .header-datetime:hover {
   background: rgba(0, 174, 239, 0.07);
-  box-shadow:
-    0 8px 24px
-    rgba(15, 23, 42, 0.06);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .header-date {
   margin-bottom: 3px;
-  color: var(
-    --cui-secondary-color,
-    #667085
-  );
+  color: var(--cui-secondary-color, #667085);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
 }
 
 .header-time {
-  color: var(
-    --cui-body-color,
-    #172033
-  );
+  color: var(--cui-body-color, #172033);
   font-size: 19px;
-  font-variant-numeric:
-    tabular-nums;
+  font-variant-numeric: tabular-nums;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
@@ -98,10 +89,7 @@
 }
 
 .header-separator {
-  color: var(
-    --cui-secondary-color,
-    #667085
-  );
+  color: var(--cui-secondary-color, #667085);
 }
 
 @media (max-width: 1199.98px) {

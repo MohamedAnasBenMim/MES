@@ -205,7 +205,7 @@ export class SupervisorDashboardComponent implements OnInit {
       'ColorSchemeChange',
       () => {
         this.setChartStyles();
-      }
+      },
     );
 
     this.#destroyRef.onDestroy(() => {

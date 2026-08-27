@@ -1,28 +1,14 @@
-import {
-  CommonModule,
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import {
-  FormsModule,
-} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
-import {
-  Router,
-} from '@angular/router';
+import { Router } from '@angular/router';
 
-import {
-  ChartjsComponent,
-} from '@coreui/angular-chartjs';
+import { ChartjsComponent } from '@coreui/angular-chartjs';
 
-import {
-  ProgressComponent,
-} from '@coreui/angular';
+import { ProgressComponent } from '@coreui/angular';
 import {
   getAuthItem,
   getAuthRole,
@@ -30,9 +16,7 @@ import {
   getAuthUsername,
 } from '../../utils/auth-storage';
 
-import {
-  Subscription,
-} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import {
   ChampionOperator,
@@ -41,13 +25,9 @@ import {
   OperatorDashboardService,
 } from '../../services/operator-dashboard/operator-dashboard.service';
 
-import {
-  ApiServiceCompleteOperation,
-} from '../../services/report-operation-post-API/api-report-operation.service';
+import { ApiServiceCompleteOperation } from '../../services/report-operation-post-API/api-report-operation.service';
 
-import {
-  LanguageService,
-} from '../../services/language/language.service';
+import { LanguageService } from '../../services/language/language.service';
 
 import {
   UserApiService,
@@ -139,46 +119,23 @@ interface DashboardTranslations {
 
   standalone: true,
 
-  templateUrl:
-    './dashboard.component.html',
+  templateUrl: './dashboard.component.html',
 
-  styleUrls: [
-    './dashboard.component.css',
-  ],
+  styleUrls: ['./dashboard.component.css'],
 
-  imports: [
-    CommonModule,
-    FormsModule,
-    ChartjsComponent,
-    ProgressComponent,
-  ],
+  imports: [CommonModule, FormsModule, ChartjsComponent, ProgressComponent],
 })
-export class DashboardComponent
-  implements OnInit, OnDestroy
-{
-  private languageSubscription?:
-    Subscription;
+export class DashboardComponent implements OnInit, OnDestroy {
+  private languageSubscription?: Subscription;
 
-  private dailyProductivity:
-    OperatorDashboardResponse[
-      'daily_productivity'
-    ] = [];
+  private dailyProductivity: OperatorDashboardResponse['daily_productivity'] =
+    [];
 
-  private readonly settingsUpdatedListener =
-    (
-      event: Event
-    ) => {
-      const settings =
-        (
-          event as CustomEvent<
-            Partial<UserSettings>
-          >
-        ).detail;
+  private readonly settingsUpdatedListener = (event: Event) => {
+    const settings = (event as CustomEvent<Partial<UserSettings>>).detail;
 
-      this.applyUserSettings(
-        settings
-      );
-    };
+    this.applyUserSettings(settings);
+  };
 
   loading = true;
   loadingError = '';
@@ -187,11 +144,9 @@ export class DashboardComponent
   operatorName = 'Operator';
   operatorRole = 'Operator';
 
-  operatorImage =
-    'assets/default-avatar.png';
+  operatorImage = 'assets/default-avatar.png';
 
-  currentDate =
-    new Date();
+  currentDate = new Date();
 
   statistics = {
     active_operations: 0,
@@ -202,27 +157,19 @@ export class DashboardComponent
     points: 0,
   };
 
-  activeOperations:
-    OperatorDashboardOperation[] = [];
+  activeOperations: OperatorDashboardOperation[] = [];
 
-  champions:
-    ChampionOperator[] = [];
+  champions: ChampionOperator[] = [];
 
-  recentIssues:
-    OperatorDashboardResponse[
-      'recent_issues'
-    ] = [];
+  recentIssues: OperatorDashboardResponse['recent_issues'] = [];
 
   productivityChart: any;
 
   reportModalVisible = false;
 
-  selectedOperation:
-    OperatorDashboardOperation
-    | null = null;
+  selectedOperation: OperatorDashboardOperation | null = null;
 
-  deliveredQuantity:
-    number | null = null;
+  deliveredQuantity: number | null = null;
 
   rejectedQuantity = 0;
 
@@ -312,52 +259,46 @@ export class DashboardComponent
   };
 
   constructor(
-    private readonly dashboardService:
-      OperatorDashboardService,
+    private readonly dashboardService: OperatorDashboardService,
 
-    private readonly reportService:
-      ApiServiceCompleteOperation,
+    private readonly reportService: ApiServiceCompleteOperation,
 
-    private readonly languageService:
-      LanguageService,
+    private readonly languageService: LanguageService,
 
-    private readonly userApiService:
-      UserApiService,
+    private readonly userApiService: UserApiService,
 
-    private readonly router:
-      Router
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
-const user = getAuthUser();
+    const user = getAuthUser();
 
-if (user?.username) {
-  this.operatorUsername = user.username.toLowerCase();
-  this.operatorName = user.username || 'Operator';
-}
-
-/*
- * This subscription is triggered every
- * time the language changes in Settings.
- */
-this.languageSubscription =
-  this.languageService.currentLanguage$.subscribe(() => {
-    this.refreshTranslations();
+    if (user?.username) {
+      this.operatorUsername = user.username.toLowerCase();
+      this.operatorName = user.username || 'Operator';
+    }
 
     /*
-     * Rebuild the chart so its labels
-     * also change immediately.
+     * This subscription is triggered every
+     * time the language changes in Settings.
      */
-    if (this.dailyProductivity.length > 0) {
-      this.buildProductivityChart(
-        this.dailyProductivity
-      );
-    }
-  });
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
+      () => {
+        this.refreshTranslations();
+
+        /*
+         * Rebuild the chart so its labels
+         * also change immediately.
+         */
+        if (this.dailyProductivity.length > 0) {
+          this.buildProductivityChart(this.dailyProductivity);
+        }
+      },
+    );
 
     window.addEventListener(
       'mes-user-settings-updated',
-      this.settingsUpdatedListener
+      this.settingsUpdatedListener,
     );
 
     this.loadLoggedInUser();
@@ -366,693 +307,414 @@ this.languageSubscription =
   }
 
   ngOnDestroy(): void {
-    this.languageSubscription
-      ?.unsubscribe();
+    this.languageSubscription?.unsubscribe();
 
     window.removeEventListener(
       'mes-user-settings-updated',
-      this.settingsUpdatedListener
+      this.settingsUpdatedListener,
     );
   }
 
   refreshTranslations(): void {
     this.text = {
-      
-      loading:
-        this.translate(
-          'OPERATOR_DASHBOARD.LOADING'
-        ),
-
-      unavailable:
-        this.translate(
-          'OPERATOR_DASHBOARD.UNAVAILABLE'
-        ),
-
-      retry:
-        this.translate(
-          'COMMON.RETRY'
-        ),
-
-      workspace:
-        this.translate(
-          'OPERATOR_DASHBOARD.WORKSPACE'
-        ),
-
-      goodMorning:
-        this.translate(
-          'OPERATOR_DASHBOARD.GOOD_MORNING'
-        ),
-
-      goodAfternoon:
-        this.translate(
-          'OPERATOR_DASHBOARD.GOOD_AFTERNOON'
-        ),
-
-      welcomeDescription:
-        this.translate(
-          'OPERATOR_DASHBOARD.WELCOME_DESCRIPTION'
-        ),
-
-      reportNextOperation:
-        this.translate(
-          'OPERATOR_DASHBOARD.REPORT_NEXT_OPERATION'
-        ),
-
-      activeOperations:
-        this.translate(
-          'OPERATOR_DASHBOARD.ACTIVE_OPERATIONS'
-        ),
-
-      completedThisWeek:
-        this.translate(
-          'OPERATOR_DASHBOARD.COMPLETED_THIS_WEEK'
-        ),
-
-      deliveredQuantity:
-        this.translate(
-          'OPERATOR_DASHBOARD.DELIVERED_QUANTITY'
-        ),
-
-      rejectedQuantity:
-        this.translate(
-          'OPERATOR_DASHBOARD.REJECTED_QUANTITY'
-        ),
-
-      weeklyPoints:
-        this.translate(
-          'OPERATOR_DASHBOARD.WEEKLY_POINTS'
-        ),
-
-      weeklyOutput:
-        this.translate(
-          'OPERATOR_DASHBOARD.WEEKLY_OUTPUT'
-        ),
-
-      productivity:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTIVITY'
-        ),
-
-      thisWeek:
-        this.translate(
-          'OPERATOR_DASHBOARD.THIS_WEEK'
-        ),
-
-      completedOperations:
-        this.translate(
-          'OPERATOR_DASHBOARD.COMPLETED_OPERATIONS'
-        ),
-
-      qualityPerformance:
-        this.translate(
-          'OPERATOR_DASHBOARD.QUALITY_PERFORMANCE'
-        ),
-
-      productionStatus:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTION_STATUS'
-        ),
-
-      quality:
-        this.translate(
-          'OPERATOR_DASHBOARD.QUALITY'
-        ),
-
-      delivered:
-        this.translate(
-          'OPERATOR_DASHBOARD.DELIVERED'
-        ),
-
-      rejected:
-        this.translate(
-          'OPERATOR_DASHBOARD.REJECTED'
-        ),
-
-      yourRank:
-        this.translate(
-          'OPERATOR_DASHBOARD.YOUR_RANK'
-        ),
-
-      currentWorkload:
-        this.translate(
-          'OPERATOR_DASHBOARD.CURRENT_WORKLOAD'
-        ),
-
-      productionOperations:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTION_OPERATIONS'
-        ),
-
-      active:
-        this.translate(
-          'OPERATOR_DASHBOARD.ACTIVE'
-        ),
-
-      order:
-        this.translate(
-          'OPERATOR_DASHBOARD.ORDER'
-        ),
-
-      operation:
-        this.translate(
-          'OPERATOR_DASHBOARD.OPERATION'
-        ),
-
-      productionItem:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTION_ITEM'
-        ),
-
-      workCenter:
-        this.translate(
-          'OPERATOR_DASHBOARD.WORK_CENTER'
-        ),
-
-      plannedQuantity:
-        this.translate(
-          'OPERATOR_DASHBOARD.PLANNED_QUANTITY'
-        ),
-
-      reportOperation:
-        this.translate(
-          'OPERATOR_DASHBOARD.REPORT_OPERATION'
-        ),
-
-      noActiveOperations:
-        this.translate(
-          'OPERATOR_DASHBOARD.NO_ACTIVE_OPERATIONS'
-        ),
-
-      operationsAppearHere:
-        this.translate(
-          'OPERATOR_DASHBOARD.OPERATIONS_APPEAR_HERE'
-        ),
-
-      productionWorkspace:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTION_WORKSPACE'
-        ),
-
-      production:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTION'
-        ),
-
-      championsBoard:
-        this.translate(
-          'OPERATOR_DASHBOARD.CHAMPIONS_BOARD'
-        ),
-
-      weeklyCompetition:
-        this.translate(
-          'OPERATOR_DASHBOARD.WEEKLY_COMPETITION'
-        ),
-
-      operations:
-        this.translate(
-          'OPERATOR_DASHBOARD.OPERATIONS'
-        ),
-
-      points:
-        this.translate(
-          'OPERATOR_DASHBOARD.POINTS'
-        ),
-
-      noChampions:
-        this.translate(
-          'OPERATOR_DASHBOARD.NO_CHAMPIONS'
-        ),
-
-      productivityScore:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTIVITY_SCORE'
-        ),
-
-      weeklyPointsSmall:
-        this.translate(
-          'OPERATOR_DASHBOARD.WEEKLY_POINTS_SMALL'
-        ),
-
-      recentIssues:
-        this.translate(
-          'OPERATOR_DASHBOARD.RECENT_ISSUES'
-        ),
-
-      noRejectedQuantities:
-        this.translate(
-          'OPERATOR_DASHBOARD.NO_REJECTED_QUANTITIES'
-        ),
-
-      productionReporting:
-        this.translate(
-          'OPERATOR_DASHBOARD.PRODUCTION_REPORTING'
-        ),
-
-      completeOperation:
-        this.translate(
-          'OPERATOR_DASHBOARD.COMPLETE_OPERATION'
-        ),
-
-      cancel:
-        this.translate(
-          'COMMON.CANCEL'
-        ),
-
-      confirmOperation:
-        this.translate(
-          'OPERATOR_DASHBOARD.CONFIRM_OPERATION'
-        ),
-
-      reporting:
-        this.translate(
-          'OPERATOR_DASHBOARD.REPORTING'
-        ),
-
-      noOperatorFound:
-        this.translate(
-          'OPERATOR_DASHBOARD.NO_OPERATOR_FOUND'
-        ),
-
-      noOperatorAction:
-        this.translate(
-          'OPERATOR_DASHBOARD.NO_OPERATOR_ACTION'
-        ),
-
-      dashboardLoadError:
-        this.translate(
-          'OPERATOR_DASHBOARD.LOAD_ERROR'
-        ),
-
-      validDeliveredQuantity:
-        this.translate(
-          'OPERATOR_DASHBOARD.VALID_DELIVERED_QUANTITY'
-        ),
-
-      validRejectedQuantity:
-        this.translate(
-          'OPERATOR_DASHBOARD.VALID_REJECTED_QUANTITY'
-        ),
-
-      quantityRequired:
-        this.translate(
-          'OPERATOR_DASHBOARD.QUANTITY_REQUIRED'
-        ),
-
-      reportSuccess:
-        this.translate(
-          'OPERATOR_DASHBOARD.REPORT_SUCCESS'
-        ),
-
-      reportFailure:
-        this.translate(
-          'OPERATOR_DASHBOARD.REPORT_FAILURE'
-        ),
-
-      monday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.MONDAY'
-        ),
-
-      tuesday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.TUESDAY'
-        ),
-
-      wednesday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.WEDNESDAY'
-        ),
-
-      thursday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.THURSDAY'
-        ),
-
-      friday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.FRIDAY'
-        ),
-
-      saturday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.SATURDAY'
-        ),
-
-      sunday:
-        this.translate(
-          'OPERATOR_DASHBOARD.DAYS.SUNDAY'
-        ),
+      loading: this.translate('OPERATOR_DASHBOARD.LOADING'),
+
+      unavailable: this.translate('OPERATOR_DASHBOARD.UNAVAILABLE'),
+
+      retry: this.translate('COMMON.RETRY'),
+
+      workspace: this.translate('OPERATOR_DASHBOARD.WORKSPACE'),
+
+      goodMorning: this.translate('OPERATOR_DASHBOARD.GOOD_MORNING'),
+
+      goodAfternoon: this.translate('OPERATOR_DASHBOARD.GOOD_AFTERNOON'),
+
+      welcomeDescription: this.translate(
+        'OPERATOR_DASHBOARD.WELCOME_DESCRIPTION',
+      ),
+
+      reportNextOperation: this.translate(
+        'OPERATOR_DASHBOARD.REPORT_NEXT_OPERATION',
+      ),
+
+      activeOperations: this.translate('OPERATOR_DASHBOARD.ACTIVE_OPERATIONS'),
+
+      completedThisWeek: this.translate(
+        'OPERATOR_DASHBOARD.COMPLETED_THIS_WEEK',
+      ),
+
+      deliveredQuantity: this.translate(
+        'OPERATOR_DASHBOARD.DELIVERED_QUANTITY',
+      ),
+
+      rejectedQuantity: this.translate('OPERATOR_DASHBOARD.REJECTED_QUANTITY'),
+
+      weeklyPoints: this.translate('OPERATOR_DASHBOARD.WEEKLY_POINTS'),
+
+      weeklyOutput: this.translate('OPERATOR_DASHBOARD.WEEKLY_OUTPUT'),
+
+      productivity: this.translate('OPERATOR_DASHBOARD.PRODUCTIVITY'),
+
+      thisWeek: this.translate('OPERATOR_DASHBOARD.THIS_WEEK'),
+
+      completedOperations: this.translate(
+        'OPERATOR_DASHBOARD.COMPLETED_OPERATIONS',
+      ),
+
+      qualityPerformance: this.translate(
+        'OPERATOR_DASHBOARD.QUALITY_PERFORMANCE',
+      ),
+
+      productionStatus: this.translate('OPERATOR_DASHBOARD.PRODUCTION_STATUS'),
+
+      quality: this.translate('OPERATOR_DASHBOARD.QUALITY'),
+
+      delivered: this.translate('OPERATOR_DASHBOARD.DELIVERED'),
+
+      rejected: this.translate('OPERATOR_DASHBOARD.REJECTED'),
+
+      yourRank: this.translate('OPERATOR_DASHBOARD.YOUR_RANK'),
+
+      currentWorkload: this.translate('OPERATOR_DASHBOARD.CURRENT_WORKLOAD'),
+
+      productionOperations: this.translate(
+        'OPERATOR_DASHBOARD.PRODUCTION_OPERATIONS',
+      ),
+
+      active: this.translate('OPERATOR_DASHBOARD.ACTIVE'),
+
+      order: this.translate('OPERATOR_DASHBOARD.ORDER'),
+
+      operation: this.translate('OPERATOR_DASHBOARD.OPERATION'),
+
+      productionItem: this.translate('OPERATOR_DASHBOARD.PRODUCTION_ITEM'),
+
+      workCenter: this.translate('OPERATOR_DASHBOARD.WORK_CENTER'),
+
+      plannedQuantity: this.translate('OPERATOR_DASHBOARD.PLANNED_QUANTITY'),
+
+      reportOperation: this.translate('OPERATOR_DASHBOARD.REPORT_OPERATION'),
+
+      noActiveOperations: this.translate(
+        'OPERATOR_DASHBOARD.NO_ACTIVE_OPERATIONS',
+      ),
+
+      operationsAppearHere: this.translate(
+        'OPERATOR_DASHBOARD.OPERATIONS_APPEAR_HERE',
+      ),
+
+      productionWorkspace: this.translate(
+        'OPERATOR_DASHBOARD.PRODUCTION_WORKSPACE',
+      ),
+
+      production: this.translate('OPERATOR_DASHBOARD.PRODUCTION'),
+
+      championsBoard: this.translate('OPERATOR_DASHBOARD.CHAMPIONS_BOARD'),
+
+      weeklyCompetition: this.translate(
+        'OPERATOR_DASHBOARD.WEEKLY_COMPETITION',
+      ),
+
+      operations: this.translate('OPERATOR_DASHBOARD.OPERATIONS'),
+
+      points: this.translate('OPERATOR_DASHBOARD.POINTS'),
+
+      noChampions: this.translate('OPERATOR_DASHBOARD.NO_CHAMPIONS'),
+
+      productivityScore: this.translate(
+        'OPERATOR_DASHBOARD.PRODUCTIVITY_SCORE',
+      ),
+
+      weeklyPointsSmall: this.translate(
+        'OPERATOR_DASHBOARD.WEEKLY_POINTS_SMALL',
+      ),
+
+      recentIssues: this.translate('OPERATOR_DASHBOARD.RECENT_ISSUES'),
+
+      noRejectedQuantities: this.translate(
+        'OPERATOR_DASHBOARD.NO_REJECTED_QUANTITIES',
+      ),
+
+      productionReporting: this.translate(
+        'OPERATOR_DASHBOARD.PRODUCTION_REPORTING',
+      ),
+
+      completeOperation: this.translate(
+        'OPERATOR_DASHBOARD.COMPLETE_OPERATION',
+      ),
+
+      cancel: this.translate('COMMON.CANCEL'),
+
+      confirmOperation: this.translate('OPERATOR_DASHBOARD.CONFIRM_OPERATION'),
+
+      reporting: this.translate('OPERATOR_DASHBOARD.REPORTING'),
+
+      noOperatorFound: this.translate('OPERATOR_DASHBOARD.NO_OPERATOR_FOUND'),
+
+      noOperatorAction: this.translate('OPERATOR_DASHBOARD.NO_OPERATOR_ACTION'),
+
+      dashboardLoadError: this.translate('OPERATOR_DASHBOARD.LOAD_ERROR'),
+
+      validDeliveredQuantity: this.translate(
+        'OPERATOR_DASHBOARD.VALID_DELIVERED_QUANTITY',
+      ),
+
+      validRejectedQuantity: this.translate(
+        'OPERATOR_DASHBOARD.VALID_REJECTED_QUANTITY',
+      ),
+
+      quantityRequired: this.translate('OPERATOR_DASHBOARD.QUANTITY_REQUIRED'),
+
+      reportSuccess: this.translate('OPERATOR_DASHBOARD.REPORT_SUCCESS'),
+
+      reportFailure: this.translate('OPERATOR_DASHBOARD.REPORT_FAILURE'),
+
+      monday: this.translate('OPERATOR_DASHBOARD.DAYS.MONDAY'),
+
+      tuesday: this.translate('OPERATOR_DASHBOARD.DAYS.TUESDAY'),
+
+      wednesday: this.translate('OPERATOR_DASHBOARD.DAYS.WEDNESDAY'),
+
+      thursday: this.translate('OPERATOR_DASHBOARD.DAYS.THURSDAY'),
+
+      friday: this.translate('OPERATOR_DASHBOARD.DAYS.FRIDAY'),
+
+      saturday: this.translate('OPERATOR_DASHBOARD.DAYS.SATURDAY'),
+
+      sunday: this.translate('OPERATOR_DASHBOARD.DAYS.SUNDAY'),
     };
 
     /*
      * Update currently visible error
      * messages after language changes.
      */
-    if (
-      this.loadingError
-      && !this.loading
-    ) {
-      this.loadingError =
-        this.text.dashboardLoadError;
+    if (this.loadingError && !this.loading) {
+      this.loadingError = this.text.dashboardLoadError;
     }
   }
 
-private translate(
-  key: string
-): string {
-  const translated =
-    this.languageService.instant(
-      key
-    );
+  private translate(key: string): string {
+    const translated = this.languageService.instant(key);
 
-  if (
-    translated &&
-    translated !== key
-  ) {
-    return translated;
+    if (translated && translated !== key) {
+      return translated;
+    }
+
+    const fallbackText: Record<string, string> = {
+      'COMMON.RETRY': 'Retry',
+
+      'COMMON.CANCEL': 'Cancel',
+
+      'OPERATOR_DASHBOARD.LOADING': 'Loading operator dashboard...',
+
+      'OPERATOR_DASHBOARD.UNAVAILABLE': 'Operator dashboard unavailable',
+
+      'OPERATOR_DASHBOARD.WORKSPACE': 'Production workspace',
+
+      'OPERATOR_DASHBOARD.GOOD_MORNING': 'Good morning',
+
+      'OPERATOR_DASHBOARD.GOOD_AFTERNOON': 'Good afternoon',
+
+      'OPERATOR_DASHBOARD.WELCOME_DESCRIPTION':
+        'Monitor your operations, quality and weekly performance.',
+
+      'OPERATOR_DASHBOARD.REPORT_NEXT_OPERATION': 'Report next operation',
+
+      'OPERATOR_DASHBOARD.ACTIVE_OPERATIONS': 'Active operations',
+
+      'OPERATOR_DASHBOARD.COMPLETED_THIS_WEEK': 'Completed this week',
+
+      'OPERATOR_DASHBOARD.DELIVERED_QUANTITY': 'Delivered quantity',
+
+      'OPERATOR_DASHBOARD.REJECTED_QUANTITY': 'Rejected quantity',
+
+      'OPERATOR_DASHBOARD.WEEKLY_POINTS': 'Weekly points',
+
+      'OPERATOR_DASHBOARD.WEEKLY_OUTPUT': 'Weekly output',
+
+      'OPERATOR_DASHBOARD.PRODUCTIVITY': 'Productivity',
+
+      'OPERATOR_DASHBOARD.THIS_WEEK': 'This week',
+
+      'OPERATOR_DASHBOARD.COMPLETED_OPERATIONS': 'Completed operations',
+
+      'OPERATOR_DASHBOARD.QUALITY_PERFORMANCE': 'Quality performance',
+
+      'OPERATOR_DASHBOARD.PRODUCTION_STATUS': 'Production status',
+
+      'OPERATOR_DASHBOARD.QUALITY': 'Quality',
+
+      'OPERATOR_DASHBOARD.DELIVERED': 'Delivered',
+
+      'OPERATOR_DASHBOARD.REJECTED': 'Rejected',
+
+      'OPERATOR_DASHBOARD.YOUR_RANK': 'Your rank',
+
+      'OPERATOR_DASHBOARD.CURRENT_WORKLOAD': 'Current workload',
+
+      'OPERATOR_DASHBOARD.PRODUCTION_OPERATIONS': 'Production operations',
+
+      'OPERATOR_DASHBOARD.ACTIVE': 'active',
+
+      'OPERATOR_DASHBOARD.ORDER': 'Order',
+
+      'OPERATOR_DASHBOARD.OPERATION': 'Operation',
+
+      'OPERATOR_DASHBOARD.PRODUCTION_ITEM': 'Production item',
+
+      'OPERATOR_DASHBOARD.WORK_CENTER': 'Work center',
+
+      'OPERATOR_DASHBOARD.PLANNED_QUANTITY': 'Planned quantity',
+
+      'OPERATOR_DASHBOARD.REPORT_OPERATION': 'Report operation',
+
+      'OPERATOR_DASHBOARD.NO_ACTIVE_OPERATIONS': 'No active operations',
+
+      'OPERATOR_DASHBOARD.OPERATIONS_APPEAR_HERE':
+        'Your currently assigned operations will appear here.',
+
+      'OPERATOR_DASHBOARD.PRODUCTION_WORKSPACE': 'Production workspace',
+
+      'OPERATOR_DASHBOARD.PRODUCTION': 'Production',
+
+      'OPERATOR_DASHBOARD.CHAMPIONS_BOARD': 'Champions Board',
+
+      'OPERATOR_DASHBOARD.WEEKLY_COMPETITION': 'Weekly competition',
+
+      'OPERATOR_DASHBOARD.OPERATIONS': 'operations',
+
+      'OPERATOR_DASHBOARD.POINTS': 'pts',
+
+      'OPERATOR_DASHBOARD.NO_CHAMPIONS':
+        'No operator performance has been recorded this week.',
+
+      'OPERATOR_DASHBOARD.PRODUCTIVITY_SCORE': 'Productivity score',
+
+      'OPERATOR_DASHBOARD.WEEKLY_POINTS_SMALL': 'weekly points',
+
+      'OPERATOR_DASHBOARD.RECENT_ISSUES': 'Recent issues',
+
+      'OPERATOR_DASHBOARD.NO_REJECTED_QUANTITIES':
+        'No rejected quantities recorded this week.',
+
+      'OPERATOR_DASHBOARD.PRODUCTION_REPORTING': 'Production reporting',
+
+      'OPERATOR_DASHBOARD.COMPLETE_OPERATION': 'Complete operation',
+
+      'OPERATOR_DASHBOARD.CONFIRM_OPERATION': 'Confirm operation',
+
+      'OPERATOR_DASHBOARD.REPORTING': 'Reporting...',
+
+      'OPERATOR_DASHBOARD.NO_OPERATOR_FOUND':
+        'This page needs an operator session. Log in with an operator account, or open the dashboard for your current role.',
+
+      'OPERATOR_DASHBOARD.NO_OPERATOR_ACTION': 'Open my dashboard',
+
+      'OPERATOR_DASHBOARD.LOAD_ERROR':
+        'The operator dashboard could not be loaded.',
+
+      'OPERATOR_DASHBOARD.VALID_DELIVERED_QUANTITY':
+        'Enter a valid delivered quantity.',
+
+      'OPERATOR_DASHBOARD.VALID_REJECTED_QUANTITY':
+        'Enter a valid rejected quantity.',
+
+      'OPERATOR_DASHBOARD.QUANTITY_REQUIRED':
+        'At least one quantity is required.',
+
+      'OPERATOR_DASHBOARD.REPORT_SUCCESS': 'Operation reported successfully.',
+
+      'OPERATOR_DASHBOARD.REPORT_FAILURE':
+        'The operation could not be reported.',
+
+      'OPERATOR_DASHBOARD.DAYS.MONDAY': 'Mon',
+
+      'OPERATOR_DASHBOARD.DAYS.TUESDAY': 'Tue',
+
+      'OPERATOR_DASHBOARD.DAYS.WEDNESDAY': 'Wed',
+
+      'OPERATOR_DASHBOARD.DAYS.THURSDAY': 'Thu',
+
+      'OPERATOR_DASHBOARD.DAYS.FRIDAY': 'Fri',
+
+      'OPERATOR_DASHBOARD.DAYS.SATURDAY': 'Sat',
+
+      'OPERATOR_DASHBOARD.DAYS.SUNDAY': 'Sun',
+    };
+
+    return fallbackText[key] || key;
   }
-
-  const fallbackText:
-    Record<string, string> = {
-    'COMMON.RETRY':
-      'Retry',
-
-    'COMMON.CANCEL':
-      'Cancel',
-
-    'OPERATOR_DASHBOARD.LOADING':
-      'Loading operator dashboard...',
-
-    'OPERATOR_DASHBOARD.UNAVAILABLE':
-      'Operator dashboard unavailable',
-
-    'OPERATOR_DASHBOARD.WORKSPACE':
-      'Production workspace',
-
-    'OPERATOR_DASHBOARD.GOOD_MORNING':
-      'Good morning',
-
-    'OPERATOR_DASHBOARD.GOOD_AFTERNOON':
-      'Good afternoon',
-
-    'OPERATOR_DASHBOARD.WELCOME_DESCRIPTION':
-      'Monitor your operations, quality and weekly performance.',
-
-    'OPERATOR_DASHBOARD.REPORT_NEXT_OPERATION':
-      'Report next operation',
-
-    'OPERATOR_DASHBOARD.ACTIVE_OPERATIONS':
-      'Active operations',
-
-    'OPERATOR_DASHBOARD.COMPLETED_THIS_WEEK':
-      'Completed this week',
-
-    'OPERATOR_DASHBOARD.DELIVERED_QUANTITY':
-      'Delivered quantity',
-
-    'OPERATOR_DASHBOARD.REJECTED_QUANTITY':
-      'Rejected quantity',
-
-    'OPERATOR_DASHBOARD.WEEKLY_POINTS':
-      'Weekly points',
-
-    'OPERATOR_DASHBOARD.WEEKLY_OUTPUT':
-      'Weekly output',
-
-    'OPERATOR_DASHBOARD.PRODUCTIVITY':
-      'Productivity',
-
-    'OPERATOR_DASHBOARD.THIS_WEEK':
-      'This week',
-
-    'OPERATOR_DASHBOARD.COMPLETED_OPERATIONS':
-      'Completed operations',
-
-    'OPERATOR_DASHBOARD.QUALITY_PERFORMANCE':
-      'Quality performance',
-
-    'OPERATOR_DASHBOARD.PRODUCTION_STATUS':
-      'Production status',
-
-    'OPERATOR_DASHBOARD.QUALITY':
-      'Quality',
-
-    'OPERATOR_DASHBOARD.DELIVERED':
-      'Delivered',
-
-    'OPERATOR_DASHBOARD.REJECTED':
-      'Rejected',
-
-    'OPERATOR_DASHBOARD.YOUR_RANK':
-      'Your rank',
-
-    'OPERATOR_DASHBOARD.CURRENT_WORKLOAD':
-      'Current workload',
-
-    'OPERATOR_DASHBOARD.PRODUCTION_OPERATIONS':
-      'Production operations',
-
-    'OPERATOR_DASHBOARD.ACTIVE':
-      'active',
-
-    'OPERATOR_DASHBOARD.ORDER':
-      'Order',
-
-    'OPERATOR_DASHBOARD.OPERATION':
-      'Operation',
-
-    'OPERATOR_DASHBOARD.PRODUCTION_ITEM':
-      'Production item',
-
-    'OPERATOR_DASHBOARD.WORK_CENTER':
-      'Work center',
-
-    'OPERATOR_DASHBOARD.PLANNED_QUANTITY':
-      'Planned quantity',
-
-    'OPERATOR_DASHBOARD.REPORT_OPERATION':
-      'Report operation',
-
-    'OPERATOR_DASHBOARD.NO_ACTIVE_OPERATIONS':
-      'No active operations',
-
-    'OPERATOR_DASHBOARD.OPERATIONS_APPEAR_HERE':
-      'Your currently assigned operations will appear here.',
-
-    'OPERATOR_DASHBOARD.PRODUCTION_WORKSPACE':
-      'Production workspace',
-
-    'OPERATOR_DASHBOARD.PRODUCTION':
-      'Production',
-
-    'OPERATOR_DASHBOARD.CHAMPIONS_BOARD':
-      'Champions Board',
-
-    'OPERATOR_DASHBOARD.WEEKLY_COMPETITION':
-      'Weekly competition',
-
-    'OPERATOR_DASHBOARD.OPERATIONS':
-      'operations',
-
-    'OPERATOR_DASHBOARD.POINTS':
-      'pts',
-
-    'OPERATOR_DASHBOARD.NO_CHAMPIONS':
-      'No operator performance has been recorded this week.',
-
-    'OPERATOR_DASHBOARD.PRODUCTIVITY_SCORE':
-      'Productivity score',
-
-    'OPERATOR_DASHBOARD.WEEKLY_POINTS_SMALL':
-      'weekly points',
-
-    'OPERATOR_DASHBOARD.RECENT_ISSUES':
-      'Recent issues',
-
-    'OPERATOR_DASHBOARD.NO_REJECTED_QUANTITIES':
-      'No rejected quantities recorded this week.',
-
-    'OPERATOR_DASHBOARD.PRODUCTION_REPORTING':
-      'Production reporting',
-
-    'OPERATOR_DASHBOARD.COMPLETE_OPERATION':
-      'Complete operation',
-
-    'OPERATOR_DASHBOARD.CONFIRM_OPERATION':
-      'Confirm operation',
-
-    'OPERATOR_DASHBOARD.REPORTING':
-      'Reporting...',
-
-    'OPERATOR_DASHBOARD.NO_OPERATOR_FOUND':
-      'This page needs an operator session. Log in with an operator account, or open the dashboard for your current role.',
-
-    'OPERATOR_DASHBOARD.NO_OPERATOR_ACTION':
-      'Open my dashboard',
-
-    'OPERATOR_DASHBOARD.LOAD_ERROR':
-      'The operator dashboard could not be loaded.',
-
-    'OPERATOR_DASHBOARD.VALID_DELIVERED_QUANTITY':
-      'Enter a valid delivered quantity.',
-
-    'OPERATOR_DASHBOARD.VALID_REJECTED_QUANTITY':
-      'Enter a valid rejected quantity.',
-
-    'OPERATOR_DASHBOARD.QUANTITY_REQUIRED':
-      'At least one quantity is required.',
-
-    'OPERATOR_DASHBOARD.REPORT_SUCCESS':
-      'Operation reported successfully.',
-
-    'OPERATOR_DASHBOARD.REPORT_FAILURE':
-      'The operation could not be reported.',
-
-    'OPERATOR_DASHBOARD.DAYS.MONDAY':
-      'Mon',
-
-    'OPERATOR_DASHBOARD.DAYS.TUESDAY':
-      'Tue',
-
-    'OPERATOR_DASHBOARD.DAYS.WEDNESDAY':
-      'Wed',
-
-    'OPERATOR_DASHBOARD.DAYS.THURSDAY':
-      'Thu',
-
-    'OPERATOR_DASHBOARD.DAYS.FRIDAY':
-      'Fri',
-
-    'OPERATOR_DASHBOARD.DAYS.SATURDAY':
-      'Sat',
-
-    'OPERATOR_DASHBOARD.DAYS.SUNDAY':
-      'Sun',
-  };
-
-  return fallbackText[key] || key;
-}
 
   loadLoggedInUser(): void {
     try {
-      const storedUser =
-        getAuthUser();
+      const storedUser = getAuthUser();
 
-      this.operatorUsername =
-        storedUser?.username
-        || getAuthUsername()
-        || '';
+      this.operatorUsername = storedUser?.username || getAuthUsername() || '';
 
       this.operatorName =
-        storedUser?.display_name
-        || storedUser?.username
-        || 'Operator';
+        storedUser?.display_name || storedUser?.username || 'Operator';
 
       this.operatorRole =
-        storedUser?.job_title
-        || this.formatRole(
-          storedUser?.role
-          || 'operator'
-        );
+        storedUser?.job_title ||
+        this.formatRole(storedUser?.role || 'operator');
 
       this.operatorImage =
-        storedUser?.profile_image
-        || 'assets/default-avatar.png';
+        storedUser?.profile_image || 'assets/default-avatar.png';
     } catch {
-      this.operatorUsername =
-        getAuthUsername();
+      this.operatorUsername = getAuthUsername();
 
-      this.operatorName =
-        this.operatorUsername
-        || 'Operator';
+      this.operatorName = this.operatorUsername || 'Operator';
 
-      this.operatorRole =
-        'Operator';
+      this.operatorRole = 'Operator';
 
-      this.operatorImage =
-        'assets/default-avatar.png';
+      this.operatorImage = 'assets/default-avatar.png';
     }
   }
 
   loadUserSettings(): void {
-    const sessionId =
-      getAuthItem(
-        'session_id'
-      );
+    const sessionId = getAuthItem('session_id');
 
     if (!sessionId) {
       return;
     }
 
-    this.userApiService
-      .getUserSettings(
-        sessionId
-      )
-      .subscribe({
-        next: (
-          settings
-        ) => {
-          this.applyUserSettings(
-            settings
-          );
-        },
+    this.userApiService.getUserSettings(sessionId).subscribe({
+      next: (settings) => {
+        this.applyUserSettings(settings);
+      },
 
-        error: (
-          error
-        ) => {
-          console.error(
-            'Could not load operator settings:',
-            error
-          );
-        },
-      });
+      error: (error) => {
+        console.error('Could not load operator settings:', error);
+      },
+    });
   }
 
   private applyUserSettings(
-    settings:
-      Partial<UserSettings>
-      | null
-      | undefined
+    settings: Partial<UserSettings> | null | undefined,
   ): void {
     if (!settings) {
       return;
     }
 
     this.operatorName =
-      settings.display_name
-      || settings.username
-      || this.operatorUsername
-      || 'Operator';
+      settings.display_name ||
+      settings.username ||
+      this.operatorUsername ||
+      'Operator';
 
     this.operatorRole =
-      settings.job_title
-      || this.formatRole(
-        settings.role
-        || 'operator'
-      );
+      settings.job_title || this.formatRole(settings.role || 'operator');
 
-    this.operatorImage =
-      settings.profile_image
-      || 'assets/default-avatar.png';
+    this.operatorImage = settings.profile_image || 'assets/default-avatar.png';
 
-    this.updateStoredUserSettings(
-      settings
-    );
+    this.updateStoredUserSettings(settings);
   }
 
-  private updateStoredUserSettings(
-    settings:
-      Partial<UserSettings>
-  ): void {
+  private updateStoredUserSettings(settings: Partial<UserSettings>): void {
     let storedUser: any = {};
 
     try {
-      storedUser =
-        JSON.parse(
-          localStorage.getItem(
-            'user'
-          ) || '{}'
-        );
+      storedUser = JSON.parse(localStorage.getItem('user') || '{}');
     } catch {
       storedUser = {};
     }
@@ -1062,37 +724,24 @@ private translate(
       ...settings,
     };
 
-    localStorage.setItem(
-      'user',
-      JSON.stringify(
-        updatedUser
-      )
-    );
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   }
 
   loadDashboard(): void {
-    const role =
-      getAuthRole();
+    const role = getAuthRole();
 
-    if (
-      role &&
-      role !== 'operator'
-    ) {
+    if (role && role !== 'operator') {
       this.loading = false;
 
-      this.loadingError =
-        this.text.noOperatorFound;
+      this.loadingError = this.text.noOperatorFound;
 
       return;
     }
 
-    if (
-      !this.operatorUsername
-    ) {
+    if (!this.operatorUsername) {
       this.loading = false;
 
-      this.loadingError =
-        this.text.noOperatorFound;
+      this.loadingError = this.text.noOperatorFound;
 
       return;
     }
@@ -1100,137 +749,85 @@ private translate(
     this.loading = true;
     this.loadingError = '';
 
-    this.dashboardService
-      .getDashboard(
-        this.operatorUsername
-      )
-      .subscribe({
-        next: (response) => {
-          /*
-           * Keep display name and custom job title
-           * loaded from User Settings.
-           * The dashboard API username is used only
-           * when no personal setting is available.
-           */
-          if (
-            !this.operatorName
-            || this.operatorName
-            === 'Operator'
-          ) {
-            this.operatorName =
-              response.operator.username;
-          }
+    this.dashboardService.getDashboard(this.operatorUsername).subscribe({
+      next: (response) => {
+        /*
+         * Keep display name and custom job title
+         * loaded from User Settings.
+         * The dashboard API username is used only
+         * when no personal setting is available.
+         */
+        if (!this.operatorName || this.operatorName === 'Operator') {
+          this.operatorName = response.operator.username;
+        }
 
-          if (
-            !this.operatorRole
-          ) {
-            this.operatorRole =
-              this.formatRole(
-                response.operator.role
-              );
-          }
+        if (!this.operatorRole) {
+          this.operatorRole = this.formatRole(response.operator.role);
+        }
 
-          if (
-            response.operator
-              .profile_image
-            && this.operatorImage
-              === 'assets/default-avatar.png'
-          ) {
-            this.operatorImage =
-              response.operator
-                .profile_image;
-          }
+        if (
+          response.operator.profile_image &&
+          this.operatorImage === 'assets/default-avatar.png'
+        ) {
+          this.operatorImage = response.operator.profile_image;
+        }
 
-          this.statistics =
-            response.statistics;
+        this.statistics = response.statistics;
 
-          this.activeOperations =
-            response.active_operations;
+        this.activeOperations = response.active_operations;
 
-          this.champions =
-            response.champions;
+        this.champions = response.champions;
 
-          this.recentIssues =
-            response.recent_issues;
+        this.recentIssues = response.recent_issues;
 
-          this.dailyProductivity =
-            response.daily_productivity;
+        this.dailyProductivity = response.daily_productivity;
 
-          this.buildProductivityChart(
-            this.dailyProductivity
-          );
+        this.buildProductivityChart(this.dailyProductivity);
 
-          this.loading = false;
-        },
+        this.loading = false;
+      },
 
-        error: (error) => {
-          console.error(
-            'Dashboard loading failed:',
-            error
-          );
+      error: (error) => {
+        console.error('Dashboard loading failed:', error);
 
-          this.loadingError =
-            error?.error?.error
-            || this.text
-              .dashboardLoadError;
+        this.loadingError = error?.error?.error || this.text.dashboardLoadError;
 
-          this.loading = false;
-        },
-      });
+        this.loading = false;
+      },
+    });
   }
 
   openCorrectDashboard(): void {
-    const role =
-      getAuthRole();
+    const role = getAuthRole();
 
-    const routeByRole:
-      Record<string, string> = {
+    const routeByRole: Record<string, string> = {
       admin: '/admin_dashboard',
       supervisor: '/supervisor_dashboard',
       quality: '/quality_dashboard',
       operator: '/dashboard',
     };
 
-    this.router.navigate([
-      routeByRole[role] || '/login',
-    ]);
+    this.router.navigate([routeByRole[role] || '/login']);
   }
 
   buildProductivityChart(
-    productivity:
-      OperatorDashboardResponse[
-        'daily_productivity'
-      ]
+    productivity: OperatorDashboardResponse['daily_productivity'],
   ): void {
     this.productivityChart = {
       type: 'bar',
 
       data: {
-        labels:
-          productivity.map(
-            (item) =>
-              this.translateDay(
-                item.day
-              )
-          ),
+        labels: productivity.map((item) => this.translateDay(item.day)),
 
         datasets: [
           {
-            label:
-              this.text
-                .completedOperations,
+            label: this.text.completedOperations,
 
-            data:
-              productivity.map(
-                (item) =>
-                  item.count
-              ),
+            data: productivity.map((item) => item.count),
 
-            backgroundColor:
-              'rgba(0, 174, 239, 0.22)',
+            backgroundColor: 'rgba(0, 174, 239, 0.22)',
 
-            borderColor:
-              '#00aeef',
+            borderColor: '#00aeef',
 
             borderWidth: 1,
 
@@ -1264,8 +861,7 @@ private translate(
             },
 
             grid: {
-              color:
-                'rgba(148,163,184,.15)',
+              color: 'rgba(148,163,184,.15)',
             },
           },
         },
@@ -1273,75 +869,48 @@ private translate(
     };
   }
 
-  translateDay(
-    day: string
-  ): string {
-    const normalizedDay =
-      String(day || '')
-        .trim()
-        .toLowerCase();
+  translateDay(day: string): string {
+    const normalizedDay = String(day || '')
+      .trim()
+      .toLowerCase();
 
-    const dayMap:
-      Record<string, string> = {
-      mon:
-        this.text.monday,
+    const dayMap: Record<string, string> = {
+      mon: this.text.monday,
 
-      monday:
-        this.text.monday,
+      monday: this.text.monday,
 
-      tue:
-        this.text.tuesday,
+      tue: this.text.tuesday,
 
-      tuesday:
-        this.text.tuesday,
+      tuesday: this.text.tuesday,
 
-      wed:
-        this.text.wednesday,
+      wed: this.text.wednesday,
 
-      wednesday:
-        this.text.wednesday,
+      wednesday: this.text.wednesday,
 
-      thu:
-        this.text.thursday,
+      thu: this.text.thursday,
 
-      thursday:
-        this.text.thursday,
+      thursday: this.text.thursday,
 
-      fri:
-        this.text.friday,
+      fri: this.text.friday,
 
-      friday:
-        this.text.friday,
+      friday: this.text.friday,
 
-      sat:
-        this.text.saturday,
+      sat: this.text.saturday,
 
-      saturday:
-        this.text.saturday,
+      saturday: this.text.saturday,
 
-      sun:
-        this.text.sunday,
+      sun: this.text.sunday,
 
-      sunday:
-        this.text.sunday,
+      sunday: this.text.sunday,
     };
 
-    return (
-      dayMap[normalizedDay]
-      || day
-    );
+    return dayMap[normalizedDay] || day;
   }
 
-  openReportModal(
-    operation:
-      OperatorDashboardOperation
-  ): void {
-    this.selectedOperation =
-      operation;
+  openReportModal(operation: OperatorDashboardOperation): void {
+    this.selectedOperation = operation;
 
-    this.deliveredQuantity =
-      operation.routing_quantity
-      || null;
+    this.deliveredQuantity = operation.routing_quantity || null;
 
     this.rejectedQuantity = 0;
 
@@ -1352,9 +921,7 @@ private translate(
   }
 
   closeReportModal(): void {
-    if (
-      this.reporting
-    ) {
+    if (this.reporting) {
       return;
     }
 
@@ -1367,56 +934,28 @@ private translate(
   }
 
   confirmReport(): void {
-    if (
-      !this.selectedOperation
-      || this.reporting
-    ) {
+    if (!this.selectedOperation || this.reporting) {
       return;
     }
 
-    const delivered =
-      Number(
-        this.deliveredQuantity
-      );
+    const delivered = Number(this.deliveredQuantity);
 
-    const rejected =
-      Number(
-        this.rejectedQuantity
-      );
+    const rejected = Number(this.rejectedQuantity);
 
-    if (
-      !Number.isFinite(
-        delivered
-      )
-      || delivered < 0
-    ) {
-      this.reportError =
-        this.text
-          .validDeliveredQuantity;
+    if (!Number.isFinite(delivered) || delivered < 0) {
+      this.reportError = this.text.validDeliveredQuantity;
 
       return;
     }
 
-    if (
-      !Number.isFinite(
-        rejected
-      )
-      || rejected < 0
-    ) {
-      this.reportError =
-        this.text
-          .validRejectedQuantity;
+    if (!Number.isFinite(rejected) || rejected < 0) {
+      this.reportError = this.text.validRejectedQuantity;
 
       return;
     }
 
-    if (
-      delivered === 0
-      && rejected === 0
-    ) {
-      this.reportError =
-        this.text
-          .quantityRequired;
+    if (delivered === 0 && rejected === 0) {
+      this.reportError = this.text.quantityRequired;
 
       return;
     }
@@ -1427,27 +966,18 @@ private translate(
 
     this.reportService
       .postData({
-        order_id:
-          this.selectedOperation
-            .order,
+        order_id: this.selectedOperation.order,
 
-        operation:
-          this.selectedOperation
-            .operation,
+        operation: this.selectedOperation.operation,
 
-        qty_deliver:
-          delivered,
+        qty_deliver: delivered,
 
-        qty_reject:
-          rejected,
+        qty_reject: rejected,
 
-        username:
-          this.operatorUsername,
+        username: this.operatorUsername,
       })
       .subscribe({
-        next: (
-          response: any
-        ) => {
+        next: (response: any) => {
           this.reporting = false;
 
           /*
@@ -1455,14 +985,9 @@ private translate(
            * message instead of the backend
            * English response.
            */
-          this.reportSuccess =
-            this.text
-              .reportSuccess;
+          this.reportSuccess = this.text.reportSuccess;
 
-          console.log(
-            'Operation report response:',
-            response
-          );
+          console.log('Operation report response:', response);
 
           setTimeout(() => {
             this.closeReportModal();
@@ -1470,119 +995,64 @@ private translate(
           }, 1000);
         },
 
-        error: (
-          error: any
-        ) => {
+        error: (error: any) => {
           this.reporting = false;
 
-          console.error(
-            'Operation report failed:',
-            error
-          );
+          console.error('Operation report failed:', error);
 
-          this.reportError =
-            this.text
-              .reportFailure;
+          this.reportError = this.text.reportFailure;
         },
       });
   }
 
   get greetingText(): string {
-    const currentHour =
-      new Date().getHours();
+    const currentHour = new Date().getHours();
 
-    return currentHour < 12
-      ? this.text.goodMorning
-      : this.text.goodAfternoon;
+    return currentHour < 12 ? this.text.goodMorning : this.text.goodAfternoon;
   }
 
-  get currentOperatorRank():
-    number | null {
-    const champion =
-      this.champions.find(
-        (operator) =>
-          operator.username
-            .toLowerCase()
-          === this.operatorUsername
-            .toLowerCase()
-      );
-
-    return champion?.rank
-      || null;
-  }
-
-  get qualityGaugeValue():
-    number {
-    return Math.round(
-      this.statistics
-        .quality_score
+  get currentOperatorRank(): number | null {
+    const champion = this.champions.find(
+      (operator) =>
+        operator.username.toLowerCase() === this.operatorUsername.toLowerCase(),
     );
+
+    return champion?.rank || null;
   }
 
-  getGaugeRotation():
-    string {
-    const value =
-      Math.min(
-        Math.max(
-          this.qualityGaugeValue,
-          0
-        ),
-        100
-      );
-
-    return (
-      `${value * 3.6}deg`
-    );
+  get qualityGaugeValue(): number {
+    return Math.round(this.statistics.quality_score);
   }
 
-  getRankClass(
-    rank: number
-  ): string {
-    if (
-      rank === 1
-    ) {
+  getGaugeRotation(): string {
+    const value = Math.min(Math.max(this.qualityGaugeValue, 0), 100);
+
+    return `${value * 3.6}deg`;
+  }
+
+  getRankClass(rank: number): string {
+    if (rank === 1) {
       return 'rank-gold';
     }
 
-    if (
-      rank === 2
-    ) {
+    if (rank === 2) {
       return 'rank-silver';
     }
 
-    if (
-      rank === 3
-    ) {
+    if (rank === 3) {
       return 'rank-bronze';
     }
 
     return 'rank-normal';
   }
 
-  isCurrentOperator(
-    username: string
-  ): boolean {
-    return (
-      username.toLowerCase()
-      === this.operatorUsername
-        .toLowerCase()
-    );
+  isCurrentOperator(username: string): boolean {
+    return username.toLowerCase() === this.operatorUsername.toLowerCase();
   }
 
-  formatRole(
-    role: string
-  ): string {
-    return String(
-      role || ''
-    )
-      .replace(
-        /_/g,
-        ' '
-      )
-      .replace(
-        /\b\w/g,
-        (letter) =>
-          letter.toUpperCase()
-      );
+  formatRole(role: string): string {
+    return String(role || '')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 }

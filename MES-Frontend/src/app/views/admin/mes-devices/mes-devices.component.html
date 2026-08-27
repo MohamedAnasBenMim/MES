@@ -38,74 +38,63 @@
     {{ errorMessage }}
   </div>
 
-
-
-
-
   <form class="device-form" *ngIf="showDeviceForm" (ngSubmit)="saveDevice()">
-  <h3>{{ editingDeviceId ? 'Edit Device' : 'Add Device' }}</h3>
+    <h3>{{ editingDeviceId ? "Edit Device" : "Add Device" }}</h3>
 
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Device Name <span class="required-star">*</span></label>
-      <input
-        type="text"
-        name="device_name"
-        [(ngModel)]="deviceForm.device_name"
-        required
-      />
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Device Name <span class="required-star">*</span></label>
+        <input
+          type="text"
+          name="device_name"
+          [(ngModel)]="deviceForm.device_name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Device Type <span class="required-star">*</span></label>
+        <select
+          name="device_type"
+          [(ngModel)]="deviceForm.device_type"
+          required
+        >
+          <option value="PC">PC</option>
+          <option value="Tablet">Tablet</option>
+          <option value="Scanner">Scanner</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>MAC Address <span class="required-star">*</span></label>
+        <input
+          type="text"
+          name="mac_address"
+          [(ngModel)]="deviceForm.mac_address"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>IP Address</label>
+        <input
+          type="text"
+          name="ip_address"
+          [(ngModel)]="deviceForm.ip_address"
+        />
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Device Type <span class="required-star">*</span></label>
-      <select
-        name="device_type"
-        [(ngModel)]="deviceForm.device_type"
-        required
-      >
-        <option value="PC">PC</option>
-        <option value="Tablet">Tablet</option>
-        <option value="Scanner">Scanner</option>
-      </select>
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancelDeviceForm()">
+        Cancel
+      </button>
+
+      <button type="submit" class="btn-primary">
+        {{ editingDeviceId ? "Update Device" : "Save Device" }}
+      </button>
     </div>
-
-    <div class="form-group">
-      <label>MAC Address <span class="required-star">*</span></label>
-      <input
-        type="text"
-        name="mac_address"
-        [(ngModel)]="deviceForm.mac_address"
-        required
-      />
-    </div>
-
-    <div class="form-group">
-      <label>IP Address</label>
-      <input
-        type="text"
-        name="ip_address"
-        [(ngModel)]="deviceForm.ip_address"
-      />
-    </div>
-  </div>
-
-  <div class="form-actions">
-    <button type="button" class="btn-cancel" (click)="cancelDeviceForm()">
-      Cancel
-    </button>
-
-    <button type="submit" class="btn-primary">
-      {{ editingDeviceId ? 'Update Device' : 'Save Device' }}
-    </button>
-  </div>
-</form>
-
-
-
-
-
-
-
+  </form>
 
   <div class="table-wrapper">
     <table>
@@ -129,20 +118,24 @@
           <td>{{ device.device_name }}</td>
           <td>{{ device.device_type }}</td>
           <td>{{ device.mac_address }}</td>
-          <td>{{ device.ip_address || '-' }}</td>
+          <td>{{ device.ip_address || "-" }}</td>
           <td>
             <span
               class="status-badge"
               [class.active]="device.status === 'active'"
               [class.disabled]="device.status === 'disabled'"
             >
-              {{ device.status === 'active' ? 'Active' : 'Disabled' }}
+              {{ device.status === "active" ? "Active" : "Disabled" }}
             </span>
           </td>
           <td>{{ formatDate(device.last_login) }}</td>
           <td>{{ formatDate(device.last_seen) }}</td>
           <td>
-            <button type="button" class="btn-info" (click)="viewDetails(device)">
+            <button
+              type="button"
+              class="btn-info"
+              (click)="viewDetails(device)"
+            >
               Details
             </button>
 
@@ -171,9 +164,7 @@
         </tr>
 
         <tr *ngIf="devices.length === 0">
-          <td colspan="9" class="empty-row">
-            No MES devices found.
-          </td>
+          <td colspan="9" class="empty-row">No MES devices found.</td>
         </tr>
       </tbody>
     </table>
@@ -184,116 +175,114 @@
       <div class="modal-header">
         <h3>Device Details</h3>
         <button
-  type="button"
-  class="modal-close-btn"
-  aria-label="Close details"
-  (click)="closeDetails()"
->
-  ×
-</button>
+          type="button"
+          class="modal-close-btn"
+          aria-label="Close details"
+          (click)="closeDetails()"
+        >
+          ×
+        </button>
       </div>
 
-        <div class="details-grid">
-            <strong>Device ID</strong>
-            <span>{{ selectedDevice.device_id }}</span>
+      <div class="details-grid">
+        <strong>Device ID</strong>
+        <span>{{ selectedDevice.device_id }}</span>
 
-            <strong>Device Name</strong>
-            <span>{{ selectedDevice.device_name }}</span>
+        <strong>Device Name</strong>
+        <span>{{ selectedDevice.device_name }}</span>
 
-            <strong>Device Type</strong>
-            <span>{{ selectedDevice.device_type }}</span>
+        <strong>Device Type</strong>
+        <span>{{ selectedDevice.device_type }}</span>
 
-            <strong>MAC Address</strong>
-            <span>{{ selectedDevice.mac_address }}</span>
+        <strong>MAC Address</strong>
+        <span>{{ selectedDevice.mac_address }}</span>
 
-            <strong>IP Address</strong>
-            <span>{{ selectedDevice.ip_address || '-' }}</span>
+        <strong>IP Address</strong>
+        <span>{{ selectedDevice.ip_address || "-" }}</span>
 
-            <strong>Status</strong>
-            <span>
-                <span
-                class="status-badge"
-                [class.active]="selectedDevice.status === 'active'"
-                [class.disabled]="selectedDevice.status === 'disabled'"
-                >
-                {{ selectedDevice.status === 'active' ? 'Active' : 'Disabled' }}
-                </span>
-            </span>
+        <strong>Status</strong>
+        <span>
+          <span
+            class="status-badge"
+            [class.active]="selectedDevice.status === 'active'"
+            [class.disabled]="selectedDevice.status === 'disabled'"
+          >
+            {{ selectedDevice.status === "active" ? "Active" : "Disabled" }}
+          </span>
+        </span>
 
-            <strong>Last Login</strong>
-            <span>{{ formatDate(selectedDevice.last_login) }}</span>
+        <strong>Last Login</strong>
+        <span>{{ formatDate(selectedDevice.last_login) }}</span>
 
-            <strong>Last Seen</strong>
-            <span>{{ formatDate(selectedDevice.last_seen) }}</span>
+        <strong>Last Seen</strong>
+        <span>{{ formatDate(selectedDevice.last_seen) }}</span>
 
-            <strong>Disabled Date</strong>
-            <span>{{ formatDate(selectedDevice.disabled_date) }}</span>
+        <strong>Disabled Date</strong>
+        <span>{{ formatDate(selectedDevice.disabled_date) }}</span>
 
-            <strong>Disabled By</strong>
-            <span>{{ selectedDevice.disabled_by || '-' }}</span>
+        <strong>Disabled By</strong>
+        <span>{{ selectedDevice.disabled_by || "-" }}</span>
 
-            <strong>Disable Reason</strong>
-            <span>{{ selectedDevice.disable_reason || '-' }}</span>
+        <strong>Disable Reason</strong>
+        <span>{{ selectedDevice.disable_reason || "-" }}</span>
 
-            <strong>Created Date</strong>
-            <span>{{ formatDate(selectedDevice.created_date) }}</span>
+        <strong>Created Date</strong>
+        <span>{{ formatDate(selectedDevice.created_date) }}</span>
 
-            <strong>Created By</strong>
-            <span>{{ selectedDevice.created_by || '-' }}</span>
+        <strong>Created By</strong>
+        <span>{{ selectedDevice.created_by || "-" }}</span>
 
-            <strong>Last Updated Date</strong>
-            <span>{{ formatDate(selectedDevice.last_updated_date) }}</span>
+        <strong>Last Updated Date</strong>
+        <span>{{ formatDate(selectedDevice.last_updated_date) }}</span>
 
-            <strong>Last Updated By</strong>
-            <span>{{ selectedDevice.last_updated_by || '-' }}</span>
-        </div>
+        <strong>Last Updated By</strong>
+        <span>{{ selectedDevice.last_updated_by || "-" }}</span>
+      </div>
     </div>
   </div>
 
+  <div class="details-backdrop" *ngIf="deviceToDisable">
+    <div class="disable-modal">
+      <div class="modal-header">
+        <h3>Disable Device</h3>
+        <button
+          type="button"
+          class="modal-close-btn"
+          aria-label="Close disable modal"
+          (click)="closeDisableModal()"
+        >
+          ×
+        </button>
+      </div>
 
+      <p class="modal-copy">
+        {{ deviceToDisable.device_name }} will no longer be allowed to access
+        MES.
+      </p>
 
+      <div class="form-group">
+        <label>Disable Reason <span class="required-star">*</span></label>
+        <textarea
+          name="disable_reason"
+          [(ngModel)]="disableReason"
+          rows="4"
+          placeholder="Enter disable reason"
+        ></textarea>
+      </div>
 
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeDisableModal()">
+          Cancel
+        </button>
 
-
-
-<div class="details-backdrop" *ngIf="deviceToDisable">
-  <div class="disable-modal">
-    <div class="modal-header">
-      <h3>Disable Device</h3>
-      <button
-        type="button"
-        class="modal-close-btn"
-        aria-label="Close disable modal"
-        (click)="closeDisableModal()"
-      >
-        ×
-      </button>
-    </div>
-
-    <p class="modal-copy">
-      {{ deviceToDisable.device_name }} will no longer be allowed to access MES.
-    </p>
-
-    <div class="form-group">
-      <label>Disable Reason <span class="required-star">*</span></label>
-      <textarea
-        name="disable_reason"
-        [(ngModel)]="disableReason"
-        rows="4"
-        placeholder="Enter disable reason"
-      ></textarea>
-    </div>
-
-    <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="closeDisableModal()">
-        Cancel
-      </button>
-
-      <button type="button" class="btn-disable" (click)="confirmDisableDevice()">
-        Disable Device
-      </button>
+        <button
+          type="button"
+          class="btn-disable"
+          (click)="confirmDisableDevice()"
+        >
+          Disable Device
+        </button>
+      </div>
     </div>
   </div>
-</div>
-
 </div>

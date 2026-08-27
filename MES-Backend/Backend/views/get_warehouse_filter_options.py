@@ -2,14 +2,12 @@ import logging
 from typing import Any
 
 import requests
+from Backend.models import IonAPICredentials
+from Backend.utils.token_manager import get_mingle_token
 from requests import RequestException
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from Backend.models import IonAPICredentials
-from Backend.utils.token_manager import get_mingle_token
-
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +22,7 @@ REQUEST_TIMEOUT_SECONDS = 30
 
 
 def get_latest_credentials() -> IonAPICredentials | None:
-    return (
-        IonAPICredentials.objects
-        .order_by("-created_at")
-        .first()
-    )
+    return IonAPICredentials.objects.order_by("-created_at").first()
 
 
 def read_api_value(
@@ -68,9 +62,7 @@ def get_warehouse_filter_options(request):
     try:
         access_token = get_mingle_token()
     except Exception:
-        logger.exception(
-            "Unable to generate the Infor access token."
-        )
+        logger.exception("Unable to generate the Infor access token.")
         return Response(
             {"warehouse_types": []},
             status=status.HTTP_200_OK,
@@ -115,9 +107,7 @@ def get_warehouse_filter_options(request):
                                 "WarehouseType",
                             )
                             if warehouse_type not in [None, ""]:
-                                warehouse_types.add(
-                                    str(warehouse_type)
-                                )
+                                warehouse_types.add(str(warehouse_type))
 
                 next_url = payload.get("@odata.nextLink")
             else:
@@ -126,17 +116,14 @@ def get_warehouse_filter_options(request):
         return Response(
             {
                 "warehouse_types": sorted(
-                    warehouse_types,
-                    key=lambda value: value.lower()
+                    warehouse_types, key=lambda value: value.lower()
                 )
             },
             status=status.HTTP_200_OK,
         )
 
     except RequestException:
-        logger.exception(
-            "Unable to load warehouse filter options."
-        )
+        logger.exception("Unable to load warehouse filter options.")
         return Response(
             {"warehouse_types": []},
             status=status.HTTP_200_OK,

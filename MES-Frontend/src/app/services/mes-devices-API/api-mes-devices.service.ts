@@ -48,7 +48,7 @@ export class ApiMesDevicesService {
   getDevices(
     username: string,
     search: string = '',
-    status: string = ''
+    status: string = '',
   ): Observable<MesDevice[]> {
     let params = new HttpParams().set('username', username);
 
@@ -77,10 +77,7 @@ export class ApiMesDevicesService {
     return this.http.put(`${this.baseUrl}${id}/`, payload);
   }
 
-  disableDevice(
-    id: number,
-    payload: MesDeviceDisablePayload
-  ): Observable<any> {
+  disableDevice(id: number, payload: MesDeviceDisablePayload): Observable<any> {
     return this.http.post(`${this.baseUrl}${id}/disable/`, payload);
   }
 

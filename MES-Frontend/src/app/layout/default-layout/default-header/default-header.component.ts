@@ -138,9 +138,8 @@ export class DefaultHeaderComponent
   userTimezone = localStorage.getItem('timezone') || 'Africa/Tunis';
   userCountryCode = localStorage.getItem('country') || 'TN';
   userDateFormat = localStorage.getItem('date_format') || 'dd/MM/yyyy';
-  userTimeFormat: '12h' | '24h' = (
-    localStorage.getItem('time_format') || '24h'
-  ) as '12h' | '24h';
+  userTimeFormat: '12h' | '24h' = (localStorage.getItem('time_format') ||
+    '24h') as '12h' | '24h';
 
   text: HeaderTranslations = {
     dashboard: 'Dashboard',
@@ -188,7 +187,7 @@ export class DefaultHeaderComponent
   constructor(
     private readonly router: Router,
     private readonly userApiService: UserApiService,
-    private readonly ngZone: NgZone
+    private readonly ngZone: NgZone,
   ) {
     super();
   }
@@ -200,7 +199,7 @@ export class DefaultHeaderComponent
 
     window.addEventListener(
       'mes-user-settings-updated',
-      this.settingsUpdatedListener
+      this.settingsUpdatedListener,
     );
 
     this.startClock();
@@ -216,7 +215,7 @@ export class DefaultHeaderComponent
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => {
         this.updateCurrentPageLabel();
@@ -229,7 +228,7 @@ export class DefaultHeaderComponent
   ngOnDestroy(): void {
     window.removeEventListener(
       'mes-user-settings-updated',
-      this.settingsUpdatedListener
+      this.settingsUpdatedListener,
     );
 
     this.stopClock();
@@ -237,7 +236,9 @@ export class DefaultHeaderComponent
   }
 
   get userCountryLabel(): string {
-    const value = String(this.userCountryCode || '').trim().toUpperCase();
+    const value = String(this.userCountryCode || '')
+      .trim()
+      .toUpperCase();
     const countries: Record<string, string> = {
       TN: 'Tunisia',
       FR: 'France',
@@ -488,11 +489,12 @@ export class DefaultHeaderComponent
 
   private applyStoredRegionalSettings(): void {
     this.userTimezone = localStorage.getItem('timezone') || this.userTimezone;
-    this.userCountryCode = localStorage.getItem('country') || this.userCountryCode;
-    this.userDateFormat = localStorage.getItem('date_format') || this.userDateFormat;
-    this.userTimeFormat = (
-      localStorage.getItem('time_format') || this.userTimeFormat
-    ) as '12h' | '24h';
+    this.userCountryCode =
+      localStorage.getItem('country') || this.userCountryCode;
+    this.userDateFormat =
+      localStorage.getItem('date_format') || this.userDateFormat;
+    this.userTimeFormat = (localStorage.getItem('time_format') ||
+      this.userTimeFormat) as '12h' | '24h';
   }
 
   private applyRegionalSettings(settings: Partial<UserSettings> | any): void {
@@ -543,13 +545,10 @@ export class DefaultHeaderComponent
       auto: this.t('COMMON.AUTO', 'Auto'),
       toggleSidebar: this.t(
         'COMMON.TOGGLE_SIDEBAR',
-        'Toggle sidebar navigation'
+        'Toggle sidebar navigation',
       ),
       openUserMenu: this.t('COMMON.OPEN_USER_MENU', 'Open user menu'),
-      openThemePicker: this.t(
-        'COMMON.OPEN_THEME_PICKER',
-        'Open theme picker'
-      ),
+      openThemePicker: this.t('COMMON.OPEN_THEME_PICKER', 'Open theme picker'),
       manufacturing: this.t('COMMON.MANUFACTURING', 'Manufacturing'),
       warehousing: this.t('COMMON.WAREHOUSING', 'Warehousing'),
       nonConformance: this.t('COMMON.NON_CONFORMANCE', 'Non-conformance'),

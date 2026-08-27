@@ -113,7 +113,7 @@ export class NcPopupComponent {
     this.apiService.postData(payload).subscribe({
       next: (res) => {
         alert(
-          `✅ NC created successfully! NC Number: ${res.NonConformanceReport}`
+          `✅ NC created successfully! NC Number: ${res.NonConformanceReport}`,
         );
       },
       error: (err) => {

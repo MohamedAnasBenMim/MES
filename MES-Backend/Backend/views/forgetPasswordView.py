@@ -1,15 +1,13 @@
+from Backend.models import UserAccount
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
-from django.conf import settings
 from django.utils.crypto import get_random_string
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-
-from Backend.models import UserAccount
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class ForgetPasswordView(APIView):
@@ -20,8 +18,7 @@ class ForgetPasswordView(APIView):
 
         if not email:
             return Response(
-                {"error": "Email is required"},
-                status=status.HTTP_400_BAD_REQUEST
+                {"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST
             )
 
         User = get_user_model()
@@ -40,7 +37,7 @@ class ForgetPasswordView(APIView):
         # Generate new random password
         new_password = get_random_string(
             length=10,
-            allowed_chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$"
+            allowed_chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$",
         )
 
         # Save the new password in every user table where the account exists.

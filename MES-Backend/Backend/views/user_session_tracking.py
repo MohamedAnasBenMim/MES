@@ -1,13 +1,11 @@
 from datetime import timedelta
-from django.utils import timezone
 
+from Backend.models import MESDevice, UserSessionLog
+from django.utils import timezone
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status
-
-from Backend.models import MESDevice, UserSessionLog
-
 
 ONLINE_THRESHOLD_SECONDS = 120
 
@@ -60,7 +58,7 @@ def user_session_heartbeat(request):
     if not session_id and not username:
         return Response(
             {"error": "session_id or username is required"},
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     session = None
@@ -70,16 +68,14 @@ def user_session_heartbeat(request):
 
     if session is None and username:
         session = (
-            UserSessionLog.objects
-            .filter(username__iexact=username, is_active=True)
+            UserSessionLog.objects.filter(username__iexact=username, is_active=True)
             .order_by("-login_time")
             .first()
         )
 
     if session is None:
         return Response(
-            {"error": "Active session not found"},
-            status=status.HTTP_404_NOT_FOUND
+            {"error": "Active session not found"}, status=status.HTTP_404_NOT_FOUND
         )
 
     now = timezone.now()
@@ -96,8 +92,7 @@ def user_session_heartbeat(request):
 
         if device and device.status == "disabled":
             return Response(
-                {"error": "This device is disabled."},
-                status=status.HTTP_403_FORBIDDEN
+                {"error": "This device is disabled."}, status=status.HTTP_403_FORBIDDEN
             )
 
         if device:
@@ -116,7 +111,7 @@ def user_session_heartbeat(request):
             "device_id": device.device_id if device else device_id,
             "device_last_seen": device.last_seen if device else None,
         },
-        status=status.HTTP_200_OK
+        status=status.HTTP_200_OK,
     )
 
 
@@ -129,7 +124,7 @@ def user_session_logout(request):
     if not session_id and not username:
         return Response(
             {"error": "session_id or username is required"},
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     session = None
@@ -139,16 +134,14 @@ def user_session_logout(request):
 
     if session is None and username:
         session = (
-            UserSessionLog.objects
-            .filter(username__iexact=username, is_active=True)
+            UserSessionLog.objects.filter(username__iexact=username, is_active=True)
             .order_by("-login_time")
             .first()
         )
 
     if session is None:
         return Response(
-            {"error": "Active session not found"},
-            status=status.HTTP_404_NOT_FOUND
+            {"error": "Active session not found"}, status=status.HTTP_404_NOT_FOUND
         )
 
     session.close_session()
@@ -163,7 +156,7 @@ def user_session_logout(request):
             "duration_display": format_duration(session.duration_seconds),
             "status": "Offline",
         },
-        status=status.HTTP_200_OK
+        status=status.HTTP_200_OK,
     )
 
 

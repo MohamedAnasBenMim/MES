@@ -282,10 +282,10 @@
         </p>
         <app-docs-example href="components/alert#dismissing">
           @if (visible[0]) {
-          <c-alert [(visible)]="visible[0]" dismissible color="warning" fade>
-            <strong>Go right ahead</strong> and click that dismiss over there on
-            the right.
-          </c-alert>
+            <c-alert [(visible)]="visible[0]" dismissible color="warning" fade>
+              <strong>Go right ahead</strong> and click that dismiss over there
+              on the right.
+            </c-alert>
           }
           <c-alert
             #alertWithButtonCloseTemplate="cAlert"
@@ -297,9 +297,13 @@
             variant="solid"
           >
             @if (alertWithButtonCloseTemplate.dismissible) {
-            <ng-template cTemplateId="alertButtonCloseTemplate">
-              <button (click)="visible[1] = false" cButtonClose white></button>
-            </ng-template>
+              <ng-template cTemplateId="alertButtonCloseTemplate">
+                <button
+                  (click)="visible[1] = false"
+                  cButtonClose
+                  white
+                ></button>
+              </ng-template>
             }
             <strong>Go right ahead</strong> and click that dismiss over there on
             the right.

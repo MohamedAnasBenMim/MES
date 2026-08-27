@@ -6,57 +6,57 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0005_activeoperation'),
+        ("Backend", "0005_activeoperation"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='activeoperation',
-            name='created_at',
+            model_name="activeoperation",
+            name="created_at",
         ),
         migrations.AddField(
-            model_name='activeoperation',
-            name='company_id',
-            field=models.CharField(blank=True, default='', max_length=50),
+            model_name="activeoperation",
+            name="company_id",
+            field=models.CharField(blank=True, default="", max_length=50),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='operated_item',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="activeoperation",
+            name="operated_item",
+            field=models.CharField(blank=True, default="", max_length=255),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='operation',
-            field=models.CharField(blank=True, default='', max_length=50),
+            model_name="activeoperation",
+            name="operation",
+            field=models.CharField(blank=True, default="", max_length=50),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='operation_status',
-            field=models.CharField(blank=True, default='', max_length=50),
+            model_name="activeoperation",
+            name="operation_status",
+            field=models.CharField(blank=True, default="", max_length=50),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='order',
-            field=models.CharField(blank=True, default='', max_length=50),
+            model_name="activeoperation",
+            name="order",
+            field=models.CharField(blank=True, default="", max_length=50),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='planned_start_date',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="activeoperation",
+            name="planned_start_date",
+            field=models.CharField(blank=True, default="", max_length=255),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='reference_operation_machine_type',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="activeoperation",
+            name="reference_operation_machine_type",
+            field=models.CharField(blank=True, default="", max_length=255),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='reference_operation_work_center',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="activeoperation",
+            name="reference_operation_work_center",
+            field=models.CharField(blank=True, default="", max_length=255),
         ),
         migrations.AlterField(
-            model_name='activeoperation',
-            name='username',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="activeoperation",
+            name="username",
+            field=models.CharField(blank=True, default="", max_length=255),
         ),
     ]

@@ -74,7 +74,7 @@ export class IdmConfigurationComponent implements OnInit {
       ]
         .join(' ')
         .toLowerCase()
-        .includes(term)
+        .includes(term),
     );
   }
 
@@ -89,7 +89,9 @@ export class IdmConfigurationComponent implements OnInit {
         this.configurations = data;
       },
       error: (err) => {
-        this.showError(this.getErrorMessage(err, 'Failed to load IDM configurations.'));
+        this.showError(
+          this.getErrorMessage(err, 'Failed to load IDM configurations.'),
+        );
       },
     });
   }
@@ -118,12 +120,16 @@ export class IdmConfigurationComponent implements OnInit {
 
     request$.subscribe({
       next: (res) => {
-        this.showSuccess(res.message || 'IDM configuration saved successfully.');
+        this.showSuccess(
+          res.message || 'IDM configuration saved successfully.',
+        );
         this.cancelEdit(form);
         this.loadConfigurations();
       },
       error: (err) => {
-        this.showError(this.getErrorMessage(err, 'Failed to save IDM configuration.'));
+        this.showError(
+          this.getErrorMessage(err, 'Failed to save IDM configuration.'),
+        );
       },
     });
   }
@@ -151,7 +157,7 @@ export class IdmConfigurationComponent implements OnInit {
 
   deleteConfiguration(config: IdmConfiguration): void {
     const confirmed = confirm(
-      `Delete IDM configuration "${config.document_type}"?`
+      `Delete IDM configuration "${config.document_type}"?`,
     );
 
     if (!confirmed) {
@@ -160,7 +166,9 @@ export class IdmConfigurationComponent implements OnInit {
 
     this.idmApi.deleteConfiguration(config.id, this.username).subscribe({
       next: (res) => {
-        this.showSuccess(res.message || 'IDM configuration deleted successfully.');
+        this.showSuccess(
+          res.message || 'IDM configuration deleted successfully.',
+        );
         this.loadConfigurations();
 
         if (this.editingId === config.id) {
@@ -168,7 +176,9 @@ export class IdmConfigurationComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.showError(this.getErrorMessage(err, 'Failed to delete IDM configuration.'));
+        this.showError(
+          this.getErrorMessage(err, 'Failed to delete IDM configuration.'),
+        );
       },
     });
   }

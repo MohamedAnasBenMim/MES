@@ -1,18 +1,7 @@
 # views.py
-import requests  # type: ignore
 import xml.etree.ElementTree as ET
 
-from django.contrib.auth.hashers import make_password
-from django.core.cache import cache
-from django.db import transaction
-from django.http import JsonResponse
-from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
-
-from rest_framework import status
-from rest_framework.decorators import api_view  # type: ignore
-from rest_framework.response import Response  # type: ignore
-
+import requests  # type: ignore
 from Backend.models import (
     ActiveOperation,
     IonAPICredentials,
@@ -21,7 +10,15 @@ from Backend.models import (
 )
 from Backend.utils.token_manager import get_mingle_token
 from Backend.views.get_dispatch_data import DISPATCH_CACHE_KEY
-
+from django.contrib.auth.hashers import make_password
+from django.core.cache import cache
+from django.db import transaction
+from django.http import JsonResponse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.decorators import api_view  # type: ignore
+from rest_framework.response import Response  # type: ignore
 
 POINTS_PER_COMPLETED_OPERATION = 100
 POINTS_PER_DELIVERED_UNIT = 2
@@ -84,9 +81,7 @@ def close_local_active_operation(
 
             active_operation.username = ""
             active_operation.operation_status = "Completed"
-            active_operation.save(
-                update_fields=["username", "operation_status"]
-            )
+            active_operation.save(update_fields=["username", "operation_status"])
 
     cache.delete(DISPATCH_CACHE_KEY)
 
@@ -95,18 +90,12 @@ def calculate_quality_score(
     delivered_quantity,
     rejected_quantity,
 ):
-    total_quantity = (
-        delivered_quantity
-        + rejected_quantity
-    )
+    total_quantity = delivered_quantity + rejected_quantity
 
     if total_quantity <= 0:
         return 100
 
-    quality = (
-        delivered_quantity
-        / total_quantity
-    ) * 100
+    quality = (delivered_quantity / total_quantity) * 100
 
     return round(
         max(
@@ -123,14 +112,8 @@ def calculate_operator_points(
 ):
     points = (
         POINTS_PER_COMPLETED_OPERATION
-        + int(
-            delivered_quantity
-            * POINTS_PER_DELIVERED_UNIT
-        )
-        - int(
-            rejected_quantity
-            * POINTS_PER_REJECTED_UNIT
-        )
+        + int(delivered_quantity * POINTS_PER_DELIVERED_UNIT)
+        - int(rejected_quantity * POINTS_PER_REJECTED_UNIT)
     )
 
     if rejected_quantity == 0:
@@ -150,9 +133,7 @@ def report_operation(request):
         username = str(request.data.get("username", "")).strip()
         active_operation_id = request.data.get("active_operation_id")
 
-        login_code = str(
-            request.data.get("login_code", "zumtech2")
-        ).strip()
+        login_code = str(request.data.get("login_code", "zumtech2")).strip()
 
     except KeyError as error:
         return Response(
@@ -162,11 +143,7 @@ def report_operation(request):
 
     except (TypeError, ValueError):
         return Response(
-            {
-                "error": (
-                    "Delivered and rejected quantities must be numeric."
-                )
-            },
+            {"error": ("Delivered and rejected quantities must be numeric.")},
             status=400,
         )
 
@@ -195,67 +172,37 @@ def report_operation(request):
 
     if token_response.status_code != 200:
         return Response(
-            {
-                "error": (
-                    "Failed to get token."
-                )
-            },
+            {"error": ("Failed to get token.")},
             status=500,
         )
 
-    access_token = (
-        token_response
-        .json()
-        .get("access_token")
-    )
+    access_token = token_response.json().get("access_token")
 
     if not access_token:
         return Response(
-            {
-                "error": (
-                    "Token not found "
-                    "in response."
-                )
-            },
+            {"error": ("Token not found " "in response.")},
             status=500,
         )
 
     try:
         company_response = requests.get(
-            (
-                "http://127.0.0.1:8000/"
-                "api/get_ionapi_credential/"
-            ),
+            ("http://127.0.0.1:8000/" "api/get_ionapi_credential/"),
             timeout=30,
         )
 
         company_response.raise_for_status()
 
-        company_code = (
-            company_response
-            .json()
-            .get("company")
-        )
+        company_code = company_response.json().get("company")
 
     except requests.RequestException:
         return Response(
-            {
-                "error": (
-                    "Unable to load "
-                    "company credentials."
-                )
-            },
+            {"error": ("Unable to load " "company credentials.")},
             status=500,
         )
 
     if not company_code:
         return Response(
-            {
-                "error": (
-                    "Company code missing "
-                    "in credentials."
-                )
-            },
+            {"error": ("Company code missing " "in credentials.")},
             status=500,
         )
 
@@ -297,16 +244,10 @@ def report_operation(request):
     )
 
     headers = {
-        "Authorization": (
-            f"Bearer {access_token}"
-        ),
-        "Content-Type": (
-            "text/xml;charset=UTF-8"
-        ),
+        "Authorization": (f"Bearer {access_token}"),
+        "Content-Type": ("text/xml;charset=UTF-8"),
         "Accept": "text/xml",
-        "SOAPAction": (
-            "ReportOperation"
-        ),
+        "SOAPAction": ("ReportOperation"),
     }
 
     try:
@@ -325,7 +266,9 @@ def report_operation(request):
 
     message = extract_infor_message(response.text)
 
-    if not (200 <= response.status_code < 300) and not is_already_completed_message(message):
+    if not (200 <= response.status_code < 300) and not is_already_completed_message(
+        message
+    ):
         return Response(
             {
                 "error": "Infor rejected the operation report.",

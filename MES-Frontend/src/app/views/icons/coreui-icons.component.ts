@@ -29,7 +29,10 @@ export class CoreUIIconsComponent implements OnInit {
   public title = 'CoreUI Icons';
   public icons!: [string, string[]][];
 
-  constructor(private route: ActivatedRoute, public iconSet: IconSetService) {
+  constructor(
+    private route: ActivatedRoute,
+    public iconSet: IconSetService,
+  ) {
     iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
   }
 

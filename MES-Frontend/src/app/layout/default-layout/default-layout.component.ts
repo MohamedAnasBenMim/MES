@@ -23,10 +23,7 @@ import {
   SidebarTogglerDirective,
 } from '@coreui/angular';
 
-import {
-  DefaultFooterComponent,
-  DefaultHeaderComponent,
-} from './';
+import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { navItems as allNavItems } from './_nav';
 import { ICustomNavData } from './custom-nav';
 import { UserApiService } from '../../services/user-get-API/api-user-get.service';
@@ -78,7 +75,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private readonly userApiService: UserApiService,
     private readonly idleTimeoutService: IdleTimeoutService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -134,7 +131,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
   filterNavItemsByRole(
     items: ICustomNavData[],
-    role: string
+    role: string,
   ): ICustomNavData[] {
     return items
       .filter((item) => !item.roles || item.roles.includes(role))
@@ -252,7 +249,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
         finalize(() => {
           this.finishAutomaticLogout();
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         error: (error) => {

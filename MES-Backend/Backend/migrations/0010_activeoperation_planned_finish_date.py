@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0009_usersessionlog'),
+        ("Backend", "0009_usersessionlog"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='activeoperation',
-            name='planned_finish_date',
-            field=models.CharField(blank=True, default='', max_length=255, null=True),
+            model_name="activeoperation",
+            name="planned_finish_date",
+            field=models.CharField(blank=True, default="", max_length=255, null=True),
         ),
     ]

@@ -13,9 +13,9 @@ describe('ChartsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [GridModule, CardModule, ChartjsModule, ChartsComponent],
-    providers: [IconSetService]
-}).compileComponents();
+      imports: [GridModule, CardModule, ChartjsModule, ChartsComponent],
+      providers: [IconSetService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

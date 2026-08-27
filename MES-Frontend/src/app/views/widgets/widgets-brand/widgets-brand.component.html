@@ -6,7 +6,12 @@
         [style]="widget.capBg ?? null"
         [values]="widget.values"
       >
-        <svg [name]="widget.icon" cIcon class="my-4 text-white" height="52"></svg>
+        <svg
+          [name]="widget.icon"
+          cIcon
+          class="my-4 text-white"
+          height="52"
+        ></svg>
         @if (withCharts) {
           <c-chart
             #chart="cChart"

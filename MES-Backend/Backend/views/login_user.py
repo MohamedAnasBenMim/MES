@@ -1,14 +1,11 @@
+from Backend.models import MESDevice, UserAccount, UserSessionLog
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone
-
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status
-
-from Backend.models import MESDevice, UserAccount, UserSessionLog
-
 
 MAX_FAILED_LOGIN_ATTEMPTS = 3
 
@@ -99,8 +96,7 @@ def register_failed_login_attempt(auth_user=None, user_account=None):
             auth_user.save()
 
         active_sessions = UserSessionLog.objects.filter(
-            username__iexact=user_account.username,
-            is_active=True
+            username__iexact=user_account.username, is_active=True
         )
 
         for session in active_sessions:
@@ -146,7 +142,7 @@ def login_user(request):
     if not username or not password:
         return Response(
             {"error": "Username and password are required"},
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     User = get_user_model()
@@ -156,13 +152,13 @@ def login_user(request):
     if auth_user_candidate and not auth_user_candidate.is_active:
         return Response(
             {"error": "This account is deactivated. Please contact the administrator."},
-            status=status.HTTP_403_FORBIDDEN
+            status=status.HTTP_403_FORBIDDEN,
         )
 
     if user_account and not user_account.is_active:
         return Response(
             {"error": "This account is deactivated. Please contact the administrator."},
-            status=status.HTTP_403_FORBIDDEN
+            status=status.HTTP_403_FORBIDDEN,
         )
 
     login_username = username
@@ -182,8 +178,7 @@ def login_user(request):
 
     if user is None and not valid_user_account_login:
         failed_result = register_failed_login_attempt(
-            auth_user=auth_user_candidate,
-            user_account=user_account
+            auth_user=auth_user_candidate, user_account=user_account
         )
 
         return Response(
@@ -193,13 +188,17 @@ def login_user(request):
                 "remaining_attempts": failed_result["remaining"],
                 "account_locked": failed_result["locked"],
             },
-            status=status.HTTP_403_FORBIDDEN if failed_result["locked"] else status.HTTP_401_UNAUTHORIZED
+            status=(
+                status.HTTP_403_FORBIDDEN
+                if failed_result["locked"]
+                else status.HTTP_401_UNAUTHORIZED
+            ),
         )
 
     if user is not None and not user.is_active:
         return Response(
             {"error": "This account is deactivated. Please contact the administrator."},
-            status=status.HTTP_403_FORBIDDEN
+            status=status.HTTP_403_FORBIDDEN,
         )
 
     if user is not None:
@@ -212,7 +211,7 @@ def login_user(request):
     if user_account is not None and not user_account.is_active:
         return Response(
             {"error": "This account is deactivated. Please contact the administrator."},
-            status=status.HTTP_403_FORBIDDEN
+            status=status.HTTP_403_FORBIDDEN,
         )
 
     role = ""
@@ -238,8 +237,7 @@ def login_user(request):
 
         if device and device.status == "disabled":
             return Response(
-                {"error": "This device is disabled."},
-                status=status.HTTP_403_FORBIDDEN
+                {"error": "This device is disabled."}, status=status.HTTP_403_FORBIDDEN
             )
 
         if device:
@@ -266,8 +264,7 @@ def login_user(request):
     reset_failed_login_attempts(user_account)
 
     old_sessions = UserSessionLog.objects.filter(
-        username__iexact=response_user.username,
-        is_active=True
+        username__iexact=response_user.username, is_active=True
     )
 
     for old_session in old_sessions:
@@ -304,8 +301,10 @@ def login_user(request):
                 "preferred_language": preferred_language,
                 "is_staff": bool(user and user.is_staff),
                 "is_superuser": bool(user and user.is_superuser),
-                "is_active": bool(user_account.is_active if user_account else user.is_active),
+                "is_active": bool(
+                    user_account.is_active if user_account else user.is_active
+                ),
             },
         },
-        status=status.HTTP_200_OK
+        status=status.HTTP_200_OK,
     )

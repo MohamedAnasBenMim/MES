@@ -9,17 +9,35 @@ import {
   CardHeaderComponent,
   ColComponent,
   RowComponent,
-  TextColorDirective
+  TextColorDirective,
 } from '@coreui/angular';
 
 @Component({
-    selector: 'app-buttons',
-    templateUrl: './buttons.component.html',
-    imports: [RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, DocsExampleComponent, ButtonDirective, IconDirective, RouterLink]
+  selector: 'app-buttons',
+  templateUrl: './buttons.component.html',
+  imports: [
+    RowComponent,
+    ColComponent,
+    TextColorDirective,
+    CardComponent,
+    CardHeaderComponent,
+    CardBodyComponent,
+    DocsExampleComponent,
+    ButtonDirective,
+    IconDirective,
+    RouterLink,
+  ],
 })
 export class ButtonsComponent {
-
   states = ['normal', 'active', 'disabled'];
-  colors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
-
+  colors = [
+    'primary',
+    'secondary',
+    'success',
+    'danger',
+    'warning',
+    'info',
+    'light',
+    'dark',
+  ];
 }

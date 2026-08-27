@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CardModule, GridModule, ProgressModule, WidgetModule } from '@coreui/angular';
+import {
+  CardModule,
+  GridModule,
+  ProgressModule,
+  WidgetModule,
+} from '@coreui/angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
@@ -17,10 +22,21 @@ describe('WidgetsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [WidgetModule, ProgressModule, GridModule, CardModule, RouterTestingModule, ChartjsModule, IconModule, WidgetsComponent, WidgetsBrandComponent, WidgetsDropdownComponent, WidgetsEComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [
+        WidgetModule,
+        ProgressModule,
+        GridModule,
+        CardModule,
+        RouterTestingModule,
+        ChartjsModule,
+        IconModule,
+        WidgetsComponent,
+        WidgetsBrandComponent,
+        WidgetsDropdownComponent,
+        WidgetsEComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

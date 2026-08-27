@@ -6,9 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0012_repair_activeoperation_columns'),
-        ('Backend', '0016_useraccount_personal_settings'),
+        ("Backend", "0012_repair_activeoperation_columns"),
+        ("Backend", "0016_useraccount_personal_settings"),
     ]
 
-    operations = [
-    ]
+    operations = []

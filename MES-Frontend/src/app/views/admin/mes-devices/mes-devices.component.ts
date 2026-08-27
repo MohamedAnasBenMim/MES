@@ -37,7 +37,7 @@ export class MesDevicesComponent implements OnInit {
     device_type: 'PC',
     mac_address: '',
     ip_address: '',
-    };
+  };
 
   constructor(private mesDevicesApi: ApiMesDevicesService) {}
 
@@ -59,9 +59,7 @@ export class MesDevicesComponent implements OnInit {
           this.devices = data;
         },
         error: (err) => {
-          this.showError(
-            err.error?.error || 'Failed to load MES devices.'
-          );
+          this.showError(err.error?.error || 'Failed to load MES devices.');
         },
       });
   }
@@ -74,19 +72,19 @@ export class MesDevicesComponent implements OnInit {
     this.loadDevices();
   }
 
-openAddDevice(): void {
-  this.clearMessages();
-  this.showDeviceForm = true;
-  this.editingDeviceId = null;
+  openAddDevice(): void {
+    this.clearMessages();
+    this.showDeviceForm = true;
+    this.editingDeviceId = null;
 
-  this.deviceForm = {
-    username: this.username,
-    device_name: '',
-    device_type: 'PC',
-    mac_address: '',
-    ip_address: '',
-  };
-}
+    this.deviceForm = {
+      username: this.username,
+      device_name: '',
+      device_type: 'PC',
+      mac_address: '',
+      ip_address: '',
+    };
+  }
 
   viewDetails(device: MesDevice): void {
     this.selectedDevice = device;
@@ -96,143 +94,132 @@ openAddDevice(): void {
     this.selectedDevice = null;
   }
 
-editDevice(device: MesDevice): void {
-  this.clearMessages();
-  this.showDeviceForm = true;
-  this.editingDeviceId = device.id;
+  editDevice(device: MesDevice): void {
+    this.clearMessages();
+    this.showDeviceForm = true;
+    this.editingDeviceId = device.id;
 
-  this.deviceForm = {
-    username: this.username,
-    device_id: device.device_id,
-    device_name: device.device_name,
-    device_type: device.device_type,
-    mac_address: device.mac_address,
-    ip_address: device.ip_address || '',
-  };
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-saveDevice(): void {
-  this.clearMessages();
-
-  if (!this.deviceForm.device_name.trim()) {
-    this.showError('Device Name is required.');
-    return;
-  }
-
-  if (!this.deviceForm.device_type.trim()) {
-    this.showError('Device Type is required.');
-    return;
-  }
-
-  if (!this.deviceForm.mac_address.trim()) {
-    this.showError('MAC Address is required.');
-    return;
-  }
-
-  this.deviceForm.username = this.username;
-
-  const request$ = this.editingDeviceId
-    ? this.mesDevicesApi.updateDevice(this.editingDeviceId, this.deviceForm)
-    : this.mesDevicesApi.createDevice(this.deviceForm);
-
-  request$.subscribe({
-    next: (res) => {
-      this.showSuccess(res.message || 'MES device saved successfully.');
-      this.cancelDeviceForm();
-      this.loadDevices();
-    },
-    error: (err) => {
-      this.showError(err.error?.error || 'Failed to save MES device.');
-    },
-  });
-}
-
-cancelDeviceForm(): void {
-  this.showDeviceForm = false;
-  this.editingDeviceId = null;
-
-  this.deviceForm = {
-    username: this.username,
-    device_name: '',
-    device_type: 'PC',
-    mac_address: '',
-    ip_address: '',
-  };
-}
-
-private clearMessages(): void {
-  this.successMessage = '';
-  this.errorMessage = '';
-}
-
-
-
-
-disableDevice(device: MesDevice): void {
-  this.clearMessages();
-  this.deviceToDisable = device;
-  this.disableReason = '';
-}
-
-
-
-enableDevice(device: MesDevice): void {
-  this.clearMessages();
-
-  this.mesDevicesApi.enableDevice(device.id, this.username).subscribe({
-    next: (res) => {
-      this.showSuccess(res.message || 'MES device enabled successfully.');
-      this.loadDevices();
-    },
-    error: (err) => {
-      this.showError(err.error?.error || 'Failed to enable MES device.');
-    },
-  });
-}
-
-
-
-
-confirmDisableDevice(): void {
-  this.clearMessages();
-
-  if (!this.deviceToDisable) {
-    return;
-  }
-
-  const reason = this.disableReason.trim();
-
-  if (!reason) {
-    this.showError('Disable reason is required.');
-    return;
-  }
-
-  this.mesDevicesApi
-    .disableDevice(this.deviceToDisable.id, {
+    this.deviceForm = {
       username: this.username,
-      disable_reason: reason,
-    })
-    .subscribe({
+      device_id: device.device_id,
+      device_name: device.device_name,
+      device_type: device.device_type,
+      mac_address: device.mac_address,
+      ip_address: device.ip_address || '',
+    };
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  saveDevice(): void {
+    this.clearMessages();
+
+    if (!this.deviceForm.device_name.trim()) {
+      this.showError('Device Name is required.');
+      return;
+    }
+
+    if (!this.deviceForm.device_type.trim()) {
+      this.showError('Device Type is required.');
+      return;
+    }
+
+    if (!this.deviceForm.mac_address.trim()) {
+      this.showError('MAC Address is required.');
+      return;
+    }
+
+    this.deviceForm.username = this.username;
+
+    const request$ = this.editingDeviceId
+      ? this.mesDevicesApi.updateDevice(this.editingDeviceId, this.deviceForm)
+      : this.mesDevicesApi.createDevice(this.deviceForm);
+
+    request$.subscribe({
       next: (res) => {
-        this.showSuccess(res.message || 'MES device disabled successfully.');
-        this.closeDisableModal();
+        this.showSuccess(res.message || 'MES device saved successfully.');
+        this.cancelDeviceForm();
         this.loadDevices();
       },
       error: (err) => {
-        this.showError(err.error?.error || 'Failed to disable MES device.');
+        this.showError(err.error?.error || 'Failed to save MES device.');
       },
     });
-}
+  }
 
-closeDisableModal(): void {
-  this.deviceToDisable = null;
-  this.disableReason = '';
-}
+  cancelDeviceForm(): void {
+    this.showDeviceForm = false;
+    this.editingDeviceId = null;
 
+    this.deviceForm = {
+      username: this.username,
+      device_name: '',
+      device_type: 'PC',
+      mac_address: '',
+      ip_address: '',
+    };
+  }
 
+  private clearMessages(): void {
+    this.successMessage = '';
+    this.errorMessage = '';
+  }
 
+  disableDevice(device: MesDevice): void {
+    this.clearMessages();
+    this.deviceToDisable = device;
+    this.disableReason = '';
+  }
+
+  enableDevice(device: MesDevice): void {
+    this.clearMessages();
+
+    this.mesDevicesApi.enableDevice(device.id, this.username).subscribe({
+      next: (res) => {
+        this.showSuccess(res.message || 'MES device enabled successfully.');
+        this.loadDevices();
+      },
+      error: (err) => {
+        this.showError(err.error?.error || 'Failed to enable MES device.');
+      },
+    });
+  }
+
+  confirmDisableDevice(): void {
+    this.clearMessages();
+
+    if (!this.deviceToDisable) {
+      return;
+    }
+
+    const reason = this.disableReason.trim();
+
+    if (!reason) {
+      this.showError('Disable reason is required.');
+      return;
+    }
+
+    this.mesDevicesApi
+      .disableDevice(this.deviceToDisable.id, {
+        username: this.username,
+        disable_reason: reason,
+      })
+      .subscribe({
+        next: (res) => {
+          this.showSuccess(res.message || 'MES device disabled successfully.');
+          this.closeDisableModal();
+          this.loadDevices();
+        },
+        error: (err) => {
+          this.showError(err.error?.error || 'Failed to disable MES device.');
+        },
+      });
+  }
+
+  closeDisableModal(): void {
+    this.deviceToDisable = null;
+    this.disableReason = '';
+  }
 
   formatDate(value: string | null): string {
     if (!value) {

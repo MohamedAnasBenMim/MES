@@ -52,7 +52,7 @@ export class ActiveListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activeListService: GetActiveListService
+    private activeListService: GetActiveListService,
   ) {}
 
   ngOnInit(): void {
@@ -97,15 +97,16 @@ export class ActiveListComponent implements OnInit {
 
     if (this.orderFilter) {
       const filter = this.orderFilter.toLowerCase();
-      filtered = filtered.filter((op: ActiveOperation) =>
-        op.Order?.toString().toLowerCase().includes(filter)
+      filtered = filtered.filter(
+        (op: ActiveOperation) =>
+          op.Order?.toString().toLowerCase().includes(filter),
       );
     }
 
     if (this.finishDateFilter) {
       filtered = filtered.filter(
         (op: ActiveOperation) =>
-          this.toDateInputValue(op.PlannedFinishDate) === this.finishDateFilter
+          this.toDateInputValue(op.PlannedFinishDate) === this.finishDateFilter,
       );
     }
 

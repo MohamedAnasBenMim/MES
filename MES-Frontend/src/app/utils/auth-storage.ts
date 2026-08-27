@@ -33,7 +33,11 @@ export function getAuthUserId(): number | null {
   return Number(user?.id || getAuthItem('user_id')) || null;
 }
 
-export function setAuthSession(user: any, role: string, sessionId?: string | number): void {
+export function setAuthSession(
+  user: any,
+  role: string,
+  sessionId?: string | number,
+): void {
   sessionStorage.setItem('user', JSON.stringify(user));
   sessionStorage.setItem('role', role);
   sessionStorage.setItem('username', user?.username || '');

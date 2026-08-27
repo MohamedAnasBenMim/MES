@@ -1,9 +1,7 @@
+from Backend.models import IDMConfiguration, UserAccount
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-
-from Backend.models import IDMConfiguration, UserAccount
-
 
 MANDATORY_FIELDS = [
     "document",
@@ -27,9 +25,7 @@ ALL_FIELDS = MANDATORY_FIELDS + OPTIONAL_FIELDS
 
 def get_request_username(request):
     return (
-        request.data.get("username")
-        or request.query_params.get("username")
-        or ""
+        request.data.get("username") or request.query_params.get("username") or ""
     ).strip()
 
 
@@ -158,9 +154,11 @@ def idm_configuration_detail(request, config_id):
     if error:
         return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
 
-    if IDMConfiguration.objects.filter(
-        document_type__iexact=cleaned["document_type"]
-    ).exclude(id=config.id).exists():
+    if (
+        IDMConfiguration.objects.filter(document_type__iexact=cleaned["document_type"])
+        .exclude(id=config.id)
+        .exists()
+    ):
         return Response(
             {"error": "Document Type already exists."},
             status=status.HTTP_400_BAD_REQUEST,

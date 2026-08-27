@@ -1,11 +1,9 @@
+from Backend.models import UserAccount, UserSessionLog
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-
-from Backend.models import UserAccount, UserSessionLog
 
 
 @api_view(["POST"])
@@ -13,10 +11,7 @@ def toggle_user_status(request, user_id):
     try:
         user_account = UserAccount.objects.get(id=user_id)
     except UserAccount.DoesNotExist:
-        return Response(
-            {"error": "User not found"},
-            status=status.HTTP_404_NOT_FOUND
-        )
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     user_account.is_active = not user_account.is_active
 
@@ -39,8 +34,7 @@ def toggle_user_status(request, user_id):
 
     if not user_account.is_active:
         active_sessions = UserSessionLog.objects.filter(
-            username__iexact=user_account.username,
-            is_active=True
+            username__iexact=user_account.username, is_active=True
         )
 
         for session in active_sessions:
@@ -64,7 +58,7 @@ def toggle_user_status(request, user_id):
                 "role": user_account.role,
                 "is_active": user_account.is_active,
                 "failed_login_attempts": user_account.failed_login_attempts,
-            }
+            },
         },
-        status=status.HTTP_200_OK
+        status=status.HTTP_200_OK,
     )

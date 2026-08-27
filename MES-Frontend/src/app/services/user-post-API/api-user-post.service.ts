@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-} from '@angular/common/http';
-import {
-  Observable,
-} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface PasswordChangeCodeRequest {
   username: string;
@@ -31,89 +27,52 @@ export interface PasswordChangeVerificationRequest {
   providedIn: 'root',
 })
 export class CreateUserApiService {
-  private readonly baseurl =
-    'http://localhost:8000/api/';
+  private readonly baseurl = 'http://localhost:8000/api/';
 
-  constructor(
-    private readonly http: HttpClient
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
   getData(): Observable<any> {
-    return this.http.get<any>(
-      `${this.baseurl}create_user/`
-    );
+    return this.http.get<any>(`${this.baseurl}create_user/`);
   }
 
   postData(data: any): Observable<any> {
-    return this.http.post(
-      `${this.baseurl}create_user/`,
-      data
-    );
+    return this.http.post(`${this.baseurl}create_user/`, data);
   }
 
-  sendUserVerificationCode(
-    data: any
-  ): Observable<any> {
-    return this.http.post(
-      `${this.baseurl}send-user-verification-code/`,
-      data
-    );
+  sendUserVerificationCode(data: any): Observable<any> {
+    return this.http.post(`${this.baseurl}send-user-verification-code/`, data);
   }
 
-  verifyUserAndCreate(
-    data: any
-  ): Observable<any> {
-    return this.http.post(
-      `${this.baseurl}verify-user-and-create/`,
-      data
-    );
+  verifyUserAndCreate(data: any): Observable<any> {
+    return this.http.post(`${this.baseurl}verify-user-and-create/`, data);
   }
 
-  editUser(
-    id: number,
-    data: FormData
-  ): Observable<any> {
-    return this.http.put(
-      `${this.baseurl}update_user/${id}/`,
-      data
-    );
+  editUser(id: number, data: FormData): Observable<any> {
+    return this.http.put(`${this.baseurl}update_user/${id}/`, data);
   }
 
-  forgetPassword(
-    email: string
-  ): Observable<any> {
-    return this.http.post(
-      `${this.baseurl}forget-password/`,
-      {
-        email: email.trim(),
-      }
-    );
+  forgetPassword(email: string): Observable<any> {
+    return this.http.post(`${this.baseurl}forget-password/`, {
+      email: email.trim(),
+    });
   }
 
-  loginUser(
-    credentials: any
-  ): Observable<any> {
-    return this.http.post(
-      `${this.baseurl}login/`,
-      credentials
-    );
+  loginUser(credentials: any): Observable<any> {
+    return this.http.post(`${this.baseurl}login/`, credentials);
   }
 
   requestProfilePasswordChangeCode(
-    data: PasswordChangeCodeRequest
+    data: PasswordChangeCodeRequest,
   ): Observable<PasswordChangeCodeResponse> {
     return this.http.post<PasswordChangeCodeResponse>(
       `${this.baseurl}profile-password/request-code/`,
-      data
+      data,
     );
   }
 
   verifyProfilePasswordChangeCode(
-    data: PasswordChangeVerificationRequest
+    data: PasswordChangeVerificationRequest,
   ): Observable<any> {
-    return this.http.post(
-      `${this.baseurl}profile-password/verify-code/`,
-      data
-    );
+    return this.http.post(`${this.baseurl}profile-password/verify-code/`, data);
   }
 }

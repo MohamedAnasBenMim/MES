@@ -28,7 +28,7 @@ export class GetActiveListService {
 
   getActiveList(username: string): Observable<ActiveOperation[]> {
     return this.http.get<ActiveOperation[]>(
-      `${this.backendUrl}?username=${username}`
+      `${this.backendUrl}?username=${username}`,
     );
   }
 }

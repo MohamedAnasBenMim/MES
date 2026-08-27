@@ -28,9 +28,9 @@ export const navItems: ICustomNavData[] = [
   },
 
   {
-  title: true,
-  name: 'Production',
-  roles: ['supervisor'],
+    title: true,
+    name: 'Production',
+    roles: ['supervisor'],
   },
   {
     name: 'Assignment Operators',
@@ -38,7 +38,6 @@ export const navItems: ICustomNavData[] = [
     iconComponent: { name: 'cil-people' },
     roles: ['supervisor'],
   },
-
 
   {
     title: true,
@@ -74,24 +73,24 @@ export const navItems: ICustomNavData[] = [
     iconComponent: { name: 'cil-description' },
     roles: ['supervisor', 'operator', 'quality'],
   },
-{
-  title: true,
-  name: 'Warehousing',
-  class: 'mt-auto',
-  roles: ['supervisor', 'operator'],
-},
-{
-  name: 'Stock Point Inventory',
-  url: '/warehousing/inventory-list',
-  icon: 'nav-icon-bullet',
-  roles: ['supervisor', 'operator'],
-},
-{
-  name: 'Warehouses',
-  url: '/warehousing/warehouses',
-  iconComponent: { name: 'cil-storage' },
-  roles: ['supervisor', 'operator'],
-},
+  {
+    title: true,
+    name: 'Warehousing',
+    class: 'mt-auto',
+    roles: ['supervisor', 'operator'],
+  },
+  {
+    name: 'Stock Point Inventory',
+    url: '/warehousing/inventory-list',
+    icon: 'nav-icon-bullet',
+    roles: ['supervisor', 'operator'],
+  },
+  {
+    name: 'Warehouses',
+    url: '/warehousing/warehouses',
+    iconComponent: { name: 'cil-storage' },
+    roles: ['supervisor', 'operator'],
+  },
   {
     title: true,
     name: 'masterdata',
@@ -118,10 +117,10 @@ export const navItems: ICustomNavData[] = [
     roles: ['admin'],
   },
   {
-  name: 'IDM Configuration',
-  url: '/admin/idm-configuration',
-  iconComponent: { name: 'cil-description' },
-  roles: ['admin'],
+    name: 'IDM Configuration',
+    url: '/admin/idm-configuration',
+    iconComponent: { name: 'cil-description' },
+    roles: ['admin'],
   },
 
   {
@@ -130,7 +129,6 @@ export const navItems: ICustomNavData[] = [
     iconComponent: { name: 'cil-description' },
     roles: ['admin'],
   },
-
 
   {
     name: 'MES Devices',

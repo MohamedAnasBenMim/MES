@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-documentation',
   imports: [],
   templateUrl: './documentation.component.html',
-  styleUrl: './documentation.component.css'
+  styleUrl: './documentation.component.css',
 })
-export class DocumentationComponent {
-
-}
+export class DocumentationComponent {}

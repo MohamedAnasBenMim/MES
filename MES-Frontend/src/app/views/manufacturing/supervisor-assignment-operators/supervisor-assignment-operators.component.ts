@@ -28,9 +28,11 @@ interface OperatorRow extends OperatorItem {
   workcenter?: string;
   shift?: string;
   skill?: string;
-  current_assignment?: (OperatorAssignmentItem & {
-    operation?: ActiveOperationItem;
-  }) | null;
+  current_assignment?:
+    | (OperatorAssignmentItem & {
+        operation?: ActiveOperationItem;
+      })
+    | null;
   current_operation?: ActiveOperationItem | null;
 }
 
@@ -58,7 +60,7 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
   constructor(
     private operatorService: ApiOperatorGetService,
     private assignmentService: ApiOperatorAssignmentService,
-    private activeOperationService: ApiOperationActiveGetService
+    private activeOperationService: ApiOperationActiveGetService,
   ) {}
 
   ngOnInit(): void {
@@ -85,66 +87,62 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
 
     if (this.searchFilter) {
       const filter = this.searchFilter.toLowerCase();
-      filtered = filtered.filter((operator) =>
-        operator.username?.toLowerCase().includes(filter) ||
-        this.getEmployeeId(operator).toLowerCase().includes(filter)
+      filtered = filtered.filter(
+        (operator) =>
+          operator.username?.toLowerCase().includes(filter) ||
+          this.getEmployeeId(operator).toLowerCase().includes(filter),
       );
     }
 
     if (this.departmentFilter) {
       filtered = filtered.filter(
-        (operator) => this.getDepartment(operator) === this.departmentFilter
+        (operator) => this.getDepartment(operator) === this.departmentFilter,
       );
     }
 
     if (this.workcenterFilter) {
       filtered = filtered.filter(
-        (operator) => this.getWorkcenter(operator) === this.workcenterFilter
+        (operator) => this.getWorkcenter(operator) === this.workcenterFilter,
       );
     }
 
     if (this.shiftFilter) {
       filtered = filtered.filter(
-        (operator) => this.getShift(operator) === this.shiftFilter
+        (operator) => this.getShift(operator) === this.shiftFilter,
       );
     }
 
     if (this.skillFilter) {
       filtered = filtered.filter(
-        (operator) => this.getSkill(operator) === this.skillFilter
+        (operator) => this.getSkill(operator) === this.skillFilter,
       );
     }
 
     if (this.availabilityFilter) {
       filtered = filtered.filter(
-        (operator) => this.getStatus(operator) === this.availabilityFilter
+        (operator) => this.getStatus(operator) === this.availabilityFilter,
       );
     }
 
     return filtered;
-  } 
-    assignmentModalOpen = false;
-    assignmentMode: 'assign' | 'reassign' = 'assign';
-    selectedOperator: OperatorRow | null = null;
-    activeOperations: ActiveOperationItem[] = [];
-    selectedOperation: ActiveOperationItem | null = null;
-    operationSearchFilter = '';
-    operationWorkcenterFilter = '';
-    operationLoading = false;
-    assignmentSubmitting = false;
+  }
+  assignmentModalOpen = false;
+  assignmentMode: 'assign' | 'reassign' = 'assign';
+  selectedOperator: OperatorRow | null = null;
+  activeOperations: ActiveOperationItem[] = [];
+  selectedOperation: ActiveOperationItem | null = null;
+  operationSearchFilter = '';
+  operationWorkcenterFilter = '';
+  operationLoading = false;
+  assignmentSubmitting = false;
 
-    successMessage = '';
-    errorMessage = '';
+  successMessage = '';
+  errorMessage = '';
 
-    historyModalOpen = false;
-    historyLoading = false;
-    historyRecords: OperatorAssignmentResponse[] = [];
-    historyOperator: OperatorRow | null = null;
-
-
-
-
-
+  historyModalOpen = false;
+  historyLoading = false;
+  historyRecords: OperatorAssignmentResponse[] = [];
+  historyOperator: OperatorRow | null = null;
 
   paginatedData(): OperatorRow[] {
     const filtered = this.filteredData();
@@ -154,7 +152,10 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
   }
 
   trackOperatorRow(index: number, operator: OperatorRow): string {
-    return operator.row_id || `${operator.id}-${operator.current_operation?.id || index}`;
+    return (
+      operator.row_id ||
+      `${operator.id}-${operator.current_operation?.id || index}`
+    );
   }
 
   totalPages(): number {
@@ -178,23 +179,33 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
   }
 
   uniqueDepartments(): string[] {
-    return this.uniqueValues(this.operators.map((operator) => this.getDepartment(operator)));
+    return this.uniqueValues(
+      this.operators.map((operator) => this.getDepartment(operator)),
+    );
   }
 
   uniqueWorkcenters(): string[] {
-    return this.uniqueValues(this.operators.map((operator) => this.getWorkcenter(operator)));
+    return this.uniqueValues(
+      this.operators.map((operator) => this.getWorkcenter(operator)),
+    );
   }
 
   uniqueShifts(): string[] {
-    return this.uniqueValues(this.operators.map((operator) => this.getShift(operator)));
+    return this.uniqueValues(
+      this.operators.map((operator) => this.getShift(operator)),
+    );
   }
 
   uniqueSkills(): string[] {
-    return this.uniqueValues(this.operators.map((operator) => this.getSkill(operator)));
+    return this.uniqueValues(
+      this.operators.map((operator) => this.getSkill(operator)),
+    );
   }
 
   uniqueStatuses(): string[] {
-    return this.uniqueValues(this.operators.map((operator) => this.getStatus(operator)));
+    return this.uniqueValues(
+      this.operators.map((operator) => this.getStatus(operator)),
+    );
   }
 
   uniqueValues(values: string[]): string[] {
@@ -231,7 +242,8 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
   }
 
   getCurrentOperation(operator: OperatorRow): string {
-    const operation = operator.current_operation || operator.current_assignment?.operation;
+    const operation =
+      operator.current_operation || operator.current_assignment?.operation;
 
     if (!operation) {
       return 'None';
@@ -248,13 +260,13 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
     return !!operator.current_assignment?.id;
   }
 
-    assignOperator(operator: OperatorRow): void {
+  assignOperator(operator: OperatorRow): void {
     this.openAssignmentModal(operator, 'assign');
-    }
+  }
 
-    reassignOperator(operator: OperatorRow): void {
+  reassignOperator(operator: OperatorRow): void {
     this.openAssignmentModal(operator, 'reassign');
-    }
+  }
 
   removeAssignment(operator: OperatorRow): void {
     const assignmentId = operator.current_assignment?.id;
@@ -271,38 +283,43 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
       })
       .subscribe({
         next: () => {
-            this.loadOperators();
-            this.showSuccess('Assignment removed successfully.');
+          this.loadOperators();
+          this.showSuccess('Assignment removed successfully.');
         },
         error: (err) => {
-            console.error('Error removing assignment:', err);
-            this.showError(this.getErrorMessage(err, 'Failed to remove assignment.'));
+          console.error('Error removing assignment:', err);
+          this.showError(
+            this.getErrorMessage(err, 'Failed to remove assignment.'),
+          );
         },
-        });
+      });
   }
 
-
-    viewHistory(operator: OperatorRow): void {
+  viewHistory(operator: OperatorRow): void {
     this.historyOperator = operator;
     this.historyRecords = [];
     this.historyModalOpen = true;
     this.historyLoading = true;
 
     this.assignmentService.getAssignmentHistory(operator.id).subscribe({
-        next: (data) => {
+      next: (data) => {
         this.historyRecords = data;
         this.historyLoading = false;
-        },
-        error: (err) => {
-            console.error('Error fetching assignment history:', err);
-            this.historyLoading = false;
-            this.showError(this.getErrorMessage(err, 'Failed to load assignment history.'));
-            },
+      },
+      error: (err) => {
+        console.error('Error fetching assignment history:', err);
+        this.historyLoading = false;
+        this.showError(
+          this.getErrorMessage(err, 'Failed to load assignment history.'),
+        );
+      },
     });
-    }
+  }
 
-
-    openAssignmentModal(operator: OperatorRow, mode: 'assign' | 'reassign'): void {
+  openAssignmentModal(
+    operator: OperatorRow,
+    mode: 'assign' | 'reassign',
+  ): void {
     this.selectedOperator = operator;
     this.assignmentMode = mode;
     this.selectedOperation = null;
@@ -310,131 +327,150 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
     this.operationWorkcenterFilter = '';
     this.assignmentModalOpen = true;
     this.loadActiveOperations();
-    }
-    closeAssignmentModal(): void {
+  }
+  closeAssignmentModal(): void {
     if (this.assignmentSubmitting) {
-        return;
+      return;
     }
 
     this.assignmentModalOpen = false;
     this.selectedOperator = null;
     this.selectedOperation = null;
     this.activeOperations = [];
-    }
+  }
 
-    loadActiveOperations(): void {
+  loadActiveOperations(): void {
     this.operationLoading = true;
 
     this.activeOperationService.getActiveOperations().subscribe({
-        next: (data) => {
+      next: (data) => {
         this.activeOperations = data;
         this.operationLoading = false;
-        },
-        error: (err) => {
-            console.error('Error fetching active operations:', err);
-            this.operationLoading = false;
-            this.showError(this.getErrorMessage(err, 'Failed to load active operations.'));
-            },
+      },
+      error: (err) => {
+        console.error('Error fetching active operations:', err);
+        this.operationLoading = false;
+        this.showError(
+          this.getErrorMessage(err, 'Failed to load active operations.'),
+        );
+      },
     });
-    }
+  }
 
-    filteredOperations(): ActiveOperationItem[] {
-    let filtered = this.activeOperations.filter((operation) => !operation.assigned);
+  filteredOperations(): ActiveOperationItem[] {
+    let filtered = this.activeOperations.filter(
+      (operation) => !operation.assigned,
+    );
 
     if (this.operationSearchFilter) {
-        const filter = this.operationSearchFilter.toLowerCase();
+      const filter = this.operationSearchFilter.toLowerCase();
 
-        filtered = filtered.filter((operation) =>
-        operation.Order?.toString().toLowerCase().includes(filter) ||
-        operation.Operation?.toString().toLowerCase().includes(filter) ||
-        operation.OperatedItem?.toString().toLowerCase().includes(filter) ||
-        operation.ReferenceOperationWorkCenter?.toString().toLowerCase().includes(filter)
-        );
+      filtered = filtered.filter(
+        (operation) =>
+          operation.Order?.toString().toLowerCase().includes(filter) ||
+          operation.Operation?.toString().toLowerCase().includes(filter) ||
+          operation.OperatedItem?.toString().toLowerCase().includes(filter) ||
+          operation.ReferenceOperationWorkCenter?.toString()
+            .toLowerCase()
+            .includes(filter),
+      );
     }
 
     if (this.operationWorkcenterFilter) {
-        filtered = filtered.filter(
-        (operation) => this.getOperationWorkcenter(operation) === this.operationWorkcenterFilter
-        );
+      filtered = filtered.filter(
+        (operation) =>
+          this.getOperationWorkcenter(operation) ===
+          this.operationWorkcenterFilter,
+      );
     }
 
     return filtered;
-    }
+  }
 
-    uniqueOperationWorkcenters(): string[] {
+  uniqueOperationWorkcenters(): string[] {
     return this.uniqueValues(
-        this.activeOperations.map((operation) => this.getOperationWorkcenter(operation))
+      this.activeOperations.map((operation) =>
+        this.getOperationWorkcenter(operation),
+      ),
     );
-    }
+  }
 
-    selectOperation(operation: ActiveOperationItem): void {
+  selectOperation(operation: ActiveOperationItem): void {
     this.selectedOperation = operation;
-    }
+  }
 
-    chooseOperation(operation: ActiveOperationItem): void {
+  chooseOperation(operation: ActiveOperationItem): void {
     if (this.assignmentSubmitting) {
-        return;
+      return;
     }
 
     this.selectOperation(operation);
     this.confirmAssignment();
-    }
+  }
 
-    confirmAssignment(): void {
+  confirmAssignment(): void {
     const actorPayload = this.getSupervisorPayload();
 
-    if (!this.selectedOperator || !this.selectedOperation || !actorPayload.assigned_by_id) {
-        return;
+    if (
+      !this.selectedOperator ||
+      !this.selectedOperation ||
+      !actorPayload.assigned_by_id
+    ) {
+      return;
     }
 
     this.assignmentSubmitting = true;
 
     if (this.assignmentMode === 'assign') {
-        this.assignmentService
+      this.assignmentService
         .createAssignment({
-            operator_id: this.selectedOperator.id,
-            operation_id: this.selectedOperation.id,
-            ...actorPayload,
-            notes: 'Assigned from supervisor assignment page',
+          operator_id: this.selectedOperator.id,
+          operation_id: this.selectedOperation.id,
+          ...actorPayload,
+          notes: 'Assigned from supervisor assignment page',
         })
         .subscribe({
-            next: () => this.afterAssignmentSaved(),
-            error: (err) => {
-                console.error('Error creating assignment:', err);
-                this.assignmentSubmitting = false;
-                this.showError(this.getErrorMessage(err, 'Failed to create assignment.'));
-                },
+          next: () => this.afterAssignmentSaved(),
+          error: (err) => {
+            console.error('Error creating assignment:', err);
+            this.assignmentSubmitting = false;
+            this.showError(
+              this.getErrorMessage(err, 'Failed to create assignment.'),
+            );
+          },
         });
 
-        return;
+      return;
     }
 
     const assignmentId = this.selectedOperator.current_assignment?.id;
 
     if (!assignmentId) {
-        this.assignmentSubmitting = false;
-        return;
+      this.assignmentSubmitting = false;
+      return;
     }
 
     this.assignmentService
-        .updateAssignment(assignmentId, {
+      .updateAssignment(assignmentId, {
         operation_id: this.selectedOperation.id,
         ...actorPayload,
         notes: 'Reassigned from supervisor assignment page',
-        })
-        .subscribe({
+      })
+      .subscribe({
         next: () => this.afterAssignmentSaved(),
         error: (err) => {
-            console.error('Error updating assignment:', err);
-            this.assignmentSubmitting = false;
-            this.showError(this.getErrorMessage(err, 'Failed to update assignment.'));
-            },
-        });
-    }
+          console.error('Error updating assignment:', err);
+          this.assignmentSubmitting = false;
+          this.showError(
+            this.getErrorMessage(err, 'Failed to update assignment.'),
+          );
+        },
+      });
+  }
 
-    afterAssignmentSaved(): void {
+  afterAssignmentSaved(): void {
     const message =
-        this.assignmentMode === 'assign'
+      this.assignmentMode === 'assign'
         ? 'Operation assigned successfully.'
         : 'Operation reassigned successfully.';
 
@@ -443,98 +479,93 @@ export class SupervisorAssignmentOperatorsComponent implements OnInit {
     this.loadOperators();
     this.loadActiveOperations();
     this.showSuccess(message);
-    }
+  }
 
-    getOperationWorkcenter(operation: ActiveOperationItem): string {
+  getOperationWorkcenter(operation: ActiveOperationItem): string {
     return operation.ReferenceOperationWorkCenter || '-';
-    }
+  }
 
-    getOperationDescription(operation: ActiveOperationItem): string {
+  getOperationDescription(operation: ActiveOperationItem): string {
     return operation.ReferenceOperationMachineType || '-';
-    }
+  }
 
-    getOperationRemainingQuantity(operation: ActiveOperationItem): string {
+  getOperationRemainingQuantity(operation: ActiveOperationItem): string {
     return '-';
-    }
+  }
 
-    getOperationPriority(operation: ActiveOperationItem): string {
+  getOperationPriority(operation: ActiveOperationItem): string {
     return '-';
-    }
+  }
 
-    getOperationDueDate(operation: ActiveOperationItem): string {
+  getOperationDueDate(operation: ActiveOperationItem): string {
     return operation.PlannedFinishDate || '-';
-    }
+  }
 
-    getOperationEstimatedHours(operation: ActiveOperationItem): string {
+  getOperationEstimatedHours(operation: ActiveOperationItem): string {
     return '-';
-    }
+  }
 
-
-
-
-
-    closeHistoryModal(): void {
+  closeHistoryModal(): void {
     this.historyModalOpen = false;
     this.historyOperator = null;
     this.historyRecords = [];
-    }
+  }
 
-    getHistoryOperation(record: OperatorAssignmentResponse): string {
+  getHistoryOperation(record: OperatorAssignmentResponse): string {
     if (!record.operation) {
-        return '-';
+      return '-';
     }
 
-    return `${record.operation.Order || '-'} / ${record.operation.Operation || '-'}`;
-    }
+    return `${record.operation.Order || '-'} / ${
+      record.operation.Operation || '-'
+    }`;
+  }
 
-    getHistoryAssignedAt(record: OperatorAssignmentResponse): string {
+  getHistoryAssignedAt(record: OperatorAssignmentResponse): string {
     return record.assigned_at || '-';
-    }
+  }
 
-    getHistoryClosedAt(record: OperatorAssignmentResponse): string {
+  getHistoryClosedAt(record: OperatorAssignmentResponse): string {
     return record.closed_at || '-';
-    }
+  }
 
-    getHistoryReason(record: OperatorAssignmentResponse): string {
+  getHistoryReason(record: OperatorAssignmentResponse): string {
     return record.closed_reason || '-';
-    }
+  }
 
-    getHistoryNotes(record: OperatorAssignmentResponse): string {
+  getHistoryNotes(record: OperatorAssignmentResponse): string {
     return record.notes || '-';
-    }
+  }
 
-
-
-
-    showSuccess(message: string): void {
+  showSuccess(message: string): void {
     this.successMessage = message;
     this.errorMessage = '';
 
     setTimeout(() => {
-        this.successMessage = '';
+      this.successMessage = '';
     }, 3000);
-    }
+  }
 
-    showError(message: string): void {
+  showError(message: string): void {
     this.errorMessage = message;
     this.successMessage = '';
 
     setTimeout(() => {
-        this.errorMessage = '';
+      this.errorMessage = '';
     }, 5000);
-    }
+  }
 
-    getErrorMessage(err: any, fallback: string): string {
+  getErrorMessage(err: any, fallback: string): string {
     return err?.error?.error || err?.message || fallback;
-    }
+  }
 
-    refreshAssignmentData(): void {
+  refreshAssignmentData(): void {
     this.loadOperators();
 
     if (this.assignmentModalOpen) {
-        this.loadActiveOperations();
+      this.loadActiveOperations();
     }
-    }
+  }
 
   getSupervisorId(): number | null {
     return getAuthUserId();

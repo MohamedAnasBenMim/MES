@@ -16,35 +16,61 @@
       class="filter-input"
     />
 
-    <select [(ngModel)]="departmentFilter" (ngModelChange)="resetPage()" class="filter-input">
+    <select
+      [(ngModel)]="departmentFilter"
+      (ngModelChange)="resetPage()"
+      class="filter-input"
+    >
       <option value="">All Departments</option>
-      <option *ngFor="let department of uniqueDepartments()" [value]="department">
+      <option
+        *ngFor="let department of uniqueDepartments()"
+        [value]="department"
+      >
         {{ department }}
       </option>
     </select>
 
-    <select [(ngModel)]="workcenterFilter" (ngModelChange)="resetPage()" class="filter-input">
+    <select
+      [(ngModel)]="workcenterFilter"
+      (ngModelChange)="resetPage()"
+      class="filter-input"
+    >
       <option value="">All Workcenters</option>
-      <option *ngFor="let workcenter of uniqueWorkcenters()" [value]="workcenter">
+      <option
+        *ngFor="let workcenter of uniqueWorkcenters()"
+        [value]="workcenter"
+      >
         {{ workcenter }}
       </option>
     </select>
 
-    <select [(ngModel)]="shiftFilter" (ngModelChange)="resetPage()" class="filter-input">
+    <select
+      [(ngModel)]="shiftFilter"
+      (ngModelChange)="resetPage()"
+      class="filter-input"
+    >
       <option value="">All Shifts</option>
       <option *ngFor="let shift of uniqueShifts()" [value]="shift">
         {{ shift }}
       </option>
     </select>
 
-    <select [(ngModel)]="skillFilter" (ngModelChange)="resetPage()" class="filter-input">
+    <select
+      [(ngModel)]="skillFilter"
+      (ngModelChange)="resetPage()"
+      class="filter-input"
+    >
       <option value="">All Skills</option>
       <option *ngFor="let skill of uniqueSkills()" [value]="skill">
         {{ skill }}
       </option>
     </select>
 
-    <select [(ngModel)]="availabilityFilter" (ngModelChange)="resetPage()" class="filter-input">
+    <select
+      [(ngModel)]="availabilityFilter"
+      (ngModelChange)="resetPage()"
+      class="filter-input"
+    >
       <option value="">All Availability</option>
       <option *ngFor="let status of uniqueStatuses()" [value]="status">
         {{ status }}
@@ -76,7 +102,10 @@
         <td>{{ getShift(operator) }}</td>
         <td>{{ getSkill(operator) }}</td>
         <td>
-          <span class="status-badge" [ngClass]="getStatus(operator).toLowerCase()">
+          <span
+            class="status-badge"
+            [ngClass]="getStatus(operator).toLowerCase()"
+          >
             {{ getStatus(operator) }}
           </span>
         </td>
@@ -137,11 +166,19 @@
   <div class="modal-content assignment-modal">
     <div class="modal-header">
       <h3>
-        {{ assignmentMode === 'assign' ? 'Assign Operation' : 'Reassign Operation' }}
+        {{
+          assignmentMode === "assign"
+            ? "Assign Operation"
+            : "Reassign Operation"
+        }}
         <span *ngIf="selectedOperator">- {{ selectedOperator.username }}</span>
       </h3>
 
-      <button class="modal-close-btn" type="button" (click)="closeAssignmentModal()">
+      <button
+        class="modal-close-btn"
+        type="button"
+        (click)="closeAssignmentModal()"
+      >
         x
       </button>
     </div>
@@ -194,13 +231,13 @@
           >
             <td>{{ operation.Order }}</td>
             <td>{{ operation.Operation }}</td>
-            <td>{{ operation.OperatedItem || '-' }}</td>
+            <td>{{ operation.OperatedItem || "-" }}</td>
             <td>{{ getOperationDescription(operation) }}</td>
             <td>{{ getOperationWorkcenter(operation) }}</td>
-            <td>{{ operation.RoutingQuantity || '-' }}</td>
+            <td>{{ operation.RoutingQuantity || "-" }}</td>
             <td>{{ getOperationRemainingQuantity(operation) }}</td>
             <td>{{ getOperationPriority(operation) }}</td>
-            <td>{{ getOperationDueDate(operation) | date : 'short' }}</td>
+            <td>{{ getOperationDueDate(operation) | date: "short" }}</td>
             <td>{{ getOperationEstimatedHours(operation) }}</td>
           </tr>
         </tbody>
@@ -226,7 +263,7 @@
         [disabled]="!selectedOperation || assignmentSubmitting"
         (click)="confirmAssignment()"
       >
-        {{ assignmentSubmitting ? 'Saving...' : 'Confirm Assignment' }}
+        {{ assignmentSubmitting ? "Saving..." : "Confirm Assignment" }}
       </button>
     </div>
   </div>
@@ -240,7 +277,11 @@
         <span *ngIf="historyOperator">- {{ historyOperator.username }}</span>
       </h3>
 
-      <button class="modal-close-btn" type="button" (click)="closeHistoryModal()">
+      <button
+        class="modal-close-btn"
+        type="button"
+        (click)="closeHistoryModal()"
+      >
         x
       </button>
     </div>
@@ -267,8 +308,8 @@
           <tr *ngFor="let record of historyRecords">
             <td>{{ getHistoryOperation(record) }}</td>
             <td>{{ record.assigned_by_name }}</td>
-            <td>{{ getHistoryAssignedAt(record) | date : 'short' }}</td>
-            <td>{{ getHistoryClosedAt(record) | date : 'short' }}</td>
+            <td>{{ getHistoryAssignedAt(record) | date: "short" }}</td>
+            <td>{{ getHistoryClosedAt(record) | date: "short" }}</td>
             <td>{{ getHistoryReason(record) }}</td>
             <td>{{ record.status }}</td>
             <td>{{ getHistoryNotes(record) }}</td>
@@ -276,9 +317,7 @@
         </tbody>
       </table>
 
-      <p *ngIf="historyRecords.length === 0">
-        No assignment history found.
-      </p>
+      <p *ngIf="historyRecords.length === 0">No assignment history found.</p>
     </div>
 
     <div class="modal-actions">

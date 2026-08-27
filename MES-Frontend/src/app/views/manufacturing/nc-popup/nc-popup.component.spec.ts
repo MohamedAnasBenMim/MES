@@ -8,9 +8,8 @@ describe('NcPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NcPopupComponent]
-    })
-    .compileComponents();
+      imports: [NcPopupComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NcPopupComponent);
     component = fixture.componentInstance;

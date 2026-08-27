@@ -1,15 +1,8 @@
-import {
-  Injectable,
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {
-  HttpClient,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import {
-  Observable,
-} from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface OperatorDashboardOperation {
   id: number;
@@ -57,11 +50,9 @@ export interface OperatorDashboardResponse {
     count: number;
   }>;
 
-  active_operations:
-    OperatorDashboardOperation[];
+  active_operations: OperatorDashboardOperation[];
 
-  champions:
-    ChampionOperator[];
+  champions: ChampionOperator[];
 
   recent_issues: Array<{
     order: string;
@@ -75,28 +66,15 @@ export interface OperatorDashboardResponse {
   providedIn: 'root',
 })
 export class OperatorDashboardService {
-  private readonly url =
-    'http://localhost:8000/api/operator-dashboard/';
+  private readonly url = 'http://localhost:8000/api/operator-dashboard/';
 
-  constructor(
-    private readonly http:
-      HttpClient
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
-  getDashboard(
-    username: string
-  ): Observable<OperatorDashboardResponse> {
-    const params =
-      new HttpParams().set(
-        'username',
-        username
-      );
+  getDashboard(username: string): Observable<OperatorDashboardResponse> {
+    const params = new HttpParams().set('username', username);
 
-    return this.http.get<OperatorDashboardResponse>(
-      this.url,
-      {
-        params,
-      }
-    );
+    return this.http.get<OperatorDashboardResponse>(this.url, {
+      params,
+    });
   }
 }

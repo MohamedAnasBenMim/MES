@@ -10,14 +10,14 @@
           <c-carousel (itemChange)="onItemChange($event)" [interval]="7000">
             <c-carousel-inner>
               @for (slide of slides[0]; track slide.src) {
-              <c-carousel-item>
-                <img
-                  [src]="slide.src"
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                  loading="lazy"
-                />
-              </c-carousel-item>
+                <c-carousel-item>
+                  <img
+                    [src]="slide.src"
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                    loading="lazy"
+                  />
+                </c-carousel-item>
               }
             </c-carousel-inner>
           </c-carousel>
@@ -44,19 +44,19 @@
           >
             <c-carousel-inner id="carousel-items">
               @for (slide of slides[0]; track slide.src; let i = $index) {
-              <c-carousel-item
-                aria-roledescription="slide"
-                [attr.aria-label]="
-                  (i + 1).toString() + ' of ' + slides[0].length
-                "
-              >
-                <img
-                  [src]="slide.src"
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                  loading="lazy"
-                />
-              </c-carousel-item>
+                <c-carousel-item
+                  aria-roledescription="slide"
+                  [attr.aria-label]="
+                    (i + 1).toString() + ' of ' + slides[0].length
+                  "
+                >
+                  <img
+                    [src]="slide.src"
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                    loading="lazy"
+                  />
+                </c-carousel-item>
               }
             </c-carousel-inner>
             <c-carousel-control
@@ -92,14 +92,14 @@
           <c-carousel (itemChange)="onItemChange($event)" [interval]="0">
             <c-carousel-inner>
               @for (slide of slides[0]; track slide.src) {
-              <c-carousel-item>
-                <img
-                  [src]="slide.src"
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                  loading="lazy"
-                />
-              </c-carousel-item>
+                <c-carousel-item>
+                  <img
+                    [src]="slide.src"
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                    loading="lazy"
+                  />
+                </c-carousel-item>
               }
             </c-carousel-inner>
             <c-carousel-control [tabIndex]="0" direction="prev">
@@ -160,14 +160,14 @@
             <!--  </c-carousel-indicators>-->
             <c-carousel-inner>
               @for (slide of slides[0]; track slide.src) {
-              <c-carousel-item>
-                <img
-                  [src]="slide.src"
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                  loading="lazy"
-                />
-              </c-carousel-item>
+                <c-carousel-item>
+                  <img
+                    [src]="slide.src"
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                    loading="lazy"
+                  />
+                </c-carousel-item>
               }
             </c-carousel-inner>
           </c-carousel>
@@ -201,18 +201,18 @@
             <c-carousel-indicators />
             <c-carousel-inner>
               @for (slide of slides[1]; track slide.src) {
-              <c-carousel-item>
-                <img
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                  loading="lazy"
-                  src="{{ slide.src }}"
-                />
-                <c-carousel-caption class="d-none d-md-block">
-                  <h3>{{ slide.title }}</h3>
-                  <p>{{ slide.subtitle }}</p>
-                </c-carousel-caption>
-              </c-carousel-item>
+                <c-carousel-item>
+                  <img
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                    loading="lazy"
+                    src="{{ slide.src }}"
+                  />
+                  <c-carousel-caption class="d-none d-md-block">
+                    <h3>{{ slide.title }}</h3>
+                    <p>{{ slide.subtitle }}</p>
+                  </c-carousel-caption>
+                </c-carousel-item>
               }
             </c-carousel-inner>
             <c-carousel-control
@@ -244,17 +244,17 @@
           >
             <c-carousel-inner>
               @for (slide of slides[0]; track slide.src) {
-              <c-carousel-item>
-                <img
-                  [src]="slide.src"
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                />
-                <c-carousel-caption class="d-none d-md-block">
-                  <h3>{{ slide.title }}</h3>
-                  <p>{{ slide.subtitle }}</p>
-                </c-carousel-caption>
-              </c-carousel-item>
+                <c-carousel-item>
+                  <img
+                    [src]="slide.src"
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                  />
+                  <c-carousel-caption class="d-none d-md-block">
+                    <h3>{{ slide.title }}</h3>
+                    <p>{{ slide.subtitle }}</p>
+                  </c-carousel-caption>
+                </c-carousel-item>
               }
             </c-carousel-inner>
             <c-carousel-control
@@ -294,18 +294,18 @@
             <c-carousel-indicators />
             <c-carousel-inner>
               @for (slide of slides[2]; track slide.src) {
-              <c-carousel-item>
-                <img
-                  [src]="slide.src"
-                  alt="{{ slide.title }}"
-                  class="d-block w-100"
-                  loading="lazy"
-                />
-                <c-carousel-caption class="d-none d-md-block">
-                  <h3>{{ slide.title }}</h3>
-                  <p>{{ slide.subtitle }}</p>
-                </c-carousel-caption>
-              </c-carousel-item>
+                <c-carousel-item>
+                  <img
+                    [src]="slide.src"
+                    alt="{{ slide.title }}"
+                    class="d-block w-100"
+                    loading="lazy"
+                  />
+                  <c-carousel-caption class="d-none d-md-block">
+                    <h3>{{ slide.title }}</h3>
+                    <p>{{ slide.subtitle }}</p>
+                  </c-carousel-caption>
+                </c-carousel-item>
               }
             </c-carousel-inner>
             <c-carousel-control

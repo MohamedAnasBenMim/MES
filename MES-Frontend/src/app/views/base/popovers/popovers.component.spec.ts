@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ButtonModule, CardModule, GridModule, PopoverModule } from '@coreui/angular';
+import {
+  ButtonModule,
+  CardModule,
+  GridModule,
+  PopoverModule,
+} from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { PopoversComponent } from './popovers.component';
@@ -13,10 +18,16 @@ describe('PopoversComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [CardModule, GridModule, PopoverModule, ButtonModule, RouterTestingModule, PopoversComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [
+        CardModule,
+        GridModule,
+        PopoverModule,
+        ButtonModule,
+        RouterTestingModule,
+        PopoversComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

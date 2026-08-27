@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0009_usersessionlog'),
+        ("Backend", "0009_usersessionlog"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='useraccount',
-            name='is_active',
+            model_name="useraccount",
+            name="is_active",
             field=models.BooleanField(default=True),
         ),
     ]

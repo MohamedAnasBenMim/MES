@@ -4,5 +4,4 @@ import { Component } from '@angular/core';
   selector: 'toast-sample-icon',
   templateUrl: './toast-sample-icon.component.svg',
 })
-export class ToastSampleIconComponent {
-}
+export class ToastSampleIconComponent {}

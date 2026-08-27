@@ -39,8 +39,14 @@
 }
 
 @keyframes modal-enter {
-  from { opacity: 0; transform: translateY(10px) scale(0.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .popup-header {
@@ -309,7 +315,10 @@
   background: linear-gradient(135deg, #182235, #152b3d);
 }
 
-:host-context([data-coreui-theme="dark"]) .material-table tbody tr:nth-child(even),
+:host-context([data-coreui-theme="dark"])
+  .material-table
+  tbody
+  tr:nth-child(even),
 :host-context([data-coreui-theme="dark"]) .pagination {
   background: #1b273a;
 }

@@ -1,7 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { BadgeModule, ButtonModule, CardModule, GridModule, UtilitiesModule } from '@coreui/angular';
+import {
+  BadgeModule,
+  ButtonModule,
+  CardModule,
+  GridModule,
+  UtilitiesModule,
+} from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { BadgesComponent } from './badges.component';
@@ -13,10 +19,17 @@ describe('BadgesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [BadgeModule, CardModule, GridModule, UtilitiesModule, ButtonModule, RouterTestingModule, BadgesComponent],
-    providers: [IconSetService]
-})
-    .compileComponents();
+      imports: [
+        BadgeModule,
+        CardModule,
+        GridModule,
+        UtilitiesModule,
+        ButtonModule,
+        RouterTestingModule,
+        BadgesComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

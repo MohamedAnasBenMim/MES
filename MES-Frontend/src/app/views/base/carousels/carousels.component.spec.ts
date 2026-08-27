@@ -11,14 +11,21 @@ import { CarouselsComponent } from './carousels.component';
 describe('CarouselsComponent', () => {
   let component: CarouselsComponent;
   let fixture: ComponentFixture<CarouselsComponent>;
-  let iconSetService: IconSetService
+  let iconSetService: IconSetService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [CarouselModule, NoopAnimationsModule, CardModule, GridModule, IconModule, RouterTestingModule, CarouselsComponent],
-    providers: [IconSetService]
-})
-    .compileComponents();
+      imports: [
+        CarouselModule,
+        NoopAnimationsModule,
+        CardModule,
+        GridModule,
+        IconModule,
+        RouterTestingModule,
+        CarouselsComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

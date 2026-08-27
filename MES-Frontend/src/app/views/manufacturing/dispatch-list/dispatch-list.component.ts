@@ -39,7 +39,7 @@ export class DispatchListComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private activeListService: activeListService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -71,21 +71,24 @@ export class DispatchListComponent implements OnInit {
 
     if (this.orderFilter) {
       const filter = this.orderFilter.toLowerCase();
-      filtered = filtered.filter((item: DispatchItem) =>
-        item.Order?.toString().toLowerCase().includes(filter)
+      filtered = filtered.filter(
+        (item: DispatchItem) =>
+          item.Order?.toString().toLowerCase().includes(filter),
       );
     }
 
     if (this.finishDateFilter) {
       filtered = filtered.filter(
         (item: DispatchItem) =>
-          this.toDateInputValue(item.PlannedFinishDate) === this.finishDateFilter
+          this.toDateInputValue(item.PlannedFinishDate) ===
+          this.finishDateFilter,
       );
     }
 
-    return [...filtered].sort((a, b) =>
-      this.getPlannedFinishTime(a.PlannedFinishDate) -
-      this.getPlannedFinishTime(b.PlannedFinishDate)
+    return [...filtered].sort(
+      (a, b) =>
+        this.getPlannedFinishTime(a.PlannedFinishDate) -
+        this.getPlannedFinishTime(b.PlannedFinishDate),
     );
   }
 

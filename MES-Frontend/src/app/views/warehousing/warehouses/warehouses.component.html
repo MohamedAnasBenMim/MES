@@ -18,10 +18,7 @@
       aria-label="Filter by warehouse type"
     >
       <option value="">All Types</option>
-      <option
-        *ngFor="let type of warehouseTypeOptions"
-        [value]="type"
-      >
+      <option *ngFor="let type of warehouseTypeOptions" [value]="type">
         {{ type }}
       </option>
     </select>
@@ -77,41 +74,24 @@
       (click)="refresh()"
       [disabled]="isLoading"
     >
-      {{ isLoading ? 'Loading...' : 'Refresh' }}
+      {{ isLoading ? "Loading..." : "Refresh" }}
     </button>
   </div>
 </div>
 
 <p *ngIf="isLoading">Loading warehouses ...</p>
 
-<div
-  *ngIf="!isLoading && errorMessage"
-  class="state-message error-message"
->
+<div *ngIf="!isLoading && errorMessage" class="state-message error-message">
   <span>{{ errorMessage }}</span>
 
-  <button type="button" (click)="loadWarehouses()">
-    Try again
-  </button>
+  <button type="button" (click)="loadWarehouses()">Try again</button>
 </div>
 
-<p
-  *ngIf="
-    !isLoading &&
-    !errorMessage &&
-    displayedWarehouses.length === 0
-  "
->
+<p *ngIf="!isLoading && !errorMessage && displayedWarehouses.length === 0">
   No warehouses found matching the selected criteria.
 </p>
 
-<div
-  *ngIf="
-    !isLoading &&
-    !errorMessage &&
-    displayedWarehouses.length > 0
-  "
->
+<div *ngIf="!isLoading && !errorMessage && displayedWarehouses.length > 0">
   <div class="table-container">
     <table [striped]="true" cTable>
       <thead>

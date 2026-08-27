@@ -1,15 +1,9 @@
 <div class="operator-dashboard">
-  <div
-    *ngIf="loading"
-    class="dashboard-state"
-  >
+  <div *ngIf="loading" class="dashboard-state">
     {{ text.loading }}
   </div>
 
-  <div
-    *ngIf="!loading && loadingError"
-    class="dashboard-state error-state"
-  >
+  <div *ngIf="!loading && loadingError" class="dashboard-state error-state">
     <strong>
       {{ text.unavailable }}
     </strong>
@@ -35,9 +29,7 @@
     </button>
   </div>
 
-  <ng-container
-    *ngIf="!loading && !loadingError"
-  >
+  <ng-container *ngIf="!loading && !loadingError">
     <section class="welcome-section">
       <div>
         <span class="eyebrow">
@@ -72,9 +64,7 @@
       <main class="dashboard-main">
         <section class="summary-grid">
           <article class="summary-card">
-            <span class="summary-icon blue">
-              ⚙
-            </span>
+            <span class="summary-icon blue"> ⚙ </span>
 
             <div>
               <span class="summary-label">
@@ -88,9 +78,7 @@
           </article>
 
           <article class="summary-card">
-            <span class="summary-icon green">
-              ✓
-            </span>
+            <span class="summary-icon green"> ✓ </span>
 
             <div>
               <span class="summary-label">
@@ -104,9 +92,7 @@
           </article>
 
           <article class="summary-card">
-            <span class="summary-icon purple">
-              ◆
-            </span>
+            <span class="summary-icon purple"> ◆ </span>
 
             <div>
               <span class="summary-label">
@@ -120,9 +106,7 @@
           </article>
 
           <article class="summary-card">
-            <span class="summary-icon orange">
-              ★
-            </span>
+            <span class="summary-icon orange"> ★ </span>
 
             <div>
               <span class="summary-label">
@@ -183,9 +167,7 @@
                 [style.--quality-angle]="getGaugeRotation()"
               >
                 <div class="quality-ring-inner">
-                  <strong>
-                    {{ qualityGaugeValue }}%
-                  </strong>
+                  <strong> {{ qualityGaugeValue }}% </strong>
 
                   <span>
                     {{ text.quality }}
@@ -220,11 +202,7 @@
                   </span>
 
                   <strong>
-                    {{
-                      currentOperatorRank
-                        ? '#' + currentOperatorRank
-                        : '—'
-                    }}
+                    {{ currentOperatorRank ? "#" + currentOperatorRank : "—" }}
                   </strong>
                 </div>
               </div>
@@ -259,9 +237,7 @@
               class="operation-card"
             >
               <div class="operation-card-top">
-                <span class="operation-document">
-                  ▣
-                </span>
+                <span class="operation-document"> ▣ </span>
 
                 <span class="status-pill">
                   {{ operation.status }}
@@ -274,10 +250,7 @@
               </span>
 
               <h3>
-                {{
-                  operation.item
-                    || text.productionItem
-                }}
+                {{ operation.item || text.productionItem }}
               </h3>
 
               <div class="operation-meta">
@@ -287,10 +260,7 @@
                 </span>
 
                 <span>
-                  {{
-                    operation.work_center
-                      || text.workCenter
-                  }}
+                  {{ operation.work_center || text.workCenter }}
                 </span>
               </div>
 
@@ -316,9 +286,7 @@
 
           <ng-template #noOperations>
             <div class="empty-state">
-              <span>
-                ✓
-              </span>
+              <span> ✓ </span>
 
               <h3>
                 {{ text.noActiveOperations }}
@@ -334,10 +302,7 @@
 
       <aside class="dashboard-sidebar">
         <section class="panel operator-profile">
-          <img
-            [src]="operatorImage"
-            [alt]="operatorName"
-          />
+          <img [src]="operatorImage" [alt]="operatorName" />
 
           <div>
             <h2>
@@ -372,9 +337,7 @@
               </h2>
             </div>
 
-            <span class="trophy">
-              🏆
-            </span>
+            <span class="trophy"> 🏆 </span>
           </div>
 
           <div
@@ -384,22 +347,14 @@
             <article
               *ngFor="let champion of champions"
               class="champion-row"
-              [class.current-operator]="
-                isCurrentOperator(champion.username)
-              "
+              [class.current-operator]="isCurrentOperator(champion.username)"
             >
-              <span
-                class="rank-badge"
-                [ngClass]="getRankClass(champion.rank)"
-              >
+              <span class="rank-badge" [ngClass]="getRankClass(champion.rank)">
                 {{ champion.rank }}
               </span>
 
               <img
-                [src]="
-                  champion.avatar
-                    || 'assets/default-avatar.png'
-                "
+                [src]="champion.avatar || 'assets/default-avatar.png'"
                 [alt]="champion.display_name"
               />
 
@@ -466,11 +421,8 @@
             *ngIf="recentIssues.length > 0; else noIssues"
             class="issue-list"
           >
-            <article
-              *ngFor="let issue of recentIssues"
-            >
-              <span class="issue-dot">
-              </span>
+            <article *ngFor="let issue of recentIssues">
+              <span class="issue-dot"> </span>
 
               <div>
                 <strong>
@@ -500,10 +452,7 @@
   </ng-container>
 </div>
 
-<div
-  *ngIf="reportModalVisible"
-  class="custom-modal-backdrop"
->
+<div *ngIf="reportModalVisible" class="custom-modal-backdrop">
   <div class="custom-modal-box">
     <div class="custom-modal-header">
       <div>
@@ -526,10 +475,7 @@
       </button>
     </div>
 
-    <div
-      *ngIf="selectedOperation"
-      class="custom-modal-body"
-    >
+    <div *ngIf="selectedOperation" class="custom-modal-body">
       <div class="operation-summary">
         <div>
           <span>
@@ -567,10 +513,7 @@
           </span>
 
           <strong>
-            {{
-              selectedOperation.work_center
-                || '—'
-            }}
+            {{ selectedOperation.work_center || "—" }}
           </strong>
         </div>
       </div>
@@ -597,17 +540,11 @@
         [disabled]="reporting"
       />
 
-      <div
-        *ngIf="reportError"
-        class="modal-message error"
-      >
+      <div *ngIf="reportError" class="modal-message error">
         {{ reportError }}
       </div>
 
-      <div
-        *ngIf="reportSuccess"
-        class="modal-message success"
-      >
+      <div *ngIf="reportSuccess" class="modal-message success">
         {{ reportSuccess }}
       </div>
     </div>
@@ -628,11 +565,7 @@
         (click)="confirmReport()"
         [disabled]="reporting"
       >
-        {{
-          reporting
-            ? text.reporting
-            : text.confirmOperation
-        }}
+        {{ reporting ? text.reporting : text.confirmOperation }}
       </button>
     </div>
   </div>

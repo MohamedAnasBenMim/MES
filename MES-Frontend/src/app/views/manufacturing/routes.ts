@@ -67,7 +67,7 @@ export const routes: Routes = [
         path: 'dispatch-list',
         loadComponent: () =>
           import('./dispatch-list/dispatch-list.component').then(
-            (m) => m.DispatchListComponent
+            (m) => m.DispatchListComponent,
           ),
         data: {
           title: 'Dispatch List',
@@ -77,7 +77,7 @@ export const routes: Routes = [
         path: 'active-list',
         loadComponent: () =>
           import('./active-list/active-list.component').then(
-            (m) => m.ActiveListComponent
+            (m) => m.ActiveListComponent,
           ),
         data: {
           title: 'Active List',
@@ -87,7 +87,7 @@ export const routes: Routes = [
         path: 'operation-execution',
         loadComponent: () =>
           import('./operation-execution/operation-execution.component').then(
-            (m) => m.OperationExecutionComponent
+            (m) => m.OperationExecutionComponent,
           ),
         data: {
           title: 'Operation Execution',
@@ -96,9 +96,9 @@ export const routes: Routes = [
       {
         path: 'supervisor-assignment-operators',
         loadComponent: () =>
-          import('./supervisor-assignment-operators/supervisor-assignment-operators.component').then(
-            (m) => m.SupervisorAssignmentOperatorsComponent
-          ),
+          import(
+            './supervisor-assignment-operators/supervisor-assignment-operators.component'
+          ).then((m) => m.SupervisorAssignmentOperatorsComponent),
         data: {
           title: 'Supervisor Assignment Operators',
         },

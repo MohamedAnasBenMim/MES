@@ -48,14 +48,14 @@
   </ng-scrollbar>
 
   @if (!sidebar1.narrow) {
-  <c-sidebar-footer
-    cSidebarToggle="sidebar1"
-    class="border-top d-none d-lg-flex"
-    toggle="unfoldable"
-    style="cursor: pointer"
-  >
-    <button cSidebarToggler aria-label="Toggle sidebar fold"></button>
-  </c-sidebar-footer>
+    <c-sidebar-footer
+      cSidebarToggle="sidebar1"
+      class="border-top d-none d-lg-flex"
+      toggle="unfoldable"
+      style="cursor: pointer"
+    >
+      <button cSidebarToggler aria-label="Toggle sidebar fold"></button>
+    </c-sidebar-footer>
   }
 </c-sidebar>
 
@@ -78,10 +78,7 @@
   <app-default-footer />
 </div>
 @if (idleWarningVisible) {
-  <div
-    class="idle-timeout-backdrop"
-    role="presentation"
-  >
+  <div class="idle-timeout-backdrop" role="presentation">
     <div
       class="idle-timeout-modal"
       role="alertdialog"
@@ -89,13 +86,9 @@
       aria-labelledby="idle-timeout-title"
       aria-describedby="idle-timeout-description"
     >
-      <div class="idle-timeout-icon">
-        !
-      </div>
+      <div class="idle-timeout-icon">!</div>
 
-      <h2 id="idle-timeout-title">
-        Session Expiring
-      </h2>
+      <h2 id="idle-timeout-title">Session Expiring</h2>
 
       <p id="idle-timeout-description">
         Your session will expire due to inactivity.

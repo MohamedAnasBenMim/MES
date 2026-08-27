@@ -8,9 +8,8 @@ describe('NonConformanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NonConformanceComponent]
-    })
-    .compileComponents();
+      imports: [NonConformanceComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NonConformanceComponent);
     component = fixture.componentInstance;

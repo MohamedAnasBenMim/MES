@@ -1,5 +1,10 @@
 <div class="popup-overlay">
-  <section class="popup-content" role="dialog" aria-modal="true" aria-labelledby="materials-title">
+  <section
+    class="popup-content"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="materials-title"
+  >
     <header class="popup-header">
       <div>
         <span class="popup-eyebrow">Production materials</span>
@@ -7,7 +12,12 @@
         <p>Review quantities and execute the existing material actions.</p>
       </div>
 
-      <button class="close-btn" type="button" (click)="close()" aria-label="Close">
+      <button
+        class="close-btn"
+        type="button"
+        (click)="close()"
+        aria-label="Close"
+      >
         ✕
       </button>
     </header>
@@ -49,7 +59,10 @@
               <td>{{ item.EstimatedQuantity }}</td>
 
               <td class="action-cell">
-                <button class="material-action initiate-action" (click)="Initiate_material(item)">
+                <button
+                  class="material-action initiate-action"
+                  (click)="Initiate_material(item)"
+                >
                   Initiate
                 </button>
               </td>

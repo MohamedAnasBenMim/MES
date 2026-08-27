@@ -3,12 +3,7 @@
     #toast
     [autohide]="false"
     [visible]="true"
-    class="
-      align-items-center
-      text-white
-      border-0
-      nc-toast
-    "
+    class="align-items-center text-white border-0 nc-toast"
     color="primary"
     style="display: none"
   >
@@ -32,9 +27,7 @@
   <div class="form-container">
     <div class="form-card-header">
       <strong>Raise Non-Conformance</strong>
-      <span class="required-note">
-        * Required fields
-      </span>
+      <span class="required-note"> * Required fields </span>
     </div>
 
     <form
@@ -46,12 +39,7 @@
       (ngSubmit)="onSubmit()"
     >
       <c-col [md]="6">
-        <label
-          cLabel
-          for="ncSubject"
-        >
-          NC Subject
-        </label>
+        <label cLabel for="ncSubject"> NC Subject </label>
 
         <input
           id="ncSubject"
@@ -65,12 +53,7 @@
       </c-col>
 
       <c-col [md]="6">
-        <label
-          cLabel
-          for="productionOrder"
-        >
-          Production Order No
-        </label>
+        <label cLabel for="productionOrder"> Production Order No </label>
 
         <input
           id="productionOrder"
@@ -83,12 +66,7 @@
       </c-col>
 
       <c-col [md]="6">
-        <label
-          cLabel
-          for="operationNo"
-        >
-          Operation No
-        </label>
+        <label cLabel for="operationNo"> Operation No </label>
 
         <input
           id="operationNo"
@@ -101,12 +79,7 @@
       </c-col>
 
       <c-col [md]="6">
-        <label
-          cLabel
-          for="itemCode"
-        >
-          Parent Item Code
-        </label>
+        <label cLabel for="itemCode"> Parent Item Code </label>
 
         <input
           id="itemCode"
@@ -119,12 +92,7 @@
       </c-col>
 
       <c-col [md]="6">
-        <label
-          cLabel
-          for="attachment"
-        >
-          Attachment
-        </label>
+        <label cLabel for="attachment"> Attachment </label>
 
         <input
           id="attachment"
@@ -135,18 +103,12 @@
         />
 
         <small class="field-help">
-          Add a photo or document
-          supporting this report.
+          Add a photo or document supporting this report.
         </small>
       </c-col>
 
       <c-col [md]="6">
-        <label
-          cLabel
-          for="Quantity"
-        >
-          Quantity
-        </label>
+        <label cLabel for="Quantity"> Quantity </label>
 
         <input
           id="Quantity"
@@ -160,12 +122,7 @@
       </c-col>
 
       <c-col [md]="12">
-        <label
-          cLabel
-          for="description"
-        >
-          NC Description
-        </label>
+        <label cLabel for="description"> NC Description </label>
 
         <textarea
           id="description"
@@ -187,26 +144,14 @@
           Cancel
         </button>
 
-        <button
-          type="submit"
-          class="submit-button"
-          [disabled]="isSubmitting"
-        >
-          {{
-            isSubmitting
-              ? 'Submitting...'
-              : 'Submit NC'
-          }}
+        <button type="submit" class="submit-button" [disabled]="isSubmitting">
+          {{ isSubmitting ? "Submitting..." : "Submit NC" }}
         </button>
       </div>
     </form>
   </div>
 
-  <div
-    *ngIf="showDialog"
-    class="dialog-backdrop"
-    (click)="closeDialog()"
-  >
+  <div *ngIf="showDialog" class="dialog-backdrop" (click)="closeDialog()">
     <section
       class="custom-dialog"
       role="dialog"
@@ -218,17 +163,11 @@
       (click)="$event.stopPropagation()"
     >
       <div class="dialog-icon">
-        <span *ngIf="dialogType === 'validation'">
-          !
-        </span>
+        <span *ngIf="dialogType === 'validation'"> ! </span>
 
-        <span *ngIf="dialogType === 'success'">
-          ✓
-        </span>
+        <span *ngIf="dialogType === 'success'"> ✓ </span>
 
-        <span *ngIf="dialogType === 'error'">
-          ×
-        </span>
+        <span *ngIf="dialogType === 'error'"> × </span>
       </div>
 
       <h2 id="dialog-title">
@@ -239,29 +178,15 @@
         {{ dialogMessage }}
       </p>
 
-      <div
-        *ngIf="dialogDetails.length > 0"
-        class="missing-fields"
-      >
-        <div
-          *ngFor="let field of dialogDetails"
-          class="missing-field"
-        >
+      <div *ngIf="dialogDetails.length > 0" class="missing-fields">
+        <div *ngFor="let field of dialogDetails" class="missing-field">
           <span>•</span>
           {{ field }}
         </div>
       </div>
 
-      <button
-        type="button"
-        class="dialog-button"
-        (click)="closeDialog()"
-      >
-        {{
-          dialogType === 'validation'
-            ? 'Complete the form'
-            : 'Close'
-        }}
+      <button type="button" class="dialog-button" (click)="closeDialog()">
+        {{ dialogType === "validation" ? "Complete the form" : "Close" }}
       </button>
     </section>
   </div>

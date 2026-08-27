@@ -4,70 +4,88 @@ export const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Forms'
+      title: 'Forms',
     },
     children: [
       {
         path: '',
         redirectTo: 'form-control',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'form-control',
-        loadComponent: () => import('./form-controls/form-controls.component').then(m => m.FormControlsComponent),
+        loadComponent: () =>
+          import('./form-controls/form-controls.component').then(
+            (m) => m.FormControlsComponent,
+          ),
         data: {
-          title: 'Form Control'
-        }
+          title: 'Form Control',
+        },
       },
       {
         path: 'select',
-        loadComponent: () => import('./select/select.component').then(m => m.SelectComponent),
+        loadComponent: () =>
+          import('./select/select.component').then((m) => m.SelectComponent),
         data: {
-          title: 'Select'
-        }
+          title: 'Select',
+        },
       },
       {
         path: 'checks-radios',
-        loadComponent: () => import('./checks-radios/checks-radios.component').then(m => m.ChecksRadiosComponent),
+        loadComponent: () =>
+          import('./checks-radios/checks-radios.component').then(
+            (m) => m.ChecksRadiosComponent,
+          ),
         data: {
-          title: 'Checks & Radios'
-        }
+          title: 'Checks & Radios',
+        },
       },
       {
         path: 'range',
-        loadComponent: () => import('./ranges/ranges.component').then(m => m.RangesComponent),
+        loadComponent: () =>
+          import('./ranges/ranges.component').then((m) => m.RangesComponent),
         data: {
-          title: 'Range'
-        }
+          title: 'Range',
+        },
       },
       {
         path: 'input-group',
-        loadComponent: () => import('./input-groups/input-groups.component').then(m => m.InputGroupsComponent),
+        loadComponent: () =>
+          import('./input-groups/input-groups.component').then(
+            (m) => m.InputGroupsComponent,
+          ),
         data: {
-          title: 'Input Group'
-        }
+          title: 'Input Group',
+        },
       },
       {
         path: 'floating-labels',
-        loadComponent: () => import('./floating-labels/floating-labels.component').then(m => m.FloatingLabelsComponent),
+        loadComponent: () =>
+          import('./floating-labels/floating-labels.component').then(
+            (m) => m.FloatingLabelsComponent,
+          ),
         data: {
-          title: 'Floating Labels'
-        }
+          title: 'Floating Labels',
+        },
       },
       {
         path: 'layout',
-        loadComponent: () => import('./layout/layout.component').then(m => m.LayoutComponent),
+        loadComponent: () =>
+          import('./layout/layout.component').then((m) => m.LayoutComponent),
         data: {
-          title: 'Layout'
-        }
+          title: 'Layout',
+        },
       },
       {
         path: 'validation',
-        loadComponent: () => import('./validation/validation.component').then(m => m.ValidationComponent),
+        loadComponent: () =>
+          import('./validation/validation.component').then(
+            (m) => m.ValidationComponent,
+          ),
         data: {
-          title: 'Validation'
-        }
-      }
-    ]
-  }
+          title: 'Validation',
+        },
+      },
+    ],
+  },
 ];

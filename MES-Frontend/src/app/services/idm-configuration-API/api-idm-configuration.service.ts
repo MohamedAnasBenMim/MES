@@ -56,7 +56,7 @@ export class ApiIdmConfigurationService {
 
   updateConfiguration(
     id: number,
-    payload: IdmConfigurationPayload
+    payload: IdmConfigurationPayload,
   ): Observable<any> {
     return this.http.put(`${this.baseUrl}${id}/`, payload);
   }

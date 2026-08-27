@@ -5,7 +5,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./supervisor-dashboard.component').then(
-        (m) => m.SupervisorDashboardComponent
+        (m) => m.SupervisorDashboardComponent,
       ),
     data: {
       title: `Dashboard`,

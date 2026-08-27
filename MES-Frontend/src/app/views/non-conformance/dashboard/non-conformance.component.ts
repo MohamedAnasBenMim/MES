@@ -19,7 +19,10 @@ export class NonConformanceComponent implements OnInit {
   ncData: any[] = [];
   ncNumberFilter = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+  ) {}
 
   loading = true;
 
@@ -37,32 +40,34 @@ export class NonConformanceComponent implements OnInit {
     });
   }
 
-paginatedData() {
-  let filtered = this.ncData;
+  paginatedData() {
+    let filtered = this.ncData;
 
-  if (this.ncNumberFilter) {
-    const filter = this.ncNumberFilter.toLowerCase();
-    filtered = filtered.filter((item) =>
-      item.NonConformanceReport?.toString().toLowerCase().includes(filter)
-    );
+    if (this.ncNumberFilter) {
+      const filter = this.ncNumberFilter.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.NonConformanceReport?.toString().toLowerCase().includes(filter),
+      );
+    }
+
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return filtered?.slice(start, start + this.itemsPerPage);
   }
 
-  const start = (this.currentPage - 1) * this.itemsPerPage;
-  return filtered?.slice(start, start + this.itemsPerPage);
-}
+  totalPages() {
+    let filtered = this.ncData;
 
-totalPages() {
-  let filtered = this.ncData;
+    if (this.ncNumberFilter) {
+      const filter = this.ncNumberFilter.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.NonConformanceReport?.toString().toLowerCase().includes(filter),
+      );
+    }
 
-  if (this.ncNumberFilter) {
-    const filter = this.ncNumberFilter.toLowerCase();
-    filtered = filtered.filter((item) =>
-      item.NonConformanceReport?.toString().toLowerCase().includes(filter)
-    );
+    return Math.ceil((filtered?.length || 0) / this.itemsPerPage);
   }
-
-  return Math.ceil((filtered?.length || 0) / this.itemsPerPage);
-}
 
   nextPage() {
     if (this.currentPage < this.totalPages()) {

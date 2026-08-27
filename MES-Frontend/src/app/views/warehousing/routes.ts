@@ -16,7 +16,7 @@ export const routes: Routes = [
         path: 'inventory-list',
         loadComponent: () =>
           import('./inventory/inventory-list.component').then(
-            (m) => m.inventoryListComponent
+            (m) => m.inventoryListComponent,
           ),
         data: {
           title: 'Stock Point Inventory',
@@ -26,7 +26,7 @@ export const routes: Routes = [
         path: 'warehouses',
         loadComponent: () =>
           import('./warehouses/warehouses.component').then(
-            (m) => m.WarehousesComponent
+            (m) => m.WarehousesComponent,
           ),
         data: {
           title: 'Warehouses',

@@ -13,10 +13,9 @@ describe('SelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [CardModule, GridModule, RouterTestingModule, SelectComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [CardModule, GridModule, RouterTestingModule, SelectComponent],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

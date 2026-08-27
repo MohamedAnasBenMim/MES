@@ -61,7 +61,7 @@ export class OperationExecutionComponent implements OnInit {
     private router: Router,
     private ApiServiceCompleteOperation: ApiServiceCompleteOperation,
     private ApiServiceLastOperation: ApiServiceLastOperation,
-    private ApiGetRelatedNC: ApiGetRelatedNC
+    private ApiGetRelatedNC: ApiGetRelatedNC,
   ) {
     const nav = this.router.getCurrentNavigation();
     this.selectedItem = nav?.extras?.state?.['selectedItem'];
@@ -219,7 +219,7 @@ export class OperationExecutionComponent implements OnInit {
   checkIfLastOperation(payload: any) {
     this.ApiServiceLastOperation.getData(
       payload.order_id,
-      payload.operation
+      payload.operation,
     ).subscribe({
       next: (data) => {
         // console.log('📦 Full response data:', data);
@@ -277,13 +277,13 @@ export class OperationExecutionComponent implements OnInit {
             const subsequentDelivery = item.SubsequentDelivery || 0;
             return sum + toIssue + toIssueByWH + subsequentDelivery;
           },
-          0
+          0,
         );
 
         // Calculate total actual quantity
         this.totalEstimatedQuantity = this.materialData.reduce(
           (sum: number, item: any) => sum + (item.EstimatedQuantity || 0),
-          0
+          0,
         );
       },
       error: (err) => {

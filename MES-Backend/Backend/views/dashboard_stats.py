@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from django.apps import apps
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncDate, TruncMonth
@@ -37,8 +38,7 @@ def safe_count_by_field(model, field_name):
 
     try:
         queryset = (
-            model.objects
-            .values(field_name)
+            model.objects.values(field_name)
             .annotate(count=Count("id"))
             .order_by(field_name)
         )
@@ -60,8 +60,7 @@ def safe_sum_by_fields(model, group_field, quantity_field):
 
     try:
         queryset = (
-            model.objects
-            .values(group_field)
+            model.objects.values(group_field)
             .annotate(total=Sum(quantity_field))
             .order_by(group_field)
         )
@@ -80,8 +79,7 @@ def safe_sum_by_fields(model, group_field, quantity_field):
 def user_registration_by_month():
     try:
         queryset = (
-            UserAccount.objects
-            .annotate(month=TruncMonth("created_at"))
+            UserAccount.objects.annotate(month=TruncMonth("created_at"))
             .values("month")
             .annotate(count=Count("id"))
             .order_by("month")
@@ -89,7 +87,9 @@ def user_registration_by_month():
 
         return [
             {
-                "month": item["month"].strftime("%b %Y") if item["month"] else "Unknown",
+                "month": (
+                    item["month"].strftime("%b %Y") if item["month"] else "Unknown"
+                ),
                 "count": item["count"],
             }
             for item in queryset
@@ -107,7 +107,7 @@ def daily_completed_orders():
             "Operation",
             "OperationActiveList",
             "ProductionOrder",
-        ]
+        ],
     )
 
     if not completed_order_model:
@@ -121,7 +121,7 @@ def daily_completed_orders():
             "updated_at",
             "created_at",
             "date",
-        ]
+        ],
     )
 
     status_field = get_first_existing_field(
@@ -129,7 +129,7 @@ def daily_completed_orders():
         [
             "status",
             "state",
-        ]
+        ],
     )
 
     if not date_field:
@@ -144,8 +144,7 @@ def daily_completed_orders():
             queryset = queryset.filter(**{f"{status_field}__icontains": "complete"})
 
         queryset = (
-            queryset
-            .filter(**{f"{date_field}__gte": last_7_days})
+            queryset.filter(**{f"{date_field}__gte": last_7_days})
             .annotate(day=TruncDate(date_field))
             .values("day")
             .annotate(count=Count("id"))
@@ -194,7 +193,7 @@ def dashboard_stats(request):
             "Nc",
             "QualityNC",
             "NonConformanceData",
-        ]
+        ],
     )
 
     nc_status_field = get_first_existing_field(
@@ -203,7 +202,7 @@ def dashboard_stats(request):
             "status",
             "state",
             "nc_status",
-        ]
+        ],
     )
 
     non_conformances_by_status = safe_count_by_field(nc_model, nc_status_field)
@@ -218,7 +217,7 @@ def dashboard_stats(request):
             "StockPointInventory",
             "WarehouseInventory",
             "ItemInventory",
-        ]
+        ],
     )
 
     stock_point_field = get_first_existing_field(
@@ -230,7 +229,7 @@ def dashboard_stats(request):
             "warehouse_name",
             "location",
             "name",
-        ]
+        ],
     )
 
     quantity_field = get_first_existing_field(
@@ -242,13 +241,11 @@ def dashboard_stats(request):
             "available_quantity",
             "on_hand",
             "total_quantity",
-        ]
+        ],
     )
 
     inventory_by_stock_point = safe_sum_by_fields(
-        inventory_model,
-        stock_point_field,
-        quantity_field
+        inventory_model, stock_point_field, quantity_field
     )
 
     # 5. Operations activity
@@ -260,7 +257,7 @@ def dashboard_stats(request):
             "ActiveOperation",
             "ManufacturingOperation",
             "ProductionOperation",
-        ]
+        ],
     )
 
     operation_status_field = get_first_existing_field(
@@ -269,13 +266,10 @@ def dashboard_stats(request):
             "status",
             "state",
             "operation_status",
-        ]
+        ],
     )
 
-    operations_activity = safe_count_by_field(
-        operation_model,
-        operation_status_field
-    )
+    operations_activity = safe_count_by_field(operation_model, operation_status_field)
 
     # 6. Daily completed orders
     completed_orders_by_day = daily_completed_orders()
@@ -287,7 +281,6 @@ def dashboard_stats(request):
             "total_operators": total_operators,
             "total_quality": total_quality,
             "total_supervisors": total_supervisors,
-
             "users_by_role": users_by_role,
             "registrations_by_month": registrations_by_month,
             "non_conformances_by_status": non_conformances_by_status,

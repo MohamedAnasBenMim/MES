@@ -44,13 +44,13 @@
           <td>{{ op.OperatedItem }}</td>
           <td>{{ op.ReferenceOperationMachineType }}</td>
           <td>{{ op.RoutingQuantity }}</td>
-          <td>{{ op.PlannedStartDate | date : "short" }}</td>
-          <td>{{ op.PlannedFinishDate | date : "short" }}</td>
+          <td>{{ op.PlannedStartDate | date: "short" }}</td>
+          <td>{{ op.PlannedFinishDate | date: "short" }}</td>
           <td>{{ op.ReferenceOperationWorkCenter }}</td>
           <td>
             {{
-              op.OperationStatus === 'ReadyToStart'
-                ? 'Ready To Start'
+              op.OperationStatus === "ReadyToStart"
+                ? "Ready To Start"
                 : op.OperationStatus
             }}
           </td>

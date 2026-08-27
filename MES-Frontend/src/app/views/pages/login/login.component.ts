@@ -134,7 +134,7 @@ export class LoginComponent {
   constructor(
     private UserApiService: UserApiService,
     private router: Router,
-    private languageService: LanguageService
+    private languageService: LanguageService,
   ) {}
 
   fetchUsers(): void {
@@ -179,14 +179,12 @@ export class LoginComponent {
           role = 'admin';
         }
 
-setAuthSession(user, role, sessionId);
+        setAuthSession(user, role, sessionId);
 
-const preferredLanguage =
-  user.preferred_language ||
-  user.language ||
-  'en';
+        const preferredLanguage =
+          user.preferred_language || user.language || 'en';
 
-this.languageService.applyLanguage(preferredLanguage);
+        this.languageService.applyLanguage(preferredLanguage);
 
         if (role === 'admin') {
           this.router.navigate(['/admin_dashboard']);
@@ -202,8 +200,7 @@ this.languageService.applyLanguage(preferredLanguage);
         console.error('Login error:', err);
 
         const message =
-          err.error?.error ||
-          'Something went wrong. Please try again.';
+          err.error?.error || 'Something went wrong. Please try again.';
 
         if (err.error?.account_locked) {
           this.showError(message, 'Account Deactivated');

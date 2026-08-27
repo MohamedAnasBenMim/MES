@@ -23,7 +23,7 @@ export class ApiService {
         // Backend now returns:
         // { source: "cache" | "infor", count: number, data: [...] }
         // So we return only res.data to the component
-        map((res) => res.data || [])
+        map((res) => res.data || []),
       );
   }
 
@@ -37,7 +37,7 @@ export class ApiService {
       })
       .pipe(
         tap((res) => console.log('🔄 Dispatch refreshed:', res)),
-        map((res) => res.data || [])
+        map((res) => res.data || []),
       );
   }
 }

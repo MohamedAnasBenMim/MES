@@ -14,10 +14,15 @@ describe('WidgetsBrandComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [WidgetModule, GridModule, ChartjsModule, IconModule, WidgetsBrandComponent],
-    providers: [IconSetService]
-})
-    .compileComponents();
+      imports: [
+        WidgetModule,
+        GridModule,
+        ChartjsModule,
+        IconModule,
+        WidgetsBrandComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

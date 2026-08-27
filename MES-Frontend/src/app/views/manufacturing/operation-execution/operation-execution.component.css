@@ -27,8 +27,11 @@ button {
   min-height: calc(100vh - 64px);
   padding: 24px;
   color: var(--text);
-  background:
-    radial-gradient(circle at top right, rgba(0, 174, 239, 0.08), transparent 28rem),
+  background: radial-gradient(
+      circle at top right,
+      rgba(0, 174, 239, 0.08),
+      transparent 28rem
+    ),
     #f4f7fb;
 }
 
@@ -146,10 +149,22 @@ button {
   display: grid;
   place-items: center;
   padding: 42px;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0, 97, 166, 0.05) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0, 97, 166, 0.05) 40px);
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.92)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(0, 97, 166, 0.05) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(0, 97, 166, 0.05) 40px
+    );
 }
 
 .workspace-intro {
@@ -446,8 +461,12 @@ button {
   content: "";
 }
 
-.pause-symbol::before { left: 7px; }
-.pause-symbol::after { right: 7px; }
+.pause-symbol::before {
+  left: 7px;
+}
+.pause-symbol::after {
+  right: 7px;
+}
 
 .complete-symbol {
   color: var(--success);
@@ -538,8 +557,11 @@ button {
   --muted: #9fb0c5;
   --primary-soft: #173a55;
 
-  background:
-    radial-gradient(circle at top right, rgba(0, 174, 239, 0.1), transparent 28rem),
+  background: radial-gradient(
+      circle at top right,
+      rgba(0, 174, 239, 0.1),
+      transparent 28rem
+    ),
     #111827;
 }
 
@@ -548,10 +570,19 @@ button {
 }
 
 :host-context([data-coreui-theme="dark"]) .center-content {
-  background:
-    linear-gradient(rgba(24, 34, 53, 0.94), rgba(24, 34, 53, 0.94)),
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0, 174, 239, 0.06) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0, 174, 239, 0.06) 40px);
+  background: linear-gradient(rgba(24, 34, 53, 0.94), rgba(24, 34, 53, 0.94)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(0, 174, 239, 0.06) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(0, 174, 239, 0.06) 40px
+    );
 }
 
 @media (max-width: 1099.98px) {

@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-add-users-popup',
   imports: [],
   templateUrl: './add-users-popup.component.html',
-  styleUrl: './add-users-popup.component.css'
+  styleUrl: './add-users-popup.component.css',
 })
-export class AddUsersPopupComponent {
-
-}
+export class AddUsersPopupComponent {}

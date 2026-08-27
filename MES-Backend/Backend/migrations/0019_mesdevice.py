@@ -6,33 +6,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0018_idmconfiguration'),
+        ("Backend", "0018_idmconfiguration"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='MESDevice',
+            name="MESDevice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('device_id', models.CharField(max_length=100, unique=True)),
-                ('device_name', models.CharField(max_length=100)),
-                ('device_type', models.CharField(max_length=50)),
-                ('mac_address', models.CharField(max_length=100, unique=True)),
-                ('ip_address', models.GenericIPAddressField(blank=True, null=True)),
-                ('status', models.CharField(choices=[('active', 'Active'), ('disabled', 'Disabled')], default='active', max_length=20)),
-                ('last_login', models.DateTimeField(blank=True, null=True)),
-                ('last_seen', models.DateTimeField(blank=True, null=True)),
-                ('disabled_date', models.DateTimeField(blank=True, null=True)),
-                ('disabled_by', models.CharField(blank=True, default='', max_length=50)),
-                ('disable_reason', models.TextField(blank=True, default='')),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('created_by', models.CharField(blank=True, default='', max_length=50)),
-                ('last_updated_date', models.DateTimeField(auto_now=True)),
-                ('last_updated_by', models.CharField(blank=True, default='', max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("device_id", models.CharField(max_length=100, unique=True)),
+                ("device_name", models.CharField(max_length=100)),
+                ("device_type", models.CharField(max_length=50)),
+                ("mac_address", models.CharField(max_length=100, unique=True)),
+                ("ip_address", models.GenericIPAddressField(blank=True, null=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("active", "Active"), ("disabled", "Disabled")],
+                        default="active",
+                        max_length=20,
+                    ),
+                ),
+                ("last_login", models.DateTimeField(blank=True, null=True)),
+                ("last_seen", models.DateTimeField(blank=True, null=True)),
+                ("disabled_date", models.DateTimeField(blank=True, null=True)),
+                (
+                    "disabled_by",
+                    models.CharField(blank=True, default="", max_length=50),
+                ),
+                ("disable_reason", models.TextField(blank=True, default="")),
+                ("created_date", models.DateTimeField(auto_now_add=True)),
+                ("created_by", models.CharField(blank=True, default="", max_length=50)),
+                ("last_updated_date", models.DateTimeField(auto_now=True)),
+                (
+                    "last_updated_by",
+                    models.CharField(blank=True, default="", max_length=50),
+                ),
             ],
             options={
-                'db_table': 'MES_DEVICE',
-                'ordering': ['device_name'],
+                "db_table": "MES_DEVICE",
+                "ordering": ["device_name"],
             },
         ),
     ]

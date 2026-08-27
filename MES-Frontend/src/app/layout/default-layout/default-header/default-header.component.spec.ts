@@ -11,7 +11,7 @@ import {
   HeaderModule,
   NavModule,
   ProgressModule,
-  SidebarModule
+  SidebarModule,
 } from '@coreui/angular';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
@@ -24,10 +24,24 @@ describe('DefaultHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [GridModule, HeaderModule, IconModule, NavModule, BadgeModule, AvatarModule, DropdownModule, BreadcrumbModule, RouterTestingModule, SidebarModule, ProgressModule, ButtonGroupModule, ReactiveFormsModule, DefaultHeaderComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [
+        GridModule,
+        HeaderModule,
+        IconModule,
+        NavModule,
+        BadgeModule,
+        AvatarModule,
+        DropdownModule,
+        BreadcrumbModule,
+        RouterTestingModule,
+        SidebarModule,
+        ProgressModule,
+        ButtonGroupModule,
+        ReactiveFormsModule,
+        DefaultHeaderComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

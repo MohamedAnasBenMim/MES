@@ -9,12 +9,8 @@ import {
   CountryCode,
   CountryCodeService,
 } from '../../../services/country-code/country-code.service';
-import {
-  CreateUserApiService,
-} from '../../../services/user-post-API/api-user-post.service';
-import {
-  UserApiService,
-} from '../../../services/user-get-API/api-user-get.service';
+import { CreateUserApiService } from '../../../services/user-post-API/api-user-post.service';
+import { UserApiService } from '../../../services/user-get-API/api-user-get.service';
 import {
   clearAuthSession,
   getAuthUser,
@@ -42,13 +38,7 @@ type MessageModalType = 'success' | 'error' | 'info';
   styleUrls: ['./edit_profile.component.css'],
   providers: [CreateUserApiService, UserApiService],
   standalone: true,
-  imports: [
-    FormsModule,
-    CardModule,
-    NgIf,
-    NgFor,
-    HttpClientModule,
-  ],
+  imports: [FormsModule, CardModule, NgIf, NgFor, HttpClientModule],
 })
 export class edit_profileComponent implements OnInit {
   formData: UserFormData = {
@@ -92,7 +82,7 @@ export class edit_profileComponent implements OnInit {
     private readonly router: Router,
     private readonly userApiService: UserApiService,
     private readonly createUserApiService: CreateUserApiService,
-    private readonly countryCodeService: CountryCodeService
+    private readonly countryCodeService: CountryCodeService,
   ) {}
 
   ngOnInit(): void {
@@ -110,7 +100,7 @@ export class edit_profileComponent implements OnInit {
       'Session Required',
       'No logged-in user was found. Please sign in again.',
       'error',
-      true
+      true,
     );
   }
 
@@ -154,11 +144,11 @@ export class edit_profileComponent implements OnInit {
 
     const cleanFullPhone = fullPhone.replace(/\s+/g, '');
     const sortedCodes = [...this.countryCodes].sort(
-      (first, second) => second.code.length - first.code.length
+      (first, second) => second.code.length - first.code.length,
     );
 
     const matchedCountry = sortedCodes.find((country) =>
-      cleanFullPhone.startsWith(country.code)
+      cleanFullPhone.startsWith(country.code),
     );
 
     if (matchedCountry) {
@@ -180,8 +170,9 @@ export class edit_profileComponent implements OnInit {
         console.error('Failed to load user data:', error);
         this.showMessage(
           'Unable to Load Profile',
-          error?.error?.error || 'Your profile information could not be loaded.',
-          'error'
+          error?.error?.error ||
+            'Your profile information could not be loaded.',
+          'error',
         );
       },
     });
@@ -226,7 +217,7 @@ export class edit_profileComponent implements OnInit {
     const newPassword = (this.formData.newPassword || '').trim();
     const confirmPassword = (this.formData.confirmNewPassword || '').trim();
     const wantsToChangePassword = Boolean(
-      oldPassword || newPassword || confirmPassword
+      oldPassword || newPassword || confirmPassword,
     );
 
     if (
@@ -263,7 +254,7 @@ export class edit_profileComponent implements OnInit {
           this.requestPasswordVerificationCode(
             oldPassword,
             newPassword,
-            confirmPassword
+            confirmPassword,
           );
           return;
         }
@@ -273,7 +264,7 @@ export class edit_profileComponent implements OnInit {
         this.showMessage(
           'Profile Updated',
           'Your profile was updated successfully.',
-          'success'
+          'success',
         );
       },
       error: (error: any) => {
@@ -283,7 +274,7 @@ export class edit_profileComponent implements OnInit {
         this.showMessage(
           'Update Failed',
           error?.error?.error || 'Your profile could not be updated.',
-          'error'
+          'error',
         );
       },
     });
@@ -301,7 +292,7 @@ export class edit_profileComponent implements OnInit {
       this.showMessage(
         'Invalid Code',
         'Enter the complete 6-digit verification code.',
-        'error'
+        'error',
       );
       return;
     }
@@ -310,7 +301,7 @@ export class edit_profileComponent implements OnInit {
       this.showMessage(
         'Verification Error',
         'The verification request is missing. Request a new code.',
-        'error'
+        'error',
       );
       return;
     }
@@ -337,7 +328,7 @@ export class edit_profileComponent implements OnInit {
             response?.message ||
               'Your password was changed successfully. Please sign in again.',
             'success',
-            true
+            true,
           );
         },
         error: (error: any) => {
@@ -382,7 +373,7 @@ export class edit_profileComponent implements OnInit {
     this.requestPasswordVerificationCode(
       oldPassword,
       newPassword,
-      confirmPassword
+      confirmPassword,
     );
   }
 
@@ -404,7 +395,7 @@ export class edit_profileComponent implements OnInit {
   private requestPasswordVerificationCode(
     oldPassword: string,
     newPassword: string,
-    confirmPassword: string
+    confirmPassword: string,
   ): void {
     if (this.isSendingVerificationCode) {
       return;
@@ -425,8 +416,7 @@ export class edit_profileComponent implements OnInit {
           this.isSendingVerificationCode = false;
           this.verificationId = response.verification_id;
           this.verificationEmail = response.masked_email || response.email;
-          this.verificationExpiresInMinutes =
-            response.expires_in_minutes || 10;
+          this.verificationExpiresInMinutes = response.expires_in_minutes || 10;
           this.verificationCode = '';
           this.verificationModalVisible = true;
         },
@@ -437,7 +427,7 @@ export class edit_profileComponent implements OnInit {
           this.showMessage(
             'Password Not Accepted',
             error?.error?.error || 'The verification code could not be sent.',
-            'error'
+            'error',
           );
         },
       });
@@ -446,15 +436,23 @@ export class edit_profileComponent implements OnInit {
   private validatePasswordFields(
     oldPassword: string,
     newPassword: string,
-    confirmPassword: string
+    confirmPassword: string,
   ): boolean {
     if (!oldPassword) {
-      this.showMessage('Old Password Required', 'Enter your current password.', 'error');
+      this.showMessage(
+        'Old Password Required',
+        'Enter your current password.',
+        'error',
+      );
       return false;
     }
 
     if (!newPassword) {
-      this.showMessage('New Password Required', 'Enter your new password.', 'error');
+      this.showMessage(
+        'New Password Required',
+        'Enter your new password.',
+        'error',
+      );
       return false;
     }
 
@@ -462,7 +460,7 @@ export class edit_profileComponent implements OnInit {
       this.showMessage(
         'Confirmation Required',
         'Confirm your new password.',
-        'error'
+        'error',
       );
       return false;
     }
@@ -471,7 +469,7 @@ export class edit_profileComponent implements OnInit {
       this.showMessage(
         'Passwords Do Not Match',
         'The new password and confirmation are different.',
-        'error'
+        'error',
       );
       return false;
     }
@@ -480,7 +478,7 @@ export class edit_profileComponent implements OnInit {
       this.showMessage(
         'Password Too Short',
         'The new password must contain at least 8 characters.',
-        'error'
+        'error',
       );
       return false;
     }
@@ -532,7 +530,7 @@ export class edit_profileComponent implements OnInit {
     title: string,
     message: string,
     type: MessageModalType,
-    redirectToLogin = false
+    redirectToLogin = false,
   ): void {
     this.messageModalTitle = title;
     this.messageModalMessage = message;

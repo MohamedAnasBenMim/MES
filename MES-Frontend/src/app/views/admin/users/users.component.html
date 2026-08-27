@@ -62,9 +62,7 @@
         </tr>
 
         <tr *ngIf="users.length === 0">
-          <td colspan="6" class="text-center text-muted">
-            No users found.
-          </td>
+          <td colspan="6" class="text-center text-muted">No users found.</td>
         </tr>
       </tbody>
     </table>
@@ -334,12 +332,14 @@
   <c-modal-body>
     <p *ngIf="selectedUserForStatus?.is_active">
       Are you sure you want to deactivate
-      <strong>{{ selectedUserForStatus?.username }}</strong>?
+      <strong>{{ selectedUserForStatus?.username }}</strong
+      >?
     </p>
 
     <p *ngIf="!selectedUserForStatus?.is_active">
       Are you sure you want to reactivate
-      <strong>{{ selectedUserForStatus?.username }}</strong>?
+      <strong>{{ selectedUserForStatus?.username }}</strong
+      >?
     </p>
 
     <div class="alert alert-warning" *ngIf="selectedUserForStatus?.is_active">
@@ -368,8 +368,8 @@
           isTogglingStatus
             ? "Processing..."
             : selectedUserForStatus?.is_active
-            ? "Deactivate"
-            : "Reactivate"
+              ? "Deactivate"
+              : "Reactivate"
         }}
       </button>
     </div>
@@ -384,9 +384,7 @@
   keyboard="false"
 >
   <c-modal-header>
-    <h5 class="modal-title text-danger">
-      Delete User
-    </h5>
+    <h5 class="modal-title text-danger">Delete User</h5>
 
     <button
       type="button"
@@ -399,7 +397,8 @@
   <c-modal-body>
     <p>
       Are you sure you want to delete
-      <strong>{{ selectedUserForDelete?.username }}</strong>?
+      <strong>{{ selectedUserForDelete?.username }}</strong
+      >?
     </p>
 
     <div class="alert alert-danger">
@@ -455,9 +454,7 @@
       {{ verificationEmail }}
     </p>
 
-    <label for="verificationCode" class="form-label">
-      Verification Code
-    </label>
+    <label for="verificationCode" class="form-label"> Verification Code </label>
 
     <input
       cFormControl
@@ -475,9 +472,7 @@
       {{ verificationError }}
     </div>
 
-    <small class="text-muted">
-      The code expires after 10 minutes.
-    </small>
+    <small class="text-muted"> The code expires after 10 minutes. </small>
 
     <div class="d-flex justify-content-end gap-2 mt-4">
       <button
@@ -521,9 +516,7 @@
   keyboard="false"
 >
   <c-modal-header>
-    <h5 class="modal-title text-success">
-      ✅ {{ successModalTitle }}
-    </h5>
+    <h5 class="modal-title text-success">✅ {{ successModalTitle }}</h5>
 
     <button
       type="button"
@@ -563,9 +556,7 @@
   keyboard="false"
 >
   <c-modal-header>
-    <h5 class="modal-title text-danger">
-      ❌ {{ errorModalTitle }}
-    </h5>
+    <h5 class="modal-title text-danger">❌ {{ errorModalTitle }}</h5>
 
     <button
       type="button"
@@ -581,12 +572,7 @@
     </div>
 
     <div class="d-flex justify-content-end mt-4">
-      <button
-        cButton
-        color="danger"
-        type="button"
-        (click)="closeErrorModal()"
-      >
+      <button cButton color="danger" type="button" (click)="closeErrorModal()">
         OK
       </button>
     </div>

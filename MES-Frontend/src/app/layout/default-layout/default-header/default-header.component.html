@@ -1,8 +1,5 @@
 <ng-container>
-  <c-container
-    [fluid]="true"
-    class="border-bottom px-4 header-main-row"
-  >
+  <c-container [fluid]="true" class="border-bottom px-4 header-main-row">
     <button
       [cSidebarToggle]="sidebarId()"
       cHeaderToggler
@@ -13,47 +10,43 @@
     >
       <svg cIcon name="cilMenu" size="lg"></svg>
     </button>
-<c-header-nav class="d-none d-md-flex">
-  <c-nav-item>
-    <a
-      cNavLink
-      routerLink="/dashboard"
-      routerLinkActive="active"
+    <c-header-nav class="d-none d-md-flex">
+      <c-nav-item>
+        <a cNavLink routerLink="/dashboard" routerLinkActive="active">
+          {{ text.dashboard }}
+        </a>
+      </c-nav-item>
+    </c-header-nav>
+
+    <div
+      class="header-datetime d-none d-lg-flex"
+      [attr.title]="userCountryLabel + ' · ' + userTimezone"
     >
-      {{ text.dashboard }}
-    </a>
-  </c-nav-item>
-</c-header-nav>
+      <div class="header-date">
+        {{ currentDateText }}
+      </div>
 
-<div
-  class="header-datetime d-none d-lg-flex"
-  [attr.title]="userCountryLabel + ' · ' + userTimezone"
->
-  <div class="header-date">
-    {{ currentDateText }}
-  </div>
+      <div class="header-time">
+        <span>{{ currentHourMinute }}</span>
+        <span>:</span>
+        <span class="header-seconds">{{ currentSecond }}</span>
+        <span class="header-period">
+          {{ currentPeriod ? " " + currentPeriod : "" }}
+        </span>
+      </div>
 
-  <div class="header-time">
-    <span>{{ currentHourMinute }}</span>
-    <span>:</span>
-    <span class="header-seconds">{{ currentSecond }}</span>
-    <span class="header-period">
-      {{ currentPeriod ? ' ' + currentPeriod : '' }}
-    </span>
-  </div>
+      <div class="header-location-line">
+        <span class="header-country">
+          {{ userCountryLabel }}
+        </span>
 
-  <div class="header-location-line">
-    <span class="header-country">
-      {{ userCountryLabel }}
-    </span>
+        <span class="header-separator">·</span>
 
-    <span class="header-separator">·</span>
-
-    <span class="header-timezone">
-      {{ userTimezone }}
-    </span>
-  </div>
-</div>
+        <span class="header-timezone">
+          {{ userTimezone }}
+        </span>
+      </div>
+    </div>
 
     <c-header-nav class="d-none d-md-flex ms-auto">
       <a cNavLink>

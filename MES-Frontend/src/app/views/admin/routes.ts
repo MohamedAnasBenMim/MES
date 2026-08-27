@@ -45,10 +45,11 @@ export const routes: Routes = [
       {
         path: 'idm-configuration',
         loadComponent: () =>
-          import('./idm-configuration/idm-configuration.component').then((m) => m.IdmConfigurationComponent),
+          import('./idm-configuration/idm-configuration.component').then(
+            (m) => m.IdmConfigurationComponent,
+          ),
         data: { title: 'IDM Configuration' },
       },
-
 
       {
         path: 'log',
@@ -57,17 +58,14 @@ export const routes: Routes = [
         data: { title: 'Log' },
       },
 
-
       {
         path: 'mes-devices',
         loadComponent: () =>
           import('./mes-devices/mes-devices.component').then(
-            (m) => m.MesDevicesComponent
+            (m) => m.MesDevicesComponent,
           ),
         data: { title: 'MES Devices' },
       },
-
-
 
       {
         path: 'users',
@@ -79,7 +77,7 @@ export const routes: Routes = [
         path: 'register',
         loadComponent: () =>
           import('./register/register.component').then(
-            (m) => m.RegisterComponent
+            (m) => m.RegisterComponent,
           ),
         data: { title: 'Register' },
       },
@@ -93,7 +91,7 @@ export const routes: Routes = [
         path: 'documentation',
         loadComponent: () =>
           import('./documentation/documentation.component').then(
-            (m) => m.DocumentationComponent
+            (m) => m.DocumentationComponent,
           ),
         data: { title: 'Documentation' },
       },

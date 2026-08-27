@@ -4,36 +4,42 @@ export const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Buttons'
+      title: 'Buttons',
     },
     children: [
       {
         path: '',
         redirectTo: 'buttons',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'buttons',
-        loadComponent: () => import('./buttons/buttons.component').then(m => m.ButtonsComponent),
+        loadComponent: () =>
+          import('./buttons/buttons.component').then((m) => m.ButtonsComponent),
         data: {
-          title: 'Buttons'
-        }
+          title: 'Buttons',
+        },
       },
       {
         path: 'button-groups',
-        loadComponent: () => import('./button-groups/button-groups.component').then(m => m.ButtonGroupsComponent),
+        loadComponent: () =>
+          import('./button-groups/button-groups.component').then(
+            (m) => m.ButtonGroupsComponent,
+          ),
         data: {
-          title: 'Button groups'
-        }
+          title: 'Button groups',
+        },
       },
       {
         path: 'dropdowns',
-        loadComponent: () => import('./dropdowns/dropdowns.component').then(m => m.DropdownsComponent),
+        loadComponent: () =>
+          import('./dropdowns/dropdowns.component').then(
+            (m) => m.DropdownsComponent,
+          ),
         data: {
-          title: 'Dropdowns'
-        }
+          title: 'Dropdowns',
+        },
       },
-    ]
-  }
+    ],
+  },
 ];
-

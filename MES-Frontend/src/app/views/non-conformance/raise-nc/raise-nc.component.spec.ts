@@ -8,9 +8,8 @@ describe('RaiseNcComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RaiseNcComponent]
-    })
-    .compileComponents();
+      imports: [RaiseNcComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RaiseNcComponent);
     component = fixture.componentInstance;

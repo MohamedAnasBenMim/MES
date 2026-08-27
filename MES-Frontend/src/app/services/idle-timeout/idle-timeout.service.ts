@@ -1,53 +1,37 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Subject,
-} from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IdleTimeoutService {
+  private readonly idleTimeoutMilliseconds = 3 * 60 * 1000;
 
-private readonly idleTimeoutMilliseconds =
-  3 * 60 * 1000;
+  private readonly warningDurationSeconds = 30 * 60;
 
-private readonly warningDurationSeconds =
-  30 * 60;
+  private idleTimer: ReturnType<typeof setTimeout> | null = null;
 
-  private idleTimer: ReturnType<typeof setTimeout> | null =
-    null;
-
-  private warningTimer:
-    ReturnType<typeof setInterval> | null = null;
+  private warningTimer: ReturnType<typeof setInterval> | null = null;
 
   private isStarted = false;
 
-  private readonly warningVisibleSubject =
-    new BehaviorSubject<boolean>(false);
+  private readonly warningVisibleSubject = new BehaviorSubject<boolean>(false);
 
-  private readonly remainingSecondsSubject =
-    new BehaviorSubject<number>(
-      this.warningDurationSeconds
-    );
+  private readonly remainingSecondsSubject = new BehaviorSubject<number>(
+    this.warningDurationSeconds,
+  );
 
-  private readonly activitySubject =
-    new Subject<void>();
+  private readonly activitySubject = new Subject<void>();
 
-  private readonly timeoutSubject =
-    new Subject<void>();
+  private readonly timeoutSubject = new Subject<void>();
 
-  readonly warningVisible$ =
-    this.warningVisibleSubject.asObservable();
+  readonly warningVisible$ = this.warningVisibleSubject.asObservable();
 
-  readonly remainingSeconds$ =
-    this.remainingSecondsSubject.asObservable();
+  readonly remainingSeconds$ = this.remainingSecondsSubject.asObservable();
 
-  readonly activity$ =
-    this.activitySubject.asObservable();
+  readonly activity$ = this.activitySubject.asObservable();
 
-  readonly timedOut$ =
-    this.timeoutSubject.asObservable();
+  readonly timedOut$ = this.timeoutSubject.asObservable();
 
   private readonly clickListener = (): void => {
     this.registerActivity();
@@ -65,23 +49,13 @@ private readonly warningDurationSeconds =
 
     this.isStarted = true;
 
-    document.addEventListener(
-      'click',
-      this.clickListener,
-      true
-    );
+    document.addEventListener('click', this.clickListener, true);
 
-    document.addEventListener(
-      'keydown',
-      this.keyboardListener,
-      true
-    );
+    document.addEventListener('keydown', this.keyboardListener, true);
 
     this.warningVisibleSubject.next(false);
 
-    this.remainingSecondsSubject.next(
-      this.warningDurationSeconds
-    );
+    this.remainingSecondsSubject.next(this.warningDurationSeconds);
 
     this.resetIdleTimer(false);
   }
@@ -89,26 +63,16 @@ private readonly warningDurationSeconds =
   stop(): void {
     this.isStarted = false;
 
-    document.removeEventListener(
-      'click',
-      this.clickListener,
-      true
-    );
+    document.removeEventListener('click', this.clickListener, true);
 
-    document.removeEventListener(
-      'keydown',
-      this.keyboardListener,
-      true
-    );
+    document.removeEventListener('keydown', this.keyboardListener, true);
 
     this.clearIdleTimer();
     this.clearWarningTimer();
 
     this.warningVisibleSubject.next(false);
 
-    this.remainingSecondsSubject.next(
-      this.warningDurationSeconds
-    );
+    this.remainingSecondsSubject.next(this.warningDurationSeconds);
   }
 
   continueSession(): void {
@@ -120,9 +84,7 @@ private readonly warningDurationSeconds =
 
     this.warningVisibleSubject.next(false);
 
-    this.remainingSecondsSubject.next(
-      this.warningDurationSeconds
-    );
+    this.remainingSecondsSubject.next(this.warningDurationSeconds);
 
     this.activitySubject.next();
 
@@ -147,9 +109,7 @@ private readonly warningDurationSeconds =
     this.resetIdleTimer(false);
   }
 
-  private resetIdleTimer(
-    emitActivity: boolean
-  ): void {
+  private resetIdleTimer(emitActivity: boolean): void {
     this.clearIdleTimer();
 
     if (emitActivity) {
@@ -171,17 +131,12 @@ private readonly warningDurationSeconds =
 
     this.warningVisibleSubject.next(true);
 
-    this.remainingSecondsSubject.next(
-      this.warningDurationSeconds
-    );
+    this.remainingSecondsSubject.next(this.warningDurationSeconds);
 
     this.warningTimer = setInterval(() => {
-      const nextValue =
-        this.remainingSecondsSubject.value - 1;
+      const nextValue = this.remainingSecondsSubject.value - 1;
 
-      this.remainingSecondsSubject.next(
-        Math.max(nextValue, 0)
-      );
+      this.remainingSecondsSubject.next(Math.max(nextValue, 0));
 
       if (nextValue <= 0) {
         this.clearWarningTimer();

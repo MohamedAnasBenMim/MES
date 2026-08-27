@@ -13,10 +13,15 @@ describe('PaginationsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [PaginationModule, CardModule, GridModule, RouterTestingModule, PaginationsComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [
+        PaginationModule,
+        CardModule,
+        GridModule,
+        RouterTestingModule,
+        PaginationsComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

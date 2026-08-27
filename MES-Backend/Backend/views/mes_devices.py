@@ -1,10 +1,8 @@
+from Backend.models import MESDevice, UserAccount
 from django.utils import timezone
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-
-from Backend.models import MESDevice, UserAccount
-
 
 MANDATORY_FIELDS = [
     "device_name",
@@ -26,9 +24,7 @@ DEVICE_TYPES = [
 
 def get_request_username(request):
     return (
-        request.data.get("username")
-        or request.query_params.get("username")
-        or ""
+        request.data.get("username") or request.query_params.get("username") or ""
     ).strip()
 
 
@@ -95,6 +91,7 @@ def generate_device_id():
     last_device = MESDevice.objects.order_by("-id").first()
     next_id = (last_device.id + 1) if last_device else 1
     return f"DEV-{next_id:06d}"
+
 
 @api_view(["GET", "POST"])
 def mes_devices(request):
@@ -188,13 +185,21 @@ def mes_device_detail(request, device_id):
 
     new_device_id = cleaned.get("device_id") or device.device_id
 
-    if MESDevice.objects.filter(device_id__iexact=new_device_id).exclude(id=device.id).exists():
+    if (
+        MESDevice.objects.filter(device_id__iexact=new_device_id)
+        .exclude(id=device.id)
+        .exists()
+    ):
         return Response(
             {"error": "Device ID already exists."},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    if MESDevice.objects.filter(mac_address__iexact=cleaned["mac_address"]).exclude(id=device.id).exists():
+    if (
+        MESDevice.objects.filter(mac_address__iexact=cleaned["mac_address"])
+        .exclude(id=device.id)
+        .exists()
+    ):
         return Response(
             {"error": "MAC Address already exists."},
             status=status.HTTP_400_BAD_REQUEST,

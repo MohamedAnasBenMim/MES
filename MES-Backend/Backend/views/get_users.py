@@ -21,7 +21,9 @@ def sync_auth_users_to_user_accounts():
     AuthUser = get_user_model()
 
     for auth_user in AuthUser.objects.all():
-        account = UserAccount.objects.filter(username__iexact=auth_user.username).first()
+        account = UserAccount.objects.filter(
+            username__iexact=auth_user.username
+        ).first()
 
         if not account and auth_user.email:
             account = UserAccount.objects.filter(email__iexact=auth_user.email).first()
@@ -67,15 +69,17 @@ def get_users(request):
         if user.profile_image:
             profile_image = request.build_absolute_uri(user.profile_image.url)
 
-        data.append({
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "role": user.role,
-            "language": user.language,
-            "phone_number": user.phone_number,
-            "profile_image": profile_image,
-            "is_active": user.is_active,
-        })
+        data.append(
+            {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "role": user.role,
+                "language": user.language,
+                "phone_number": user.phone_number,
+                "profile_image": profile_image,
+                "is_active": user.is_active,
+            }
+        )
 
     return Response(data)

@@ -16,7 +16,7 @@ export const routes: Routes = [
         path: 'nc-list',
         loadComponent: () =>
           import('./dashboard/non-conformance.component').then(
-            (m) => m.NonConformanceComponent
+            (m) => m.NonConformanceComponent,
           ),
         data: {
           title: 'Non Conformances list',
@@ -26,7 +26,7 @@ export const routes: Routes = [
         path: 'raise-nc',
         loadComponent: () =>
           import('./raise-nc/raise-nc.component').then(
-            (m) => m.RaiseNcComponent
+            (m) => m.RaiseNcComponent,
           ),
         data: {
           title: 'Raise Non Conformance',

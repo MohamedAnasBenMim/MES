@@ -10,14 +10,20 @@ import { ButtonsComponent } from './buttons.component';
 describe('ButtonsComponent', () => {
   let component: ButtonsComponent;
   let fixture: ComponentFixture<ButtonsComponent>;
-  let iconSetService: IconSetService
+  let iconSetService: IconSetService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [CardModule, GridModule, ButtonModule, RouterTestingModule, IconModule, ButtonsComponent],
-    providers: [IconSetService]
-})
-    .compileComponents();
+      imports: [
+        CardModule,
+        GridModule,
+        ButtonModule,
+        RouterTestingModule,
+        IconModule,
+        ButtonsComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

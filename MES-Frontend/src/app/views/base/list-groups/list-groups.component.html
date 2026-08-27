@@ -13,7 +13,7 @@
         <app-docs-example href="components/list-group">
           <ul cListGroup>
             @for (item of sampleList; track item) {
-            <li cListGroupItem>{{ item }}</li>
+              <li cListGroupItem>{{ item }}</li>
             }
           </ul>
         </app-docs-example>
@@ -33,7 +33,7 @@
         <app-docs-example href="components/list-group/#active-items">
           <ul cListGroup>
             @for (item of sampleList; track item; let first = $first) {
-            <li cListGroupItem [active]="first">{{ item }}</li>
+              <li cListGroupItem [active]="first">{{ item }}</li>
             }
           </ul>
         </app-docs-example>
@@ -53,7 +53,7 @@
         <app-docs-example href="components/list-group/#disabled-items">
           <div cListGroup>
             @for (item of sampleList; track item; let first = $first) {
-            <button cListGroupItem [disabled]="first">{{ item }}</button>
+              <button cListGroupItem [disabled]="first">{{ item }}</button>
             }
           </div>
         </app-docs-example>
@@ -76,11 +76,15 @@
         </p>
         <app-docs-example href="components/list-group/#links-and-buttons">
           <div cListGroup>
-            @for (item of sampleList; track item; let first = $first, last =
-            $last) {
-            <a href cListGroupItem [active]="first" [disabled]="last">{{
-              item
-            }}</a>
+            @for (
+              item of sampleList;
+              track item;
+              let first = $first, last =
+            $last
+            ) {
+              <a href cListGroupItem [active]="first" [disabled]="last">{{
+                item
+              }}</a>
             }
           </div>
         </app-docs-example>
@@ -101,7 +105,7 @@
         <app-docs-example href="components/list-group/#flush">
           <ul cListGroup flush>
             @for (item of sampleList; track item) {
-            <li cListGroupItem>{{ item }}</li>
+              <li cListGroupItem>{{ item }}</li>
             }
           </ul>
         </app-docs-example>
@@ -130,11 +134,11 @@
         </p>
         <app-docs-example href="components/list-group/#flush">
           @for (breakpoint of breakpoints; track breakpoint) {
-          <ul [horizontal]="breakpoint" cListGroup class="mb-2">
-            <li cListGroupItem>Cras justo odio</li>
-            <li cListGroupItem>Dapibus ac facilisis in</li>
-            <li cListGroupItem>Morbi leo risus</li>
-          </ul>
+            <ul [horizontal]="breakpoint" cListGroup class="mb-2">
+              <li cListGroupItem>Cras justo odio</li>
+              <li cListGroupItem>Dapibus ac facilisis in</li>
+              <li cListGroupItem>Morbi leo risus</li>
+            </ul>
           }
         </app-docs-example>
       </c-card-body>
@@ -153,9 +157,9 @@
         <app-docs-example href="components/list-group/#contextual-classes">
           <ul cListGroup class="mb-3">
             @for (color of colors; track color) {
-            <li [color]="color" cListGroupItem>
-              A simple {{ color }} list group item
-            </li>
+              <li [color]="color" cListGroupItem>
+                A simple {{ color }} list group item
+              </li>
             }
           </ul>
         </app-docs-example>
@@ -169,9 +173,9 @@
         <app-docs-example href="components/list-group/#contextual-classes">
           <div cListGroup>
             @for (color of colors; track color) {
-            <a [color]="color" cListGroupItem href>
-              A simple {{ color }} list group item
-            </a>
+              <a [color]="color" cListGroupItem href>
+                A simple {{ color }} list group item
+              </a>
             }
           </div>
         </app-docs-example>
@@ -190,20 +194,23 @@
         </p>
         <app-docs-example href="components/list-group/#with-badges">
           <div cListGroup>
-            @for (item of sampleList; track item; let i = $index, last = $last)
-            {
-            <button
-              cListGroupItem
-              class="d-flex justify-content-between align-items-center"
-              [disabled]="last"
-            >
-              {{ item }}
-              <c-badge
-                [color]="last ? 'secondary' : 'primary'"
-                shape="rounded-pill"
-                >{{ i + 1 }}</c-badge
+            @for (
+              item of sampleList;
+              track item;
+              let i = $index, last = $last
+            ) {
+              <button
+                cListGroupItem
+                class="d-flex justify-content-between align-items-center"
+                [disabled]="last"
               >
-            </button>
+                {{ item }}
+                <c-badge
+                  [color]="last ? 'secondary' : 'primary'"
+                  shape="rounded-pill"
+                  >{{ i + 1 }}</c-badge
+                >
+              </button>
             }
           </div>
         </app-docs-example>

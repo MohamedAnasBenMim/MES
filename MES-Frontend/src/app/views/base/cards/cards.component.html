@@ -406,27 +406,27 @@
                   <c-card-header>
                     <c-tabs-list class="card-header-tabs" variant="tabs">
                       @for (tab of tabs; track tab) {
-                      <button
-                        [itemKey]="tab"
-                        cTab
-                        [disabled]="tab === 'Disabled'"
-                      >
-                        {{ tab }}
-                      </button>
+                        <button
+                          [itemKey]="tab"
+                          cTab
+                          [disabled]="tab === 'Disabled'"
+                        >
+                          {{ tab }}
+                        </button>
                       }
                     </c-tabs-list>
                   </c-card-header>
                   <c-card-body>
                     <c-tabs-content>
                       @for (panel of tabs; track panel) {
-                      <c-tab-panel [itemKey]="panel">
-                        <ng-container
-                          *ngTemplateOutlet="
-                            cardBodyTemplate;
-                            context: { $implicit: panel }
-                          "
-                        />
-                      </c-tab-panel>
+                        <c-tab-panel [itemKey]="panel">
+                          <ng-container
+                            *ngTemplateOutlet="
+                              cardBodyTemplate;
+                              context: { $implicit: panel }
+                            "
+                          />
+                        </c-tab-panel>
                       }
                     </c-tabs-content>
                   </c-card-body>
@@ -441,27 +441,27 @@
                   <c-card-header>
                     <c-tabs-list class="card-header-pills" variant="pills">
                       @for (tab of tabs; track tab) {
-                      <button
-                        [itemKey]="tab"
-                        cTab
-                        [disabled]="tab === 'Disabled'"
-                      >
-                        {{ tab }}
-                      </button>
+                        <button
+                          [itemKey]="tab"
+                          cTab
+                          [disabled]="tab === 'Disabled'"
+                        >
+                          {{ tab }}
+                        </button>
                       }
                     </c-tabs-list>
                   </c-card-header>
                   <c-card-body>
                     <c-tabs-content>
                       @for (panel of tabs; track panel) {
-                      <c-tab-panel [itemKey]="panel">
-                        <ng-container
-                          *ngTemplateOutlet="
-                            cardBodyTemplate;
-                            context: { $implicit: panel }
-                          "
-                        />
-                      </c-tab-panel>
+                        <c-tab-panel [itemKey]="panel">
+                          <ng-container
+                            *ngTemplateOutlet="
+                              cardBodyTemplate;
+                              context: { $implicit: panel }
+                            "
+                          />
+                        </c-tab-panel>
                       }
                     </c-tabs-content>
                   </c-card-body>
@@ -551,29 +551,29 @@
         >
           <c-row>
             @for (item of colors; track item; let i = $index) {
-            <c-col lg="4">
-              <c-card
-                [color]="item.color"
-                [textColor]="
-                  item.color === 'warning' || item.color === 'light'
-                    ? 'dark'
-                    : 'white'
-                "
-                class="mb-3"
-              >
-                <c-card-header>Header</c-card-header>
-                <c-card-body class="bg-gradient">
-                  <h5 cCardTitle>{{ item.color }} card title</h5>
-                  <p cCardText>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card&#39;s content.
-                  </p>
-                  <button [color]="item.color" cButton class="shadow">
-                    Go somewhere
-                  </button>
-                </c-card-body>
-              </c-card>
-            </c-col>
+              <c-col lg="4">
+                <c-card
+                  [color]="item.color"
+                  [textColor]="
+                    item.color === 'warning' || item.color === 'light'
+                      ? 'dark'
+                      : 'white'
+                  "
+                  class="mb-3"
+                >
+                  <c-card-header>Header</c-card-header>
+                  <c-card-body class="bg-gradient">
+                    <h5 cCardTitle>{{ item.color }} card title</h5>
+                    <p cCardText>
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card&#39;s content.
+                    </p>
+                    <button [color]="item.color" cButton class="shadow">
+                      Go somewhere
+                    </button>
+                  </c-card-body>
+                </c-card>
+              </c-col>
             }
           </c-row>
         </app-docs-example>
@@ -591,22 +591,22 @@
         <app-docs-example class="mb-1" href="components/card/#border">
           <c-row class="g-4">
             @for (item of colors; track item; let i = $index) {
-            <c-col lg="4">
-              <c-card
-                [cBorder]="item.color"
-                [textColor]="item?.textColor ?? ''"
-              >
-                <c-card-header>Header</c-card-header>
-                <c-card-body>
-                  <h5 cCardTitle>{{ item.color }} card title</h5>
-                  <p cCardText>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card&#39;s content.
-                  </p>
-                  <button [color]="item.color" cButton>Go somewhere</button>
-                </c-card-body>
-              </c-card>
-            </c-col>
+              <c-col lg="4">
+                <c-card
+                  [cBorder]="item.color"
+                  [textColor]="item?.textColor ?? ''"
+                >
+                  <c-card-header>Header</c-card-header>
+                  <c-card-body>
+                    <h5 cCardTitle>{{ item.color }} card title</h5>
+                    <p cCardText>
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card&#39;s content.
+                    </p>
+                    <button [color]="item.color" cButton>Go somewhere</button>
+                  </c-card-body>
+                </c-card>
+              </c-col>
             }
           </c-row>
         </app-docs-example>
@@ -624,23 +624,23 @@
         <app-docs-example href="components/card/#top-border">
           <c-row>
             @for (item of colors; track item; let i = $index) {
-            <c-col lg="4">
-              <c-card
-                [cBorder]="{ top: { color: item.color, width: 3 } }"
-                [textColor]="item?.textColor ?? ''"
-                class="mb-3"
-              >
-                <c-card-header>Header</c-card-header>
-                <c-card-body>
-                  <h5 cCardTitle>{{ item.color }} card title</h5>
-                  <p cCardText>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card&#39;s content.
-                  </p>
-                  <button [color]="item.color" cButton>Go somewhere</button>
-                </c-card-body>
-              </c-card>
-            </c-col>
+              <c-col lg="4">
+                <c-card
+                  [cBorder]="{ top: { color: item.color, width: 3 } }"
+                  [textColor]="item?.textColor ?? ''"
+                  class="mb-3"
+                >
+                  <c-card-header>Header</c-card-header>
+                  <c-card-body>
+                    <h5 cCardTitle>{{ item.color }} card title</h5>
+                    <p cCardText>
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card&#39;s content.
+                    </p>
+                    <button [color]="item.color" cButton>Go somewhere</button>
+                  </c-card-body>
+                </c-card>
+              </c-col>
             }
           </c-row>
         </app-docs-example>

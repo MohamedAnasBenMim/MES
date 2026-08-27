@@ -1,0 +1,39 @@
+# GITHUB DEPENDABOT CONFIGURATION
+# --------------------------------
+# HOW IT WORKS:
+#   1. GitHub's Dependabot bot runs automatically every week (no setup needed beyond this file)
+#   2. It scans your dependency files (requirements.txt, package.json, Dockerfiles)
+#   3. If it finds a package with a known security vulnerability (CVE), it opens a Pull Request
+#   4. The PR updates the vulnerable package to a safe version
+#   5. You review and merge the PR to stay secure
+
+version: 2
+updates:
+  # Scan Python packages in requirements.txt for vulnerabilities
+  - package-ecosystem: "pip"
+    directory: "/MES-Backend"
+    schedule:
+      interval: "weekly"
+
+  # Scan Node.js/Angular packages in package.json for vulnerabilities
+  - package-ecosystem: "npm"
+    directory: "/MES-Frontend"
+    schedule:
+      interval: "weekly"
+
+  # Scan Docker base images (python:3.11-slim, nginx:alpine) for security patches
+  - package-ecosystem: "docker"
+    directory: "/MES-Backend"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "/MES-Frontend"
+    schedule:
+      interval: "weekly"
+
+  # Scan GitHub Actions (actions/checkout, actions/setup-python) for updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

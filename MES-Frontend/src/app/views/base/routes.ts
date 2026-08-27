@@ -4,121 +4,156 @@ export const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Base'
+      title: 'Base',
     },
     children: [
       {
         path: '',
         redirectTo: 'cards',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'accordion',
-        loadComponent: () => import('./accordion/accordions.component').then(m => m.AccordionsComponent),
+        loadComponent: () =>
+          import('./accordion/accordions.component').then(
+            (m) => m.AccordionsComponent,
+          ),
         data: {
-          title: 'Accordion'
-        }
+          title: 'Accordion',
+        },
       },
       {
         path: 'breadcrumbs',
-        loadComponent: () => import('./breadcrumbs/breadcrumbs.component').then(m => m.BreadcrumbsComponent),
+        loadComponent: () =>
+          import('./breadcrumbs/breadcrumbs.component').then(
+            (m) => m.BreadcrumbsComponent,
+          ),
         data: {
-          title: 'Breadcrumbs'
-        }
+          title: 'Breadcrumbs',
+        },
       },
       {
         path: 'cards',
-        loadComponent: () => import('./cards/cards.component').then(m => m.CardsComponent),
+        loadComponent: () =>
+          import('./cards/cards.component').then((m) => m.CardsComponent),
         data: {
-          title: 'Cards'
-        }
+          title: 'Cards',
+        },
       },
       {
         path: 'carousel',
-        loadComponent: () => import('./carousels/carousels.component').then(m => m.CarouselsComponent),
+        loadComponent: () =>
+          import('./carousels/carousels.component').then(
+            (m) => m.CarouselsComponent,
+          ),
         data: {
-          title: 'Carousel'
-        }
+          title: 'Carousel',
+        },
       },
       {
         path: 'collapse',
-        loadComponent: () => import('./collapses/collapses.component').then(m => m.CollapsesComponent),
+        loadComponent: () =>
+          import('./collapses/collapses.component').then(
+            (m) => m.CollapsesComponent,
+          ),
         data: {
-          title: 'Collapse'
-        }
+          title: 'Collapse',
+        },
       },
       {
         path: 'list-group',
-        loadComponent: () => import('./list-groups/list-groups.component').then(m => m.ListGroupsComponent),
+        loadComponent: () =>
+          import('./list-groups/list-groups.component').then(
+            (m) => m.ListGroupsComponent,
+          ),
         data: {
-          title: 'List Group'
-        }
+          title: 'List Group',
+        },
       },
       {
         path: 'navs',
-        loadComponent: () => import('./navs/navs.component').then(m => m.NavsComponent),
+        loadComponent: () =>
+          import('./navs/navs.component').then((m) => m.NavsComponent),
         data: {
-          title: 'Navs & Tabs'
-        }
+          title: 'Navs & Tabs',
+        },
       },
       {
         path: 'pagination',
-        loadComponent: () => import('./paginations/paginations.component').then(m => m.PaginationsComponent),
+        loadComponent: () =>
+          import('./paginations/paginations.component').then(
+            (m) => m.PaginationsComponent,
+          ),
         data: {
-          title: 'Pagination'
-        }
+          title: 'Pagination',
+        },
       },
       {
         path: 'placeholder',
-        loadComponent: () => import('./placeholders/placeholders.component').then(m => m.PlaceholdersComponent),
+        loadComponent: () =>
+          import('./placeholders/placeholders.component').then(
+            (m) => m.PlaceholdersComponent,
+          ),
         data: {
-          title: 'Placeholder'
-        }
+          title: 'Placeholder',
+        },
       },
       {
         path: 'popovers',
-        loadComponent: () => import('./popovers/popovers.component').then(m => m.PopoversComponent),
+        loadComponent: () =>
+          import('./popovers/popovers.component').then(
+            (m) => m.PopoversComponent,
+          ),
         data: {
-          title: 'Popovers'
-        }
+          title: 'Popovers',
+        },
       },
       {
         path: 'progress',
-        loadComponent: () => import('./progress/progress.component').then(m => m.ProgressComponent),
+        loadComponent: () =>
+          import('./progress/progress.component').then(
+            (m) => m.ProgressComponent,
+          ),
         data: {
-          title: 'Progress'
-        }
+          title: 'Progress',
+        },
       },
       {
         path: 'spinners',
-        loadComponent: () => import('./spinners/spinners.component').then(m => m.SpinnersComponent),
+        loadComponent: () =>
+          import('./spinners/spinners.component').then(
+            (m) => m.SpinnersComponent,
+          ),
         data: {
-          title: 'Spinners'
-        }
+          title: 'Spinners',
+        },
       },
       {
         path: 'tables',
-        loadComponent: () => import('./tables/tables.component').then(m => m.TablesComponent),
+        loadComponent: () =>
+          import('./tables/tables.component').then((m) => m.TablesComponent),
         data: {
-          title: 'Tables'
-        }
+          title: 'Tables',
+        },
       },
       {
         path: 'tabs',
-        loadComponent: () => import('./tabs/tabs.component').then(m => m.AppTabsComponent),
+        loadComponent: () =>
+          import('./tabs/tabs.component').then((m) => m.AppTabsComponent),
         data: {
-          title: 'Tabs'
-        }
+          title: 'Tabs',
+        },
       },
       {
         path: 'tooltips',
-        loadComponent: () => import('./tooltips/tooltips.component').then(m => m.TooltipsComponent),
+        loadComponent: () =>
+          import('./tooltips/tooltips.component').then(
+            (m) => m.TooltipsComponent,
+          ),
         data: {
-          title: 'Tooltips'
-        }
-      }
-    ]
-  }
+          title: 'Tooltips',
+        },
+      },
+    ],
+  },
 ];
-
-

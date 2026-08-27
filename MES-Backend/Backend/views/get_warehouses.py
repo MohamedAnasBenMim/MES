@@ -2,14 +2,12 @@ import logging
 from typing import Any
 
 import requests
+from Backend.models import IonAPICredentials
+from Backend.utils.token_manager import get_mingle_token
 from requests import RequestException
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from Backend.models import IonAPICredentials
-from Backend.utils.token_manager import get_mingle_token
-
 
 logger = logging.getLogger(__name__)
 
@@ -35,11 +33,7 @@ WAREHOUSE_FIELDS = (
 
 
 def get_latest_credentials() -> IonAPICredentials | None:
-    return (
-        IonAPICredentials.objects
-        .order_by("-created_at")
-        .first()
-    )
+    return IonAPICredentials.objects.order_by("-created_at").first()
 
 
 def parse_positive_integer(
@@ -179,18 +173,11 @@ def matches_search(
 
     normalized_search = search_term.strip().lower()
 
-    warehouse_code = str(
-        warehouse.get("Warehouse") or ""
-    ).lower()
+    warehouse_code = str(warehouse.get("Warehouse") or "").lower()
 
-    description = str(
-        warehouse.get("Description") or ""
-    ).lower()
+    description = str(warehouse.get("Description") or "").lower()
 
-    return (
-        normalized_search in warehouse_code
-        or normalized_search in description
-    )
+    return normalized_search in warehouse_code or normalized_search in description
 
 
 def matches_warehouse_type(
@@ -200,9 +187,7 @@ def matches_warehouse_type(
     if not selected_type:
         return True
 
-    actual_type = str(
-        warehouse.get("WarehouseType") or ""
-    ).strip().lower()
+    actual_type = str(warehouse.get("WarehouseType") or "").strip().lower()
 
     return actual_type == selected_type.strip().lower()
 
@@ -279,9 +264,7 @@ def fetch_all_warehouses(
         )
 
         if response.status_code in {401, 403}:
-            raise PermissionError(
-                "Infor authorization failed."
-            )
+            raise PermissionError("Infor authorization failed.")
 
         response.raise_for_status()
 
@@ -291,19 +274,11 @@ def fetch_all_warehouses(
             page_items = payload.get("value", [])
 
             if isinstance(page_items, list):
-                warehouses.extend(
-                    item
-                    for item in page_items
-                    if isinstance(item, dict)
-                )
+                warehouses.extend(item for item in page_items if isinstance(item, dict))
 
             next_url = payload.get("@odata.nextLink")
         elif isinstance(payload, list):
-            warehouses.extend(
-                item
-                for item in payload
-                if isinstance(item, dict)
-            )
+            warehouses.extend(item for item in payload if isinstance(item, dict))
 
             next_url = None
         else:
@@ -329,9 +304,7 @@ def get_warehouses(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    company_code = (
-        credentials.company or ""
-    ).strip()
+    company_code = (credentials.company or "").strip()
 
     if not company_code:
         return Response(
@@ -364,12 +337,10 @@ def get_warehouses(request):
         "",
     ).strip()
 
-    inventory_management = (
-        request.query_params.get(
-            "inventory_management",
-            "",
-        ).strip()
-    )
+    inventory_management = request.query_params.get(
+        "inventory_management",
+        "",
+    ).strip()
 
     page = parse_positive_integer(
         request.query_params.get("page"),
@@ -387,17 +358,10 @@ def get_warehouses(request):
     try:
         access_token = get_mingle_token()
     except Exception:
-        logger.exception(
-            "Unable to generate the Infor token."
-        )
+        logger.exception("Unable to generate the Infor token.")
 
         return Response(
-            {
-                "error": (
-                    "Authorization error while accessing "
-                    "LN warehouse data."
-                )
-            },
+            {"error": ("Authorization error while accessing " "LN warehouse data.")},
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
@@ -408,27 +372,17 @@ def get_warehouses(request):
     }
 
     try:
-        raw_warehouses = fetch_all_warehouses(
-            headers
-        )
+        raw_warehouses = fetch_all_warehouses(headers)
 
-        warehouses = [
-            normalize_warehouse(item)
-            for item in raw_warehouses
-        ]
+        warehouses = [normalize_warehouse(item) for item in raw_warehouses]
 
-        warehouses.sort(
-            key=lambda item: str(
-                item.get("Warehouse") or ""
-            ).lower()
-        )
+        warehouses.sort(key=lambda item: str(item.get("Warehouse") or "").lower())
 
         warehouse_types = sorted(
             {
                 str(item.get("WarehouseType")).strip()
                 for item in warehouses
-                if item.get("WarehouseType")
-                not in {None, ""}
+                if item.get("WarehouseType") not in {None, ""}
             },
             key=str.lower,
         )
@@ -446,29 +400,17 @@ def get_warehouses(request):
 
         total_pages = max(
             1,
-            (
-                total_count
-                + page_size
-                - 1
-            )
-            // page_size,
+            (total_count + page_size - 1) // page_size,
         )
 
         if page > total_pages:
             page = total_pages
 
-        start_index = (
-            page - 1
-        ) * page_size
+        start_index = (page - 1) * page_size
 
-        end_index = (
-            start_index
-            + page_size
-        )
+        end_index = start_index + page_size
 
-        page_items = filtered_warehouses[
-            start_index:end_index
-        ]
+        page_items = filtered_warehouses[start_index:end_index]
 
         return Response(
             {
@@ -488,40 +430,25 @@ def get_warehouses(request):
 
     except PermissionError:
         return Response(
-            {
-                "error": (
-                    "Authorization error while accessing "
-                    "LN warehouse data."
-                )
-            },
+            {"error": ("Authorization error while accessing " "LN warehouse data.")},
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
     except RequestException as exception:
-        logger.exception(
-            "Unable to retrieve Warehouse Master data."
-        )
+        logger.exception("Unable to retrieve Warehouse Master data.")
 
         return Response(
             {
-                "error": (
-                    "Unable to retrieve warehouse data."
-                ),
+                "error": ("Unable to retrieve warehouse data."),
                 "detail": str(exception),
             },
             status=status.HTTP_502_BAD_GATEWAY,
         )
 
     except ValueError:
-        logger.exception(
-            "Infor returned an invalid JSON response."
-        )
+        logger.exception("Infor returned an invalid JSON response.")
 
         return Response(
-            {
-                "error": (
-                    "Unable to retrieve warehouse data."
-                )
-            },
+            {"error": ("Unable to retrieve warehouse data.")},
             status=status.HTTP_502_BAD_GATEWAY,
         )

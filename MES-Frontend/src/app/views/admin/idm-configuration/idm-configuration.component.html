@@ -21,7 +21,12 @@
     {{ errorMessage }}
   </div>
 
-  <form class="idm-form" #idmForm="ngForm" (ngSubmit)="saveConfiguration(idmForm)" novalidate>
+  <form
+    class="idm-form"
+    #idmForm="ngForm"
+    (ngSubmit)="saveConfiguration(idmForm)"
+    novalidate
+  >
     <div class="form-group">
       <label>Document <span class="required-star">*</span></label>
       <input
@@ -47,7 +52,10 @@
         [class.input-error]="documentType.invalid && documentType.touched"
         required
       />
-      <small class="field-error" *ngIf="documentType.invalid && documentType.touched">
+      <small
+        class="field-error"
+        *ngIf="documentType.invalid && documentType.touched"
+      >
         Document Type is required.
       </small>
     </div>
@@ -62,7 +70,10 @@
         [class.input-error]="entityType.invalid && entityType.touched"
         required
       />
-      <small class="field-error" *ngIf="entityType.invalid && entityType.touched">
+      <small
+        class="field-error"
+        *ngIf="entityType.invalid && entityType.touched"
+      >
         Entity Type is required.
       </small>
     </div>
@@ -77,7 +88,10 @@
         [class.input-error]="entityTypeValue.invalid && entityTypeValue.touched"
         required
       />
-      <small class="field-error" *ngIf="entityTypeValue.invalid && entityTypeValue.touched">
+      <small
+        class="field-error"
+        *ngIf="entityTypeValue.invalid && entityTypeValue.touched"
+      >
         Entity Type Value is required.
       </small>
     </div>
@@ -89,36 +103,44 @@
         name="accounting_entity"
         [(ngModel)]="formData.accounting_entity"
         #accountingEntity="ngModel"
-        [class.input-error]="accountingEntity.invalid && accountingEntity.touched"
+        [class.input-error]="
+          accountingEntity.invalid && accountingEntity.touched
+        "
         required
       />
-      <small class="field-error" *ngIf="accountingEntity.invalid && accountingEntity.touched">
+      <small
+        class="field-error"
+        *ngIf="accountingEntity.invalid && accountingEntity.touched"
+      >
         Accounting Entity is required.
       </small>
     </div>
 
     <div class="form-group">
-      <label>Accounting Entity Value <span class="required-star">*</span></label>
+      <label
+        >Accounting Entity Value <span class="required-star">*</span></label
+      >
       <input
         type="text"
         name="accounting_entity_value"
         [(ngModel)]="formData.accounting_entity_value"
         #accountingEntityValue="ngModel"
-        [class.input-error]="accountingEntityValue.invalid && accountingEntityValue.touched"
+        [class.input-error]="
+          accountingEntityValue.invalid && accountingEntityValue.touched
+        "
         required
       />
-      <small class="field-error" *ngIf="accountingEntityValue.invalid && accountingEntityValue.touched">
+      <small
+        class="field-error"
+        *ngIf="accountingEntityValue.invalid && accountingEntityValue.touched"
+      >
         Accounting Entity Value is required.
       </small>
     </div>
 
     <div class="form-group">
       <label>Location</label>
-      <input
-        type="text"
-        name="location"
-        [(ngModel)]="formData.location"
-      />
+      <input type="text" name="location" [(ngModel)]="formData.location" />
     </div>
 
     <div class="form-group">
@@ -140,7 +162,10 @@
         [class.input-error]="invoiceNumber.invalid && invoiceNumber.touched"
         required
       />
-      <small class="field-error" *ngIf="invoiceNumber.invalid && invoiceNumber.touched">
+      <small
+        class="field-error"
+        *ngIf="invoiceNumber.invalid && invoiceNumber.touched"
+      >
         Invoice Number is required.
       </small>
     </div>
@@ -161,10 +186,15 @@
         name="financial_company"
         [(ngModel)]="formData.financial_company"
         #financialCompany="ngModel"
-        [class.input-error]="financialCompany.invalid && financialCompany.touched"
+        [class.input-error]="
+          financialCompany.invalid && financialCompany.touched
+        "
         required
       />
-      <small class="field-error" *ngIf="financialCompany.invalid && financialCompany.touched">
+      <small
+        class="field-error"
+        *ngIf="financialCompany.invalid && financialCompany.touched"
+      >
         Financial Company is required.
       </small>
     </div>
@@ -175,7 +205,7 @@
       </button>
 
       <button type="submit" class="btn-save">
-        {{ editingId ? 'Update configuration' : 'Save' }}
+        {{ editingId ? "Update configuration" : "Save" }}
       </button>
     </div>
   </form>
@@ -209,25 +239,31 @@
           <td>{{ config.entity_type_value }}</td>
           <td>{{ config.accounting_entity }}</td>
           <td>{{ config.accounting_entity_value }}</td>
-          <td>{{ config.location || '-' }}</td>
-          <td>{{ config.location_value || '-' }}</td>
+          <td>{{ config.location || "-" }}</td>
+          <td>{{ config.location_value || "-" }}</td>
           <td>{{ config.invoice_number }}</td>
-          <td>{{ config.transaction_type || '-' }}</td>
+          <td>{{ config.transaction_type || "-" }}</td>
           <td>{{ config.financial_company }}</td>
           <td>
-            <button type="button" class="btn-edit" (click)="editConfiguration(config)">
+            <button
+              type="button"
+              class="btn-edit"
+              (click)="editConfiguration(config)"
+            >
               Edit
             </button>
-            <button type="button" class="btn-delete" (click)="deleteConfiguration(config)">
+            <button
+              type="button"
+              class="btn-delete"
+              (click)="deleteConfiguration(config)"
+            >
               Delete
             </button>
           </td>
         </tr>
 
         <tr *ngIf="filteredConfigurations.length === 0">
-          <td colspan="12" class="empty-row">
-            No IDM configurations found.
-          </td>
+          <td colspan="12" class="empty-row">No IDM configurations found.</td>
         </tr>
       </tbody>
     </table>

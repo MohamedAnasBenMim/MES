@@ -48,9 +48,7 @@
       </select>
     </div>
 
-    <div *ngIf="isLoading" class="state-message">
-      Loading roles...
-    </div>
+    <div *ngIf="isLoading" class="state-message">Loading roles...</div>
 
     <div *ngIf="!isLoading && errorMessage" class="state-message error">
       {{ errorMessage }}

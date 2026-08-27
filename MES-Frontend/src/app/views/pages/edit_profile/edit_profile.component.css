@@ -47,13 +47,9 @@
 
   text-align: center;
 
-  box-shadow:
-    0 28px 80px
-    rgba(15, 23, 42, 0.3);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.3);
 
-  animation:
-    profile-modal-open
-    0.2s ease-out;
+  animation: profile-modal-open 0.2s ease-out;
 }
 
 .profile-modal-box h3 {
@@ -161,9 +157,7 @@
 .verification-code-input:focus {
   border-color: #00aeef;
 
-  box-shadow:
-    0 0 0 4px
-    rgba(0, 174, 239, 0.12);
+  box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.12);
 }
 
 .verification-code-input:disabled {
@@ -251,17 +245,13 @@
   from {
     opacity: 0;
 
-    transform:
-      translateY(14px)
-      scale(0.98);
+    transform: translateY(14px) scale(0.98);
   }
 
   to {
     opacity: 1;
 
-    transform:
-      translateY(0)
-      scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 

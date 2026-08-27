@@ -17,10 +17,7 @@ from .generate_random_password import generate_random_password
 @csrf_exempt
 def create_user(request):
     if request.method != "POST":
-        return JsonResponse(
-            {"error": "Only POST method allowed."},
-            status=405
-        )
+        return JsonResponse({"error": "Only POST method allowed."}, status=405)
 
     try:
         # Read JSON or form-data
@@ -28,10 +25,7 @@ def create_user(request):
             try:
                 data = json.loads(request.body.decode("utf-8"))
             except json.JSONDecodeError:
-                return JsonResponse(
-                    {"error": "Invalid JSON body."},
-                    status=400
-                )
+                return JsonResponse({"error": "Invalid JSON body."}, status=400)
         else:
             data = request.POST
 
@@ -43,64 +37,43 @@ def create_user(request):
 
         # Required fields
         if not username:
-            return JsonResponse(
-                {"error": "Username is required."},
-                status=400
-            )
+            return JsonResponse({"error": "Username is required."}, status=400)
 
         if not email:
-            return JsonResponse(
-                {"error": "Email is required."},
-                status=400
-            )
+            return JsonResponse({"error": "Email is required."}, status=400)
 
         # Validate email format
         try:
             validate_email(email)
         except ValidationError:
-            return JsonResponse(
-                {"error": "Invalid email format."},
-                status=400
-            )
+            return JsonResponse({"error": "Invalid email format."}, status=400)
 
         # Validate role
         allowed_roles = ["admin", "operator", "quality", "supervisor"]
 
         if role not in allowed_roles:
             return JsonResponse(
-                {
-                    "error": "Invalid role.",
-                    "allowed_roles": allowed_roles
-                },
-                status=400
+                {"error": "Invalid role.", "allowed_roles": allowed_roles}, status=400
             )
 
         AuthUser = get_user_model()
 
         # Check duplicate username
         if UserAccount.objects.filter(username__iexact=username).exists():
-            return JsonResponse(
-                {"error": "Username already exists."},
-                status=409
-            )
+            return JsonResponse({"error": "Username already exists."}, status=409)
 
         if AuthUser.objects.filter(username__iexact=username).exists():
-            return JsonResponse(
-                {"error": "Username already exists."},
-                status=409
-            )
+            return JsonResponse({"error": "Username already exists."}, status=409)
 
         # Check duplicate email
         if UserAccount.objects.filter(email__iexact=email).exists():
             return JsonResponse(
-                {"error": f"A user with email '{email}' already exists."},
-                status=409
+                {"error": f"A user with email '{email}' already exists."}, status=409
             )
 
         if AuthUser.objects.filter(email__iexact=email).exists():
             return JsonResponse(
-                {"error": f"A user with email '{email}' already exists."},
-                status=409
+                {"error": f"A user with email '{email}' already exists."}, status=409
             )
 
         # Generate password only in backend
@@ -163,9 +136,9 @@ ZUM IT Team
             return JsonResponse(
                 {
                     "error": "User was not created because the email could not be sent.",
-                    "details": str(mail_or_database_error)
+                    "details": str(mail_or_database_error),
                 },
-                status=500
+                status=500,
             )
 
         return JsonResponse(
@@ -178,14 +151,11 @@ ZUM IT Team
                     "role": user_account.role,
                     "language": user_account.language,
                     "phone_number": user_account.phone_number,
-                }
+                },
             },
-            status=201
+            status=201,
         )
 
     except Exception as e:
         traceback.print_exc()
-        return JsonResponse(
-            {"error": f"Server error: {str(e)}"},
-            status=500
-        )
+        return JsonResponse({"error": f"Server error: {str(e)}"}, status=500)

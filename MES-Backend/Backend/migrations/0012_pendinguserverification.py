@@ -6,24 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0011_useraccount_failed_login_attempts_and_more'),
+        ("Backend", "0011_useraccount_failed_login_attempts_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PendingUserVerification',
+            name="PendingUserVerification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=150)),
-                ('email', models.EmailField(max_length=254)),
-                ('role', models.CharField(max_length=100)),
-                ('language', models.CharField(max_length=50)),
-                ('phone_number', models.CharField(max_length=30)),
-                ('verification_code_hash', models.CharField(max_length=128)),
-                ('expires_at', models.DateTimeField()),
-                ('attempts', models.PositiveIntegerField(default=0)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("username", models.CharField(max_length=150)),
+                ("email", models.EmailField(max_length=254)),
+                ("role", models.CharField(max_length=100)),
+                ("language", models.CharField(max_length=50)),
+                ("phone_number", models.CharField(max_length=30)),
+                ("verification_code_hash", models.CharField(max_length=128)),
+                ("expires_at", models.DateTimeField()),
+                ("attempts", models.PositiveIntegerField(default=0)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
     ]

@@ -51,23 +51,25 @@ export class ApiOperatorAssignmentService {
 
   constructor(private http: HttpClient) {}
 
-  createAssignment(payload: AssignmentPayload): Observable<OperatorAssignmentResponse> {
+  createAssignment(
+    payload: AssignmentPayload,
+  ): Observable<OperatorAssignmentResponse> {
     return this.http.post<OperatorAssignmentResponse>(this.baseUrl, payload);
   }
 
   updateAssignment(
     assignmentId: number,
-    payload: AssignmentUpdatePayload
+    payload: AssignmentUpdatePayload,
   ): Observable<OperatorAssignmentResponse> {
     return this.http.put<OperatorAssignmentResponse>(
       `${this.baseUrl}${assignmentId}/`,
-      payload
+      payload,
     );
   }
 
   removeAssignment(
     assignmentId: number,
-    payload: AssignmentRemovePayload
+    payload: AssignmentRemovePayload,
   ): Observable<OperatorAssignmentResponse> {
     const params = new HttpParams()
       .set('assigned_by_id', String(payload.assigned_by_id))
@@ -79,13 +81,15 @@ export class ApiOperatorAssignmentService {
       {
         body: payload,
         params,
-      }
+      },
     );
   }
 
-  getAssignmentHistory(operatorId: number): Observable<OperatorAssignmentResponse[]> {
+  getAssignmentHistory(
+    operatorId: number,
+  ): Observable<OperatorAssignmentResponse[]> {
     return this.http.get<OperatorAssignmentResponse[]>(
-      `${this.baseUrl}history/?operator_id=${operatorId}`
+      `${this.baseUrl}history/?operator_id=${operatorId}`,
     );
   }
 }

@@ -6,24 +6,47 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0004_useraccount_modified_at_useraccount_profile_image'),
+        ("Backend", "0004_useraccount_modified_at_useraccount_profile_image"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ActiveOperation',
+            name="ActiveOperation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=200)),
-                ('order', models.CharField(max_length=200)),
-                ('operation', models.CharField(max_length=200)),
-                ('operated_item', models.CharField(blank=True, max_length=200, null=True)),
-                ('reference_operation_machine_type', models.CharField(blank=True, max_length=200, null=True)),
-                ('routing_quantity', models.FloatField(default=0)),
-                ('planned_start_date', models.CharField(blank=True, max_length=200, null=True)),
-                ('reference_operation_work_center', models.CharField(blank=True, max_length=200, null=True)),
-                ('operation_status', models.CharField(blank=True, max_length=200, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("username", models.CharField(max_length=200)),
+                ("order", models.CharField(max_length=200)),
+                ("operation", models.CharField(max_length=200)),
+                (
+                    "operated_item",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "reference_operation_machine_type",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("routing_quantity", models.FloatField(default=0)),
+                (
+                    "planned_start_date",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "reference_operation_work_center",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "operation_status",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

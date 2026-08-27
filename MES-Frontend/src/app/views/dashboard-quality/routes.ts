@@ -5,7 +5,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./quality-dashboard.component').then(
-        (m) => m.QualityDashboardComponent
+        (m) => m.QualityDashboardComponent,
       ),
     data: {
       title: `Dashboard`,

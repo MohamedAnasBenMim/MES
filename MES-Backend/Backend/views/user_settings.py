@@ -1,20 +1,23 @@
 from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+from Backend.models import UserAccount, UserSessionLog
 from django.conf import settings
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
-
-from Backend.models import UserAccount, UserSessionLog
 
 SUPPORTED_LANGUAGES = {"en"}
 SUPPORTED_DATE_FORMATS = {"dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd"}
 SUPPORTED_TIME_FORMATS = {"12h", "24h"}
 SUPPORTED_THEMES = {"light", "dark"}
 LANGUAGE_ALIASES = {
-    "english": "en", "french": "en", "german": "en",
-    "deutsch": "en", "dutch": "en", "nederlands": "en",
+    "english": "en",
+    "french": "en",
+    "german": "en",
+    "deutsch": "en",
+    "dutch": "en",
+    "nederlands": "en",
 }
 MAX_PROFILE_IMAGE_SIZE = 5 * 1024 * 1024
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
@@ -60,7 +63,9 @@ def get_current_account(request):
 
     session = UserSessionLog.objects.filter(id=session_id, is_active=True).first()
     if not session:
-        return None, Response({"error": "Session expired. Please login again."}, status=401)
+        return None, Response(
+            {"error": "Session expired. Please login again."}, status=401
+        )
 
     account = (
         UserAccount.objects.filter(username__iexact=session.username).first()
@@ -95,13 +100,19 @@ def user_settings(request):
             account.save(update_fields=["language", "modified_at"])
         return Response(serialize_settings(request, account), status=200)
 
-    display_name = str(request.data.get("display_name", account.display_name or account.username)).strip()
+    display_name = str(
+        request.data.get("display_name", account.display_name or account.username)
+    ).strip()
     job_title = str(request.data.get("job_title", account.job_title or "")).strip()
     language = normalize_language(request.data.get("language", account.language))
     timezone_name = validate_timezone(request.data.get("timezone", account.timezone))
     country = str(request.data.get("country", account.country or "TN")).strip().upper()
-    date_format = str(request.data.get("date_format", account.date_format or "dd/MM/yyyy")).strip()
-    time_format = str(request.data.get("time_format", account.time_format or "24h")).strip()
+    date_format = str(
+        request.data.get("date_format", account.date_format or "dd/MM/yyyy")
+    ).strip()
+    time_format = str(
+        request.data.get("time_format", account.time_format or "24h")
+    ).strip()
     theme = normalize_theme(request.data.get("theme", account.theme or "light"))
 
     errors = {}
@@ -123,7 +134,9 @@ def user_settings(request):
         errors["theme"] = "Unsupported theme."
 
     profile_image = request.FILES.get("profile_image")
-    remove_profile_image = str(request.data.get("remove_profile_image", "false")).lower() == "true"
+    remove_profile_image = (
+        str(request.data.get("remove_profile_image", "false")).lower() == "true"
+    )
     if profile_image:
         if profile_image.size > MAX_PROFILE_IMAGE_SIZE:
             errors["profile_image"] = "Profile picture cannot exceed 5 MB."
@@ -151,7 +164,9 @@ def user_settings(request):
         account.profile_image = profile_image
 
     account.save()
-    return Response({"success": True, **serialize_settings(request, account)}, status=200)
+    return Response(
+        {"success": True, **serialize_settings(request, account)}, status=200
+    )
 
 
 def re_full_country(value):

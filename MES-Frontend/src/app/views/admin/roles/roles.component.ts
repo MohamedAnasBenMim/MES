@@ -39,13 +39,7 @@ export class RolesComponent implements OnInit {
       name: 'Admin',
       description: 'Full system administration and user governance.',
       accessLevel: 'Full access',
-      modules: [
-        'Admin Dashboard',
-        'System',
-        'Users',
-        'Roles',
-        'Documentation',
-      ],
+      modules: ['Admin Dashboard', 'System', 'Users', 'Roles', 'Documentation'],
     },
     {
       key: 'supervisor',
@@ -98,7 +92,8 @@ export class RolesComponent implements OnInit {
     const search = this.searchTerm.trim().toLowerCase();
 
     return this.roles.filter((role) => {
-      const matchesRole = this.selectedRole === 'all' || role.key === this.selectedRole;
+      const matchesRole =
+        this.selectedRole === 'all' || role.key === this.selectedRole;
       const matchesSearch =
         !search ||
         role.name.toLowerCase().includes(search) ||
@@ -139,22 +134,27 @@ export class RolesComponent implements OnInit {
   }
 
   getRoleUserCount(roleKey: string): number {
-    return this.users.filter((user) => this.normalizeRole(user.role) === roleKey).length;
+    return this.users.filter(
+      (user) => this.normalizeRole(user.role) === roleKey,
+    ).length;
   }
 
   getRoleActiveCount(roleKey: string): number {
     return this.users.filter(
       (user) =>
-        this.normalizeRole(user.role) === roleKey &&
-        user.is_active !== false
+        this.normalizeRole(user.role) === roleKey && user.is_active !== false,
     ).length;
   }
 
   getRoleUsers(roleKey: string): UserAccount[] {
-    return this.users.filter((user) => this.normalizeRole(user.role) === roleKey);
+    return this.users.filter(
+      (user) => this.normalizeRole(user.role) === roleKey,
+    );
   }
 
   private normalizeRole(role: string | null | undefined): string {
-    return String(role || '').trim().toLowerCase();
+    return String(role || '')
+      .trim()
+      .toLowerCase();
   }
 }

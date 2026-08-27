@@ -4,48 +4,34 @@ import {
   importProvidersFrom,
 } from '@angular/core';
 
-import {
-  provideRouter,
-  withHashLocation,
-} from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 
 import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 
-import {
-  provideAnimations,
-} from '@angular/platform-browser/animations';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
-import {
-  provideTranslateService,
-} from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
-import {
-  provideTranslateHttpLoader,
-} from '@ngx-translate/http-loader';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import {
-  SidebarModule,
-} from '@coreui/angular';
+import { SidebarModule } from '@coreui/angular';
 
-import {
-  routes,
-} from './app.routes';
+import { routes } from './app.routes';
 
-import {
-  LanguageService,
-} from './services/language/language.service';
+import { LanguageService } from './services/language/language.service';
 
-function initializeLanguage(
-  languageService: LanguageService
-): () => void {
+function initializeLanguage(languageService: LanguageService): () => void {
   return () => {
     const savedTheme = localStorage.getItem('theme') || 'system';
-    const resolvedTheme = savedTheme === 'system'
-      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : savedTheme;
+    const resolvedTheme =
+      savedTheme === 'system'
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+        : savedTheme;
     document.documentElement.setAttribute('data-coreui-theme', resolvedTheme);
     languageService.initialize();
   };
@@ -53,14 +39,9 @@ function initializeLanguage(
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(
-      routes,
-      withHashLocation()
-    ),
+    provideRouter(routes, withHashLocation()),
 
-    provideHttpClient(
-      withInterceptorsFromDi()
-    ),
+    provideHttpClient(withInterceptorsFromDi()),
 
     provideAnimations(),
 
@@ -69,9 +50,7 @@ export const appConfig: ApplicationConfig = {
      * It provides SidebarNavHelper and fixes:
      * "No provider for _SidebarNavHelper"
      */
-    importProvidersFrom(
-      SidebarModule
-    ),
+    importProvidersFrom(SidebarModule),
 
     /*
      * Keep only one ngx-translate provider
@@ -81,26 +60,19 @@ export const appConfig: ApplicationConfig = {
       fallbackLang: 'en',
       lang: 'en',
 
-      loader:
-        provideTranslateHttpLoader({
-          prefix:
-            './assets/i18n/',
+      loader: provideTranslateHttpLoader({
+        prefix: './assets/i18n/',
 
-          suffix:
-            '.json',
-        }),
+        suffix: '.json',
+      }),
     }),
 
     {
-      provide:
-        APP_INITIALIZER,
+      provide: APP_INITIALIZER,
 
-      useFactory:
-        initializeLanguage,
+      useFactory: initializeLanguage,
 
-      deps: [
-        LanguageService,
-      ],
+      deps: [LanguageService],
 
       multi: true,
     },

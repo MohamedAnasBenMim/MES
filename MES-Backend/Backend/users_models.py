@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class IonAPICredentials(models.Model):
     ti = models.CharField(max_length=100)
     cn = models.CharField(max_length=50)
@@ -10,7 +11,9 @@ class IonAPICredentials(models.Model):
     pu = models.URLField()
     oa = models.CharField(max_length=100)
     ot = models.CharField(max_length=100)
-    or_field = models.CharField(max_length=100, db_column='or')  # 'or' is a Python keyword
+    or_field = models.CharField(
+        max_length=100, db_column="or"
+    )  # 'or' is a Python keyword
     sc = models.JSONField(default=list)  # Assuming it's always a list
     ev = models.CharField(max_length=50)
     v = models.CharField(max_length=10)

@@ -5,10 +5,19 @@
         <strong>Angular Collapse</strong>
       </c-card-header>
       <c-card-body>
-        <p class="text-body-secondary small">You can use a link or a button component.</p>
+        <p class="text-body-secondary small">
+          You can use a link or a button component.
+        </p>
         <app-docs-example href="components/collapse">
-          <a (click)="toggleCollapse(0)" cButton class="me-1" color="primary">Link</a>
-          <button (click)="toggleCollapse(0)" cButton class="me-1" color="primary">
+          <a (click)="toggleCollapse(0)" cButton class="me-1" color="primary"
+            >Link</a
+          >
+          <button
+            (click)="toggleCollapse(0)"
+            cButton
+            class="me-1"
+            color="primary"
+          >
             Button
           </button>
           <div [visible]="collapses[0]" cCollapse>

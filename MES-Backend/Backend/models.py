@@ -12,7 +12,9 @@ class IonAPICredentials(models.Model):
     pu = models.URLField()
     oa = models.CharField(max_length=100)
     ot = models.CharField(max_length=100)
-    or_field = models.CharField(max_length=100, db_column='or')  # 'or' is a Python keyword
+    or_field = models.CharField(
+        max_length=100, db_column="or"
+    )  # 'or' is a Python keyword
     sc = models.JSONField(default=list)  # Assuming it's always a list
     ev = models.CharField(max_length=50)
     v = models.CharField(max_length=10)
@@ -26,6 +28,7 @@ class IonAPICredentials(models.Model):
 
 # ---------------------------------------------------------------
 
+
 class UserAccount(models.Model):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
@@ -33,7 +36,9 @@ class UserAccount(models.Model):
     language = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=20)
     password = models.CharField(max_length=128)
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    profile_image = models.ImageField(
+        upload_to="profile_images/", null=True, blank=True
+    )
 
     # Personal settings
     display_name = models.CharField(max_length=150, blank=True, default="")
@@ -69,28 +74,30 @@ class ActiveOperation(models.Model):
     operated_item = models.CharField(max_length=255, default="", blank=True, null=True)
 
     reference_operation_machine_type = models.CharField(
-        max_length=255,
-        default="",
-        blank=True,
-        null=True
+        max_length=255, default="", blank=True, null=True
     )
     routing_quantity = models.FloatField(default=0, null=True)
 
-    planned_start_date = models.CharField(max_length=255, default="", blank=True, null=True)
-    planned_finish_date = models.CharField(max_length=255, default="", blank=True, null=True)
-
-    reference_operation_work_center = models.CharField(
-        max_length=255,
-        default="",
-        blank=True,
-        null=True
+    planned_start_date = models.CharField(
+        max_length=255, default="", blank=True, null=True
+    )
+    planned_finish_date = models.CharField(
+        max_length=255, default="", blank=True, null=True
     )
 
-    operation_status = models.CharField(max_length=50, default="", blank=True, null=True)
-    
+    reference_operation_work_center = models.CharField(
+        max_length=255, default="", blank=True, null=True
+    )
+
+    operation_status = models.CharField(
+        max_length=50, default="", blank=True, null=True
+    )
+
     def __str__(self):
         return f"{self.order} - {self.operation} ({self.username})"
+
     # ------------------------------------------------------------------
+
 
 class OperatorAssignment(models.Model):
     STATUS_CHOICES = [
@@ -108,58 +115,46 @@ class OperatorAssignment(models.Model):
     ]
 
     operator = models.ForeignKey(
-        UserAccount,
-        on_delete=models.PROTECT,
-        related_name="operator_assignments"
+        UserAccount, on_delete=models.PROTECT, related_name="operator_assignments"
     )
 
     operation = models.ForeignKey(
-        ActiveOperation,
-        on_delete=models.PROTECT,
-        related_name="operator_assignments"
+        ActiveOperation, on_delete=models.PROTECT, related_name="operator_assignments"
     )
 
     assigned_by = models.ForeignKey(
-        UserAccount,
-        on_delete=models.PROTECT,
-        related_name="assignments_created"
+        UserAccount, on_delete=models.PROTECT, related_name="assignments_created"
     )
 
     assigned_at = models.DateTimeField(auto_now_add=True)
     closed_at = models.DateTimeField(null=True, blank=True)
 
     closed_reason = models.CharField(
-        max_length=50,
-        choices=CLOSED_REASON_CHOICES,
-        null=True,
-        blank=True
+        max_length=50, choices=CLOSED_REASON_CHOICES, null=True, blank=True
     )
 
     notes = models.TextField(blank=True, default="")
 
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default="assigned"
-    )
-    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="assigned")
+
     def __str__(self):
         return f"{self.operator} -> {self.operation} ({self.status})"
-
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
                 fields=["operator"],
                 condition=models.Q(closed_at__isnull=True),
-                name="unique_active_assignment_per_operator"
+                name="unique_active_assignment_per_operator",
             ),
             models.UniqueConstraint(
                 fields=["operation"],
                 condition=models.Q(closed_at__isnull=True),
-                name="unique_active_assignment_per_operation"
+                name="unique_active_assignment_per_operation",
             ),
         ]
+
+
 # ------------------------------------------------------------------
 
 
@@ -236,6 +231,7 @@ class OperatorPerformance(models.Model):
 # ------------------------------------------------------------------
 # User Activity & Time Tracking
 
+
 class UserSessionLog(models.Model):
     username = models.CharField(max_length=150)
     email = models.EmailField(blank=True, null=True)
@@ -272,8 +268,6 @@ class UserSessionLog(models.Model):
         self.save()
 
 
-        
-
 class PendingUserVerification(models.Model):
     username = models.CharField(max_length=150)
     email = models.EmailField()
@@ -293,7 +287,8 @@ class PendingUserVerification(models.Model):
 
     def __str__(self):
         return f"{self.email} - verification pending"
-    
+
+
 class PendingPasswordChange(models.Model):
     username = models.CharField(max_length=150)
     email = models.EmailField()
@@ -311,46 +306,29 @@ class PendingPasswordChange(models.Model):
         return timezone.now() > self.expires_at
 
     def __str__(self):
-        return f"{self.username} - password change pending"    
-    
+        return f"{self.username} - password change pending"
+
+
 class DispatchOperation(models.Model):
     company_id = models.CharField(max_length=100, db_index=True)
     order = models.CharField(max_length=100, db_index=True)
     operation = models.CharField(max_length=100, db_index=True)
 
-    operated_item = models.CharField(
-        max_length=255,
-        blank=True,
-        default=""
-    )
+    operated_item = models.CharField(max_length=255, blank=True, default="")
 
     reference_operation_machine_type = models.CharField(
-        max_length=255,
-        blank=True,
-        default=""
+        max_length=255, blank=True, default=""
     )
 
-    routing_quantity = models.FloatField(
-        default=0
-    )
+    routing_quantity = models.FloatField(default=0)
 
-    planned_start_date = models.CharField(
-        max_length=255,
-        blank=True,
-        default=""
-    )
+    planned_start_date = models.CharField(max_length=255, blank=True, default="")
 
     reference_operation_work_center = models.CharField(
-        max_length=255,
-        blank=True,
-        default=""
+        max_length=255, blank=True, default=""
     )
 
-    operation_status = models.CharField(
-        max_length=100,
-        blank=True,
-        default=""
-    )
+    operation_status = models.CharField(max_length=100, blank=True, default="")
 
     # Keeps the complete LN object in case you need more fields later.
     raw_data = models.JSONField(default=dict)
@@ -364,27 +342,23 @@ class DispatchOperation(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["company_id", "order", "operation"],
-                name="unique_dispatch_operation"
+                name="unique_dispatch_operation",
             )
         ]
 
         indexes = [
             models.Index(
                 fields=["company_id", "order", "operation"],
-                name="dispatch_company_order_idx"
+                name="dispatch_company_order_idx",
             ),
             models.Index(
                 fields=["company_id", "operation_status"],
-                name="dispatch_company_status_idx"
+                name="dispatch_company_status_idx",
             ),
         ]
 
     def __str__(self):
-        return (
-            f"{self.company_id} - "
-            f"{self.order} - "
-            f"{self.operation}"
-        )
+        return f"{self.company_id} - " f"{self.order} - " f"{self.operation}"
 
 
 class DispatchSynchronization(models.Model):
@@ -395,48 +369,25 @@ class DispatchSynchronization(models.Model):
         ("error", "Synchronization failed"),
     ]
 
-    name = models.CharField(
-        max_length=100,
-        unique=True,
-        default="dispatch"
-    )
+    name = models.CharField(max_length=100, unique=True, default="dispatch")
 
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default="never"
-    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="never")
 
-    last_started_at = models.DateTimeField(
-        blank=True,
-        null=True
-    )
+    last_started_at = models.DateTimeField(blank=True, null=True)
 
-    last_success_at = models.DateTimeField(
-        blank=True,
-        null=True
-    )
+    last_success_at = models.DateTimeField(blank=True, null=True)
 
-    last_error_at = models.DateTimeField(
-        blank=True,
-        null=True
-    )
+    last_error_at = models.DateTimeField(blank=True, null=True)
 
-    last_error = models.TextField(
-        blank=True,
-        default=""
-    )
+    last_error = models.TextField(blank=True, default="")
 
-    records_count = models.PositiveIntegerField(
-        default=0
-    )
+    records_count = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name} - {self.status}"
-
 
 
 class IDMConfiguration(models.Model):
@@ -462,7 +413,6 @@ class IDMConfiguration(models.Model):
 
     def __str__(self):
         return self.document_type
-
 
 
 class MESDevice(models.Model):
@@ -501,4 +451,3 @@ class MESDevice(models.Model):
 
     def __str__(self):
         return f"{self.device_name} ({self.device_id})"
-    

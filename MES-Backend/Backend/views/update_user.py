@@ -16,15 +16,12 @@ def normalize_role(role):
     role_aliases = {
         "admin": "admin",
         "administrator": "admin",
-
         "operator": "operator",
-
         "quality": "quality",
         "quality technicien": "quality",
         "quality technician": "quality",
         "qualitytechnicien": "quality",
         "quality_technicien": "quality",
-
         "supervisor": "supervisor",
     }
 
@@ -88,10 +85,7 @@ def update_user(request, user_id):
         account = resolve_user_account(user_id)
 
         if not account:
-            return Response(
-                {"error": "User not found."},
-                status=404
-            )
+            return Response({"error": "User not found."}, status=404)
 
         AuthUser = get_user_model()
         auth_user = find_auth_user_for_account(account)
@@ -106,29 +100,26 @@ def update_user(request, user_id):
         email = data.get("email", "").strip() or account.email
         role_input = data.get("role", "").strip()
         language = "en"
-        phone_number = data.get("phone_number", "").strip() or account.phone_number or "00000000"
+        phone_number = (
+            data.get("phone_number", "").strip() or account.phone_number or "00000000"
+        )
 
         role = normalize_role(role_input) if role_input else account.role
 
         if not username:
-            return Response(
-                {"error": "Username is required."},
-                status=400
-            )
+            return Response({"error": "Username is required."}, status=400)
 
         if not email:
-            return Response(
-                {"error": "Email is required."},
-                status=400
-            )
+            return Response({"error": "Email is required."}, status=400)
 
         # Check username duplicate only if username changed
         if username.lower() != account.username.lower():
-            if UserAccount.objects.filter(username__iexact=username).exclude(id=account.id).exists():
-                return Response(
-                    {"error": "Username already exists."},
-                    status=409
-                )
+            if (
+                UserAccount.objects.filter(username__iexact=username)
+                .exclude(id=account.id)
+                .exists()
+            ):
+                return Response({"error": "Username already exists."}, status=409)
 
             auth_username_query = AuthUser.objects.filter(username__iexact=username)
 
@@ -136,18 +127,16 @@ def update_user(request, user_id):
                 auth_username_query = auth_username_query.exclude(id=auth_user.id)
 
             if auth_username_query.exists():
-                return Response(
-                    {"error": "Username already exists."},
-                    status=409
-                )
+                return Response({"error": "Username already exists."}, status=409)
 
         # Check email duplicate only if email changed
         if email.lower() != account.email.lower():
-            if UserAccount.objects.filter(email__iexact=email).exclude(id=account.id).exists():
-                return Response(
-                    {"error": "Email already exists."},
-                    status=409
-                )
+            if (
+                UserAccount.objects.filter(email__iexact=email)
+                .exclude(id=account.id)
+                .exists()
+            ):
+                return Response({"error": "Email already exists."}, status=409)
 
             auth_email_query = AuthUser.objects.filter(email__iexact=email)
 
@@ -155,10 +144,7 @@ def update_user(request, user_id):
                 auth_email_query = auth_email_query.exclude(id=auth_user.id)
 
             if auth_email_query.exists():
-                return Response(
-                    {"error": "Email already exists."},
-                    status=409
-                )
+                return Response({"error": "Email already exists."}, status=409)
 
         # Update UserAccount
         account.username = username
@@ -216,14 +202,11 @@ def update_user(request, user_id):
                     "language": account.language,
                     "phone_number": account.phone_number,
                     "profile_image": profile_image,
-                }
+                },
             },
-            status=200
+            status=200,
         )
 
     except Exception as e:
         traceback.print_exc()
-        return Response(
-            {"error": f"Server error: {str(e)}"},
-            status=500
-        )
+        return Response({"error": f"Server error: {str(e)}"}, status=500)

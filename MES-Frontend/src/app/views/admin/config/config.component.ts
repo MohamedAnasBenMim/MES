@@ -44,7 +44,7 @@ export class ConfigComponent implements OnInit {
   constructor(
     private ConfigApiService: ConfigApiService,
     private router: Router,
-    private ionapiService: IonapiService
+    private ionapiService: IonapiService,
   ) {}
 
   isArray(value: any): value is any[] {
@@ -144,7 +144,7 @@ export class ConfigComponent implements OnInit {
         const cn = res.data?.cn || 'N/A';
         const ti = res.data?.ti || 'N/A';
         this.showSuccessToast(
-          `${res.message}\nCustomer ID: ${cn}\nTenant: ${ti}`
+          `${res.message}\nCustomer ID: ${cn}\nTenant: ${ti}`,
         );
       },
       error: (err: any) => {

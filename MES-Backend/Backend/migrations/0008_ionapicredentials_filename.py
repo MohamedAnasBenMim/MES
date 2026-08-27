@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Backend', '0007_alter_activeoperation_company_id_and_more'),
+        ("Backend", "0007_alter_activeoperation_company_id_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ionapicredentials',
-            name='filename',
+            model_name="ionapicredentials",
+            name="filename",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]

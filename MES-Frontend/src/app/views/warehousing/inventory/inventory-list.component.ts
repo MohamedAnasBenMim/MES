@@ -32,7 +32,10 @@ export class inventoryListComponent implements OnInit {
   currentPage = 1;
   orderFilter: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.apiService.getData().subscribe({
@@ -49,10 +52,11 @@ export class inventoryListComponent implements OnInit {
     let filtered = this.InventoryData;
 
     if (this.orderFilter) {
-      filtered = filtered.filter((item: InventoryItem) =>
-        item.Item?.toString()
-          .toLowerCase()
-          .includes(this.orderFilter.toLowerCase())
+      filtered = filtered.filter(
+        (item: InventoryItem) =>
+          item.Item?.toString()
+            .toLowerCase()
+            .includes(this.orderFilter.toLowerCase()),
       );
     }
 
@@ -64,10 +68,11 @@ export class inventoryListComponent implements OnInit {
     let filtered = this.InventoryData;
 
     if (this.orderFilter) {
-      filtered = filtered.filter((item: InventoryItem) =>
-        item.Item?.toString()
-          .toLowerCase()
-          .includes(this.orderFilter.toLowerCase())
+      filtered = filtered.filter(
+        (item: InventoryItem) =>
+          item.Item?.toString()
+            .toLowerCase()
+            .includes(this.orderFilter.toLowerCase()),
       );
     }
 

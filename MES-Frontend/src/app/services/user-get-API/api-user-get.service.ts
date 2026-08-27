@@ -124,22 +124,18 @@ export class UserApiService {
   toggleUserStatus(id: number): Observable<any> {
     return this.http.post(`${this.baseurl}toggle_user_status/${id}/`, {});
   }
-  getUserSettings(
-    sessionId: string
-  ): Observable<UserSettings> {
-    return this.http.get<UserSettings>(
-      `${this.baseurl}user/settings/`,
-      { params: { session_id: sessionId } }
-    );
+  getUserSettings(sessionId: string): Observable<UserSettings> {
+    return this.http.get<UserSettings>(`${this.baseurl}user/settings/`, {
+      params: { session_id: sessionId },
+    });
   }
 
   updateUserSettings(
-    formData: FormData
+    formData: FormData,
   ): Observable<UserSettings & { success: boolean }> {
     return this.http.put<UserSettings & { success: boolean }>(
       `${this.baseurl}user/settings/`,
-      formData
+      formData,
     );
   }
-
 }

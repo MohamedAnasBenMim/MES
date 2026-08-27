@@ -32,10 +32,14 @@ def delete_user(request, user_id):
             auth_user = AuthUser.objects.filter(id=user_id).first()
 
             if auth_user:
-                account = UserAccount.objects.filter(username__iexact=auth_user.username).first()
+                account = UserAccount.objects.filter(
+                    username__iexact=auth_user.username
+                ).first()
 
                 if not account and auth_user.email:
-                    account = UserAccount.objects.filter(email__iexact=auth_user.email).first()
+                    account = UserAccount.objects.filter(
+                        email__iexact=auth_user.email
+                    ).first()
 
         if not account and not auth_user:
             return Response({"error": "User not found."}, status=404)
@@ -55,7 +59,7 @@ def delete_user(request, user_id):
                 "message": "User deleted successfully.",
                 "username": deleted_username,
             },
-            status=200
+            status=200,
         )
 
     except Exception as e:

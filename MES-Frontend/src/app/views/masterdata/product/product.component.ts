@@ -62,7 +62,7 @@ export class ProductComponent implements OnInit {
         item.ItemType,
         item.ItemGroup,
         item.ProductType,
-      ].some((value) => value?.toString().toLowerCase().includes(filter))
+      ].some((value) => value?.toString().toLowerCase().includes(filter)),
     );
   }
 

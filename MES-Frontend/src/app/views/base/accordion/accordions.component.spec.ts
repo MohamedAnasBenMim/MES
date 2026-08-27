@@ -14,10 +14,16 @@ describe('AccordionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AccordionModule, NoopAnimationsModule, CardModule, GridModule, RouterTestingModule, AccordionsComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [
+        AccordionModule,
+        NoopAnimationsModule,
+        CardModule,
+        GridModule,
+        RouterTestingModule,
+        AccordionsComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

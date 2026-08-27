@@ -103,7 +103,7 @@ export class ToastersComponent implements OnInit {
 
   formChanges: Observable<any> = this.toasterForm.valueChanges.pipe(
     takeUntilDestroyed(),
-    filter((e) => e.autohide !== this.autohide)
+    filter((e) => e.autohide !== this.autohide),
   );
 
   @ViewChildren(ToasterComponent) viewChildren!: QueryList<ToasterComponent>;
@@ -122,7 +122,7 @@ export class ToastersComponent implements OnInit {
   addToast() {
     const formValues = this.toasterForm.value;
     const toasterPosition = this.viewChildren.filter(
-      (item) => item.placement === this.toasterForm.value.position
+      (item) => item.placement === this.toasterForm.value.position,
     );
     toasterPosition.forEach((item) => {
       const title = `Toast ${formValues.color} ${formValues.position}`;

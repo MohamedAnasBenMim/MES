@@ -1,17 +1,20 @@
-from django.core.cache import cache
-from django.db import IntegrityError, transaction
-from django.utils import timezone
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from Backend.models import ActiveOperation, IonAPICredentials, OperatorAssignment, UserAccount
+from Backend.models import (
+    ActiveOperation,
+    IonAPICredentials,
+    OperatorAssignment,
+    UserAccount,
+)
 from Backend.views.get_dispatch_data import (
     DISPATCH_CACHE_KEY,
     DISPATCH_CACHE_TIMEOUT,
     fetch_dispatch_data_from_infor,
     get_cached_access_token,
 )
-
+from django.core.cache import cache
+from django.db import IntegrityError, transaction
+from django.utils import timezone
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 def is_supervisor(user):
@@ -45,9 +48,11 @@ def get_assignment_actor(data, fallback_data=None):
     username = str(
         get_assignment_value(data, fallback_data, "assigned_by_username") or ""
     ).strip()
-    role = str(
-        get_assignment_value(data, fallback_data, "assigned_by_role") or ""
-    ).strip().lower()
+    role = (
+        str(get_assignment_value(data, fallback_data, "assigned_by_role") or "")
+        .strip()
+        .lower()
+    )
 
     if username:
         username_actor = UserAccount.objects.filter(username__iexact=username).first()
@@ -75,6 +80,7 @@ def get_assignment_actor(data, fallback_data=None):
 
     return None
 
+
 def normalize_status(status):
     return str(status or "").strip().lower().replace("_", "").replace(" ", "")
 
@@ -92,12 +98,7 @@ def is_operation_active(operation):
 def is_operation_completed_or_closed(operation):
     status = normalize_status(operation.operation_status)
 
-    return (
-        "complete" in status
-        or "closed" in status
-        or "cancel" in status
-    )
-
+    return "complete" in status or "closed" in status or "cancel" in status
 
 
 def get_active_assignment_for_operator(operator):
@@ -134,7 +135,8 @@ def get_operator_active_operations(operator, include_completed=False):
         return operations
 
     return [
-        operation for operation in operations
+        operation
+        for operation in operations
         if not is_operation_completed_or_closed(operation)
     ]
 
@@ -157,30 +159,28 @@ def has_active_list_owner(operation, allowed_operator=None):
 
 
 def has_same_operation_in_another_active_list(operation, operator):
-    return ActiveOperation.objects.filter(
-        order=operation.order,
-        operation=operation.operation,
-    ).exclude(
-        id=operation.id
-    ).exclude(
-        username__isnull=True
-    ).exclude(
-        username=""
-    ).exclude(
-        username__iexact=operator.username
-    ).exists()
+    return (
+        ActiveOperation.objects.filter(
+            order=operation.order,
+            operation=operation.operation,
+        )
+        .exclude(id=operation.id)
+        .exclude(username__isnull=True)
+        .exclude(username="")
+        .exclude(username__iexact=operator.username)
+        .exists()
+    )
 
 
 def has_same_operation_active_list_owner(operation):
-    operations = ActiveOperation.objects.filter(
-        order=operation.order,
-        operation=operation.operation,
-    ).exclude(
-        id=operation.id
-    ).exclude(
-        username__isnull=True
-    ).exclude(
-        username=""
+    operations = (
+        ActiveOperation.objects.filter(
+            order=operation.order,
+            operation=operation.operation,
+        )
+        .exclude(id=operation.id)
+        .exclude(username__isnull=True)
+        .exclude(username="")
     )
 
     if operation.company_id:
@@ -194,7 +194,8 @@ def operator_has_other_active_operation(operator, allowed_operation=None):
 
     if allowed_operation:
         operations = [
-            operation for operation in operations
+            operation
+            for operation in operations
             if operation.id != allowed_operation.id
         ]
 
@@ -299,8 +300,6 @@ def sync_available_operations_from_dispatch():
         )
 
 
-
-
 def serialize_operation(operation):
     assignment = get_active_assignment_for_operation(operation)
     active_list_owner = str(operation.username or "").strip()
@@ -317,7 +316,9 @@ def serialize_operation(operation):
         "PlannedFinishDate": operation.planned_finish_date,
         "ReferenceOperationWorkCenter": operation.reference_operation_work_center,
         "OperationStatus": operation.operation_status,
-        "assigned": assignment is not None or bool(active_list_owner) or same_operation_has_owner,
+        "assigned": assignment is not None
+        or bool(active_list_owner)
+        or same_operation_has_owner,
         "assignment_id": assignment.id if assignment else None,
         "assigned_to": active_list_owner or None,
     }
@@ -353,7 +354,9 @@ def serialize_operator(operator):
         "role": operator.role,
         "status": "busy" if active_operations else "available",
         "active_operation_count": len(active_operations),
-        "current_operation": serialize_operation(current_operation) if current_operation else None,
+        "current_operation": (
+            serialize_operation(current_operation) if current_operation else None
+        ),
         "current_assignment": serialize_assignment(assignment) if assignment else None,
     }
 
@@ -407,22 +410,33 @@ def validate_assignment(operator, operation):
         return Response({"error": "Operation is completed or closed."}, status=400)
 
     if operator_has_other_active_operation(operator):
-        return Response({"error": "Operator already has an active operation."}, status=400)
+        return Response(
+            {"error": "Operator already has an active operation."}, status=400
+        )
 
     if get_active_assignment_for_operator(operator):
-        return Response({"error": "Operator already has an active assignment."}, status=400)
+        return Response(
+            {"error": "Operator already has an active assignment."}, status=400
+        )
 
     if has_active_list_owner(operation, allowed_operator=operator):
-        return Response({"error": "Operation is already in another operator active list."}, status=400)
+        return Response(
+            {"error": "Operation is already in another operator active list."},
+            status=400,
+        )
 
     if has_same_operation_in_another_active_list(operation, operator):
-        return Response({"error": "Operation is already in another operator active list."}, status=400)
+        return Response(
+            {"error": "Operation is already in another operator active list."},
+            status=400,
+        )
 
     if get_active_assignment_for_operation(operation):
-        return Response({"error": "Operation already has an active assignment."}, status=400)
+        return Response(
+            {"error": "Operation already has an active assignment."}, status=400
+        )
 
     return None
-
 
 
 @api_view(["GET"])
@@ -445,9 +459,10 @@ def active_operations(request):
 
     operations = ActiveOperation.objects.all().order_by("planned_finish_date", "id")
     operations = [
-    op for op in operations
-    if is_operation_active(op) and not is_operation_completed_or_closed(op)
-]
+        op
+        for op in operations
+        if is_operation_active(op) and not is_operation_completed_or_closed(op)
+    ]
     return Response([serialize_operation(op) for op in operations])
 
 
@@ -457,13 +472,17 @@ def operator_assignments(request):
     operator = UserAccount.objects.filter(id=request.data.get("operator_id")).first()
 
     if not supervisor or not is_supervisor(supervisor):
-        return Response({"error": "Only a supervisor or admin can assign operators."}, status=403)
+        return Response(
+            {"error": "Only a supervisor or admin can assign operators."}, status=403
+        )
 
     try:
         with transaction.atomic():
-            operation = ActiveOperation.objects.select_for_update().filter(
-                id=request.data.get("operation_id")
-            ).first()
+            operation = (
+                ActiveOperation.objects.select_for_update()
+                .filter(id=request.data.get("operation_id"))
+                .first()
+            )
 
             validation_error = validate_assignment(operator, operation)
             if validation_error:
@@ -494,7 +513,9 @@ def operator_assignment_detail(request, assignment_id):
     supervisor = get_assignment_actor(request.data, request.query_params)
 
     if not supervisor or not is_supervisor(supervisor):
-        return Response({"error": "Only a supervisor or admin can update assignments."}, status=403)
+        return Response(
+            {"error": "Only a supervisor or admin can update assignments."}, status=403
+        )
     if assignment.closed_at:
         return Response({"error": "Assignment is already closed."}, status=400)
 
@@ -528,19 +549,31 @@ def operator_assignment_detail(request, assignment_id):
             return Response({"error": "Operation is completed or closed."}, status=400)
 
         if get_active_assignment_for_operation(new_operation):
-            return Response({"error": "Operation already has an active assignment."}, status=400)
+            return Response(
+                {"error": "Operation already has an active assignment."}, status=400
+            )
 
         if has_active_list_owner(new_operation, allowed_operator=assignment.operator):
-            return Response({"error": "Operation is already in another operator active list."}, status=400)
+            return Response(
+                {"error": "Operation is already in another operator active list."},
+                status=400,
+            )
 
-        if has_same_operation_in_another_active_list(new_operation, assignment.operator):
-            return Response({"error": "Operation is already in another operator active list."}, status=400)
+        if has_same_operation_in_another_active_list(
+            new_operation, assignment.operator
+        ):
+            return Response(
+                {"error": "Operation is already in another operator active list."},
+                status=400,
+            )
 
         if operator_has_other_active_operation(
             assignment.operator,
             allowed_operation=assignment.operation,
         ):
-            return Response({"error": "Operator already has another active operation."}, status=400)
+            return Response(
+                {"error": "Operator already has another active operation."}, status=400
+            )
 
         with transaction.atomic():
             remove_operation_from_operator_active_list(

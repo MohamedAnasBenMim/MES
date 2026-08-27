@@ -15,16 +15,16 @@ export const routes: Routes = [
       title: 'Home',
     },
     children: [
-{
-  path: 'dashboard',
-  loadComponent: () =>
-    import('./views/dashboard-operator/dashboard.component').then(
-      (m) => m.DashboardComponent
-    ),
-  data: {
-    title: 'Operator Dashboard',
-  },
-},
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./views/dashboard-operator/dashboard.component').then(
+            (m) => m.DashboardComponent,
+          ),
+        data: {
+          title: 'Operator Dashboard',
+        },
+      },
 
       {
         path: 'admin_dashboard',
@@ -80,12 +80,11 @@ export const routes: Routes = [
           import('./views/admin/routes').then((m) => m.routes),
       },
 
-
       {
         path: 'settings',
         loadComponent: () =>
           import('./views/settings/settings.component').then(
-            (m) => m.SettingsComponent
+            (m) => m.SettingsComponent,
           ),
         data: { title: 'Settings' },
       },
@@ -94,7 +93,7 @@ export const routes: Routes = [
         path: 'edit_profile',
         loadComponent: () =>
           import('./views/pages/edit_profile/edit_profile.component').then(
-            (m) => m.edit_profileComponent
+            (m) => m.edit_profileComponent,
           ),
         data: {
           title: 'Edit profile',
@@ -107,7 +106,7 @@ export const routes: Routes = [
     path: '404',
     loadComponent: () =>
       import('./views/pages/page404/page404.component').then(
-        (m) => m.Page404Component
+        (m) => m.Page404Component,
       ),
     data: {
       title: 'Page 404',
@@ -118,7 +117,7 @@ export const routes: Routes = [
     path: '500',
     loadComponent: () =>
       import('./views/pages/page500/page500.component').then(
-        (m) => m.Page500Component
+        (m) => m.Page500Component,
       ),
     data: {
       title: 'Page 500',
@@ -129,7 +128,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./views/pages/login/login.component').then(
-        (m) => m.LoginComponent
+        (m) => m.LoginComponent,
       ),
     data: {
       title: 'Login Page',
@@ -140,7 +139,7 @@ export const routes: Routes = [
     path: 'forget-password',
     loadComponent: () =>
       import('./views/pages/forget-password/forget-password.component').then(
-        (m) => m.ForgetPasswordComponent
+        (m) => m.ForgetPasswordComponent,
       ),
     data: {
       title: 'Forget Password',
@@ -151,7 +150,7 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () =>
       import('./views/pages/register/register.component').then(
-        (m) => m.RegisterComponent
+        (m) => m.RegisterComponent,
       ),
     data: {
       title: 'Register Page',

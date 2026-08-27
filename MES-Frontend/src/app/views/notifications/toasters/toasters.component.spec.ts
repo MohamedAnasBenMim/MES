@@ -2,7 +2,14 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ButtonModule, CardModule, FormModule, GridModule, ProgressModule, ToastModule } from '@coreui/angular';
+import {
+  ButtonModule,
+  CardModule,
+  FormModule,
+  GridModule,
+  ProgressModule,
+  ToastModule,
+} from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { ToastersComponent } from './toasters.component';
@@ -15,10 +22,21 @@ describe('ToastersComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [NoopAnimationsModule, GridModule, ToastModule, CardModule, FormModule, ButtonModule, ProgressModule, FormsModule, ReactiveFormsModule, ToastersComponent, AppToastComponent],
-    providers: [IconSetService]
-})
-      .compileComponents();
+      imports: [
+        NoopAnimationsModule,
+        GridModule,
+        ToastModule,
+        CardModule,
+        FormModule,
+        ButtonModule,
+        ProgressModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ToastersComponent,
+        AppToastComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

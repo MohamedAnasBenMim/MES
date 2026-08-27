@@ -6,9 +6,10 @@
       </c-card-header>
       <c-card-body>
         <p class="text-body-secondary small">
-          The breadcrumb navigation provides links back to each previous page the user navigated
-          through and shows the current location in a website or an application. You don’t have
-          to add separators, because they automatically added in CSS through
+          The breadcrumb navigation provides links back to each previous page
+          the user navigated through and shows the current location in a website
+          or an application. You don’t have to add separators, because they
+          automatically added in CSS through
           <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::before">
             <code>::before</code>
           </a>
@@ -26,49 +27,57 @@
               </c-breadcrumb-item>
             }
           </c-breadcrumb>
-          <hr>
+          <hr />
           <c-breadcrumb class="mb-2">
-            @for (item of items.slice(0, 1); track item; let i = $index, isLast = $last) {
+            @for (
+              item of items.slice(0, 1);
+              track item;
+              let i = $index, isLast = $last
+            ) {
               <c-breadcrumb-item [active]="isLast" [url]="item.url">
                 {{ item.label }}
               </c-breadcrumb-item>
             }
           </c-breadcrumb>
           <c-breadcrumb class="mb-2">
-            @for (item of items.slice(0, 2); track item; let i = $index, isLast = $last) {
+            @for (
+              item of items.slice(0, 2);
+              track item;
+              let i = $index, isLast = $last
+            ) {
               <c-breadcrumb-item [active]="isLast" [url]="item.url">
                 {{ item.label }}
               </c-breadcrumb-item>
             }
           </c-breadcrumb>
           <c-breadcrumb class="mb-2">
-            @for (item of items.slice(0, 3); track item; let i = $index, isLast = $last) {
+            @for (
+              item of items.slice(0, 3);
+              track item;
+              let i = $index, isLast = $last
+            ) {
               <c-breadcrumb-item [active]="isLast" [url]="item.url">
                 {{ item.label }}
               </c-breadcrumb-item>
             }
           </c-breadcrumb>
           <c-breadcrumb class="mb-2">
-            @for (item of items.slice(0, 4); track item; let i = $index, isLast = $last) {
+            @for (
+              item of items.slice(0, 4);
+              track item;
+              let i = $index, isLast = $last
+            ) {
               <c-breadcrumb-item [active]="isLast" [url]="item.url">
-                <span [ngClass]="{'mark': isLast}">{{ item.label }}</span>
+                <span [ngClass]="{ mark: isLast }">{{ item.label }}</span>
               </c-breadcrumb-item>
             }
           </c-breadcrumb>
-          <hr>
+          <hr />
           <c-breadcrumb class="mb-0">
-            <c-breadcrumb-item url="/">
-              Home
-            </c-breadcrumb-item>
-            <c-breadcrumb-item url="/">
-              Library
-            </c-breadcrumb-item>
-            <c-breadcrumb-item url="/">
-              Data
-            </c-breadcrumb-item>
-            <c-breadcrumb-item [active]="true">
-              Bootstrap
-            </c-breadcrumb-item>
+            <c-breadcrumb-item url="/"> Home </c-breadcrumb-item>
+            <c-breadcrumb-item url="/"> Library </c-breadcrumb-item>
+            <c-breadcrumb-item url="/"> Data </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true"> Bootstrap </c-breadcrumb-item>
           </c-breadcrumb>
         </app-docs-example>
       </c-card-body>

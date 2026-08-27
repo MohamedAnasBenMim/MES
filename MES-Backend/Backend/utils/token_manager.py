@@ -11,7 +11,7 @@ def get_mingle_token():
     # 1️⃣ Fetch all IONAPI credentials only once
     # ------------------------------------------------------------------
     try:
-        cred_response = requests.get('http://127.0.0.1:8000/api/get_ionapi_credential/')
+        cred_response = requests.get("http://127.0.0.1:8000/api/get_ionapi_credential/")
         cred_response.raise_for_status()
         creds = cred_response.json()
     except Exception as e:
@@ -19,12 +19,12 @@ def get_mingle_token():
         raise
 
     # Extract values safely
-    pu = creds.get('pu')
-    ot = creds.get('ot')
-    ci = creds.get('ci')
-    cs = creds.get('cs')
-    ev = creds.get('ev')
-    iu = creds.get('iu')
+    pu = creds.get("pu")
+    ot = creds.get("ot")
+    ci = creds.get("ci")
+    cs = creds.get("cs")
+    ev = creds.get("ev")
+    iu = creds.get("iu")
 
     # ------------------------------------------------------------------
     # 2️⃣ Build token URL and credentials dynamically
@@ -37,22 +37,17 @@ def get_mingle_token():
     data = {
         "grant_type": "password",
         "username": "LDE4VNS7C63W3JGC_DEM#MiEcMbq0duOOTfig-ZWlxpa574cFd9qJTVjXGIMj4oaR9JqEHHcacqgLln3AFDNn9uGe6wcgPuGWklHsQS-sdQ",
-        "password": "ko5kvCJK_KD6Q0AimIFF0jO-OiKtatOZZF-qtavcTA-vG9Euc7eEcSfcV-tLJNo_eh45wybj-_vTwciSxI_sCw"
+        "password": "ko5kvCJK_KD6Q0AimIFF0jO-OiKtatOZZF-qtavcTA-vG9Euc7eEcSfcV-tLJNo_eh45wybj-_vTwciSxI_sCw",
     }
 
-    headers = {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
     # ------------------------------------------------------------------
     # 3️⃣ Request the token
     # ------------------------------------------------------------------
     try:
         response = requests.post(
-            url=token_url,
-            headers=headers,
-            data=data,
-            auth=(client_id, client_secret)
+            url=token_url, headers=headers, data=data, auth=(client_id, client_secret)
         )
         response.raise_for_status()
 

@@ -1,9 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TableDirective } from '@coreui/angular';
@@ -29,9 +25,7 @@ interface WarehouseRow {
   templateUrl: './warehouses.component.html',
   styleUrls: ['./warehouses.component.css'],
 })
-export class WarehousesComponent
-  implements OnInit, OnDestroy
-{
+export class WarehousesComponent implements OnInit, OnDestroy {
   displayedWarehouses: WarehouseRow[] = [];
 
   warehouseTypeOptions: string[] = [];
@@ -59,9 +53,7 @@ export class WarehousesComponent
   private warehouseSubscription: Subscription | null = null;
   private filterOptionsSubscription: Subscription | null = null;
 
-  constructor(
-    private readonly warehousesApiService: WarehousesApiService
-  ) {}
+  constructor(private readonly warehousesApiService: WarehousesApiService) {}
 
   ngOnInit(): void {
     this.loadFilterOptions();
@@ -82,29 +74,23 @@ export class WarehousesComponent
 
     this.filterOptionsSubscription?.unsubscribe();
 
-    this.filterOptionsSubscription =
-      this.warehousesApiService
-        .getWarehouseFilterOptions()
-        .subscribe({
-          next: (response) => {
-            this.warehouseTypeOptions = Array.isArray(
-              response?.warehouse_types
-            )
-              ? response.warehouse_types
-              : [];
+    this.filterOptionsSubscription = this.warehousesApiService
+      .getWarehouseFilterOptions()
+      .subscribe({
+        next: (response) => {
+          this.warehouseTypeOptions = Array.isArray(response?.warehouse_types)
+            ? response.warehouse_types
+            : [];
 
-            this.isLoadingFilterOptions = false;
-          },
-          error: (error) => {
-            console.error(
-              'Error loading warehouse filter options:',
-              error
-            );
+          this.isLoadingFilterOptions = false;
+        },
+        error: (error) => {
+          console.error('Error loading warehouse filter options:', error);
 
-            this.warehouseTypeOptions = [];
-            this.isLoadingFilterOptions = false;
-          },
-        });
+          this.warehouseTypeOptions = [];
+          this.isLoadingFilterOptions = false;
+        },
+      });
   }
 
   loadWarehouses(): void {
@@ -113,65 +99,52 @@ export class WarehousesComponent
 
     this.warehouseSubscription?.unsubscribe();
 
-    this.warehouseSubscription =
-      this.warehousesApiService
-        .getWarehouses({
-          search: this.searchTerm,
-          warehouseType: this.selectedWarehouseType,
-          mesControlled: this.selectedMesControlled,
-          wmsControlled: this.selectedWmsControlled,
-          inventoryManagement:
-            this.selectedInventoryManagement,
-          page: this.currentPage,
-          pageSize: Number(this.itemsPerPage),
-        })
-        .subscribe({
-          next: (response) => {
-            this.displayedWarehouses = response.value.map(
-              (warehouse) =>
-                this.mapWarehouseToRow(warehouse)
-            );
+    this.warehouseSubscription = this.warehousesApiService
+      .getWarehouses({
+        search: this.searchTerm,
+        warehouseType: this.selectedWarehouseType,
+        mesControlled: this.selectedMesControlled,
+        wmsControlled: this.selectedWmsControlled,
+        inventoryManagement: this.selectedInventoryManagement,
+        page: this.currentPage,
+        pageSize: Number(this.itemsPerPage),
+      })
+      .subscribe({
+        next: (response) => {
+          this.displayedWarehouses = response.value.map((warehouse) =>
+            this.mapWarehouseToRow(warehouse),
+          );
 
-            this.totalWarehouses = response.total_count;
-            this.currentPage = response.page;
-            this.itemsPerPage = response.page_size;
-            this.totalPages = Math.max(
-              response.total_pages,
-              1
-            );
-            this.hasPrevious = response.has_previous;
-            this.hasNext = response.has_next;
+          this.totalWarehouses = response.total_count;
+          this.currentPage = response.page;
+          this.itemsPerPage = response.page_size;
+          this.totalPages = Math.max(response.total_pages, 1);
+          this.hasPrevious = response.has_previous;
+          this.hasNext = response.has_next;
 
-            this.isLoading = false;
-          },
+          this.isLoading = false;
+        },
 
-          error: (error) => {
-            console.error(
-              'Warehouse loading error:',
-              error
-            );
+        error: (error) => {
+          console.error('Warehouse loading error:', error);
 
-            this.displayedWarehouses = [];
-            this.totalWarehouses = 0;
-            this.totalPages = 1;
-            this.hasPrevious = false;
-            this.hasNext = false;
-            this.isLoading = false;
+          this.displayedWarehouses = [];
+          this.totalWarehouses = 0;
+          this.totalPages = 1;
+          this.hasPrevious = false;
+          this.hasNext = false;
+          this.isLoading = false;
 
-            if (
-              error?.status === 401 ||
-              error?.status === 403
-            ) {
-              this.errorMessage =
-                'Authorization error while accessing LN warehouse data.';
-              return;
-            }
-
+          if (error?.status === 401 || error?.status === 403) {
             this.errorMessage =
-              error?.error?.error ||
-              'Unable to retrieve warehouse data.';
-          },
-        });
+              'Authorization error while accessing LN warehouse data.';
+            return;
+          }
+
+          this.errorMessage =
+            error?.error?.error || 'Unable to retrieve warehouse data.';
+        },
+      });
   }
 
   onSearchChange(): void {
@@ -218,11 +191,7 @@ export class WarehousesComponent
   }
 
   previousPage(): void {
-    if (
-      this.isLoading ||
-      !this.hasPrevious ||
-      this.currentPage <= 1
-    ) {
+    if (this.isLoading || !this.hasPrevious || this.currentPage <= 1) {
       return;
     }
 
@@ -244,18 +213,11 @@ export class WarehousesComponent
   }
 
   get firstDisplayedIndex(): number {
-    if (
-      this.totalWarehouses === 0 ||
-      this.displayedWarehouses.length === 0
-    ) {
+    if (this.totalWarehouses === 0 || this.displayedWarehouses.length === 0) {
       return 0;
     }
 
-    return (
-      (this.currentPage - 1) *
-        Number(this.itemsPerPage) +
-      1
-    );
+    return (this.currentPage - 1) * Number(this.itemsPerPage) + 1;
   }
 
   get lastDisplayedIndex(): number {
@@ -264,10 +226,8 @@ export class WarehousesComponent
     }
 
     return Math.min(
-      this.firstDisplayedIndex +
-        this.displayedWarehouses.length -
-        1,
-      this.totalWarehouses
+      this.firstDisplayedIndex + this.displayedWarehouses.length - 1,
+      this.totalWarehouses,
     );
   }
 
@@ -277,14 +237,12 @@ export class WarehousesComponent
         this.selectedWarehouseType ||
         this.selectedMesControlled ||
         this.selectedWmsControlled ||
-        this.selectedInventoryManagement
+        this.selectedInventoryManagement,
     );
   }
 
   getStatusClass(value: string): string {
-    const normalizedValue = value
-      .trim()
-      .toLowerCase();
+    const normalizedValue = value.trim().toLowerCase();
 
     if (normalizedValue === 'yes') {
       return 'status-badge status-yes';
@@ -297,44 +255,23 @@ export class WarehousesComponent
     return 'status-badge status-unknown';
   }
 
-  trackByWarehouse(
-    index: number,
-    row: WarehouseRow
-  ): string | number {
+  trackByWarehouse(index: number, row: WarehouseRow): string | number {
     return row.warehouse !== '-' ? row.warehouse : index;
   }
 
-  private mapWarehouseToRow(
-    warehouse: Warehouse
-  ): WarehouseRow {
+  private mapWarehouseToRow(warehouse: Warehouse): WarehouseRow {
     return {
-      warehouse: this.displayValue(
-        warehouse.Warehouse
-      ),
-      description: this.displayValue(
-        warehouse.Description
-      ),
-      warehouseType: this.displayValue(
-        warehouse.WarehouseType
-      ),
-      mesControlled: this.displayBoolean(
-        warehouse.MESControlled
-      ),
-      wmsControlled: this.displayBoolean(
-        warehouse.WMSControlled
-      ),
-      inventoryManagement: this.displayBoolean(
-        warehouse.InventoryManagement
-      ),
+      warehouse: this.displayValue(warehouse.Warehouse),
+      description: this.displayValue(warehouse.Description),
+      warehouseType: this.displayValue(warehouse.WarehouseType),
+      mesControlled: this.displayBoolean(warehouse.MESControlled),
+      wmsControlled: this.displayBoolean(warehouse.WMSControlled),
+      inventoryManagement: this.displayBoolean(warehouse.InventoryManagement),
     };
   }
 
   private displayValue(value: unknown): string {
-    if (
-      value === null ||
-      value === undefined ||
-      value === ''
-    ) {
+    if (value === null || value === undefined || value === '') {
       return '-';
     }
 
@@ -342,11 +279,7 @@ export class WarehousesComponent
   }
 
   private displayBoolean(value: unknown): string {
-    if (
-      value === null ||
-      value === undefined ||
-      value === ''
-    ) {
+    if (value === null || value === undefined || value === '') {
       return '-';
     }
 
@@ -358,21 +291,17 @@ export class WarehousesComponent
       return value === 1 ? 'Yes' : 'No';
     }
 
-    const normalizedValue = String(value)
-      .trim()
-      .toLowerCase();
+    const normalizedValue = String(value).trim().toLowerCase();
 
     if (
-      ['true', 'yes', 'y', '1', 'enabled', 'active'].includes(
-        normalizedValue
-      )
+      ['true', 'yes', 'y', '1', 'enabled', 'active'].includes(normalizedValue)
     ) {
       return 'Yes';
     }
 
     if (
       ['false', 'no', 'n', '0', 'disabled', 'inactive'].includes(
-        normalizedValue
+        normalizedValue,
       )
     ) {
       return 'No';

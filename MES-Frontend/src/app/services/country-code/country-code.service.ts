@@ -69,8 +69,8 @@ export class CountryCodeService {
             index ===
             self.findIndex(
               (country) =>
-                country.country === item.country && country.code === item.code
-            )
+                country.country === item.country && country.code === item.code,
+            ),
         );
 
         uniqueResult.sort((a, b) => a.country.localeCompare(b.country));
@@ -81,7 +81,10 @@ export class CountryCodeService {
         return uniqueResult;
       }),
       catchError((error) => {
-        console.error('❌ Failed to load country codes from countries.dev:', error);
+        console.error(
+          '❌ Failed to load country codes from countries.dev:',
+          error,
+        );
 
         return of([
           { country: 'Tunisia', code: '+216', flag: '🇹🇳', cca2: 'TN' },
@@ -90,7 +93,7 @@ export class CountryCodeService {
           { country: 'Netherlands', code: '+31', flag: '🇳🇱', cca2: 'NL' },
           { country: 'Germany', code: '+49', flag: '🇩🇪', cca2: 'DE' },
         ]);
-      })
+      }),
     );
   }
 }

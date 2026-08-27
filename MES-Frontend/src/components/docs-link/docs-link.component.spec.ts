@@ -8,9 +8,8 @@ describe('DocsLinkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [DocsLinkComponent]
-})
-    .compileComponents();
+      imports: [DocsLinkComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

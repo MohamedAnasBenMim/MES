@@ -109,7 +109,7 @@ export class UsersComponent {
   constructor(
     private CreateUserApiService: CreateUserApiService,
     private UserApiService: UserApiService,
-    private CountryCodeService: CountryCodeService
+    private CountryCodeService: CountryCodeService,
   ) {}
 
   ngOnInit(): void {
@@ -135,7 +135,7 @@ export class UsersComponent {
 
         this.openErrorModal(
           'Countries Loading Failed',
-          'Failed to load country codes. Please refresh the page.'
+          'Failed to load country codes. Please refresh the page.',
         );
       },
     });
@@ -151,7 +151,7 @@ export class UsersComponent {
 
         this.openErrorModal(
           'Users Loading Failed',
-          err.error?.error || 'Failed to load users.'
+          err.error?.error || 'Failed to load users.',
         );
       },
     });
@@ -177,11 +177,11 @@ export class UsersComponent {
     const cleanFullPhone = fullPhone.replace(/\s+/g, '');
 
     const sortedCodes = [...this.countryCodes].sort(
-      (a, b) => b.code.length - a.code.length
+      (a, b) => b.code.length - a.code.length,
     );
 
     const matchedCountry = sortedCodes.find((country) =>
-      cleanFullPhone.startsWith(country.code)
+      cleanFullPhone.startsWith(country.code),
     );
 
     if (matchedCountry) {
@@ -227,27 +227,29 @@ export class UsersComponent {
 
     this.isSendingVerificationCode = true;
 
-    this.CreateUserApiService.sendUserVerificationCode(this.formData).subscribe({
-      next: (res: any) => {
-        this.isSendingVerificationCode = false;
+    this.CreateUserApiService.sendUserVerificationCode(this.formData).subscribe(
+      {
+        next: (res: any) => {
+          this.isSendingVerificationCode = false;
 
-        this.pendingVerificationId = res.verification_id;
-        this.verificationEmail = res.email || this.formData.email;
-        this.verificationCode = '';
-        this.verificationError = '';
-        this.showVerificationModal = true;
+          this.pendingVerificationId = res.verification_id;
+          this.verificationEmail = res.email || this.formData.email;
+          this.verificationCode = '';
+          this.verificationError = '';
+          this.showVerificationModal = true;
+        },
+        error: (err: any) => {
+          this.isSendingVerificationCode = false;
+
+          console.error('❌ Verification code sending failed:', err);
+
+          this.openErrorModal(
+            'Create User Failed',
+            err.error?.error || 'Failed to send verification code.',
+          );
+        },
       },
-      error: (err: any) => {
-        this.isSendingVerificationCode = false;
-
-        console.error('❌ Verification code sending failed:', err);
-
-        this.openErrorModal(
-          'Create User Failed',
-          err.error?.error || 'Failed to send verification code.'
-        );
-      },
-    });
+    );
   }
 
   closeVerificationModal(): void {
@@ -260,7 +262,7 @@ export class UsersComponent {
   openSuccessModal(
     title: string,
     message: string,
-    extraMessage: string = ''
+    extraMessage: string = '',
   ): void {
     this.successModalTitle = title;
     this.successModalMessage = message;
@@ -339,8 +341,9 @@ export class UsersComponent {
         setTimeout(() => {
           this.openSuccessModal(
             'Account Created Successfully',
-            res.message || 'Email verified and user account created successfully.',
-            "The generated password has been sent to the user's email."
+            res.message ||
+              'Email verified and user account created successfully.',
+            "The generated password has been sent to the user's email.",
           );
         }, 200);
       },
@@ -360,31 +363,33 @@ export class UsersComponent {
     this.isSendingVerificationCode = true;
     this.verificationError = '';
 
-    this.CreateUserApiService.sendUserVerificationCode(this.formData).subscribe({
-      next: (res: any) => {
-        this.isSendingVerificationCode = false;
+    this.CreateUserApiService.sendUserVerificationCode(this.formData).subscribe(
+      {
+        next: (res: any) => {
+          this.isSendingVerificationCode = false;
 
-        this.pendingVerificationId = res.verification_id;
-        this.verificationEmail = res.email || this.formData.email;
-        this.verificationCode = '';
+          this.pendingVerificationId = res.verification_id;
+          this.verificationEmail = res.email || this.formData.email;
+          this.verificationCode = '';
 
-        this.openSuccessModal(
-          'Verification Code Resent',
-          'A new verification code has been sent successfully.',
-          "The generated verification code has been resend to the user's email."
-        );
+          this.openSuccessModal(
+            'Verification Code Resent',
+            'A new verification code has been sent successfully.',
+            "The generated verification code has been resend to the user's email.",
+          );
+        },
+        error: (err: any) => {
+          this.isSendingVerificationCode = false;
+
+          console.error('❌ Failed to resend verification code:', err);
+
+          this.openErrorModal(
+            'Resend Code Failed',
+            err.error?.error || 'Failed to resend verification code.',
+          );
+        },
       },
-      error: (err: any) => {
-        this.isSendingVerificationCode = false;
-
-        console.error('❌ Failed to resend verification code:', err);
-
-        this.openErrorModal(
-          'Resend Code Failed',
-          err.error?.error || 'Failed to resend verification code.'
-        );
-      },
-    });
+    );
   }
 
   getSubmitButtonText(): string {
@@ -429,7 +434,7 @@ export class UsersComponent {
 
         this.openSuccessModal(
           'User Deleted',
-          `The user "${deletedUsername}" has been deleted successfully.`
+          `The user "${deletedUsername}" has been deleted successfully.`,
         );
       },
       error: (err: any) => {
@@ -439,7 +444,7 @@ export class UsersComponent {
 
         this.openErrorModal(
           'Delete User Failed',
-          err.error?.error || 'Failed to delete user.'
+          err.error?.error || 'Failed to delete user.',
         );
       },
     });
@@ -453,7 +458,10 @@ export class UsersComponent {
 
   updateUser(): void {
     if (!this.formData.id) {
-      this.openErrorModal('Update User Failed', 'Cannot update user: Missing ID.');
+      this.openErrorModal(
+        'Update User Failed',
+        'Cannot update user: Missing ID.',
+      );
       return;
     }
 
@@ -463,7 +471,7 @@ export class UsersComponent {
       next: () => {
         this.openSuccessModal(
           'User Updated',
-          'The user account has been updated successfully.'
+          'The user account has been updated successfully.',
         );
 
         this.fetchUsers();
@@ -474,7 +482,7 @@ export class UsersComponent {
 
         this.openErrorModal(
           'Update User Failed',
-          err.error?.error || 'Failed to update user.'
+          err.error?.error || 'Failed to update user.',
         );
       },
     });
@@ -499,7 +507,9 @@ export class UsersComponent {
 
     this.isTogglingStatus = true;
 
-    this.UserApiService.toggleUserStatus(this.selectedUserForStatus.id).subscribe({
+    this.UserApiService.toggleUserStatus(
+      this.selectedUserForStatus.id,
+    ).subscribe({
       next: (res: any) => {
         this.isTogglingStatus = false;
 
@@ -508,7 +518,7 @@ export class UsersComponent {
 
         this.openSuccessModal(
           'Account Status Updated',
-          res.message || 'The account status has been updated successfully.'
+          res.message || 'The account status has been updated successfully.',
         );
       },
       error: (err: any) => {
@@ -518,7 +528,7 @@ export class UsersComponent {
 
         this.openErrorModal(
           'Status Update Failed',
-          err.error?.error || 'Failed to change user status.'
+          err.error?.error || 'Failed to change user status.',
         );
       },
     });

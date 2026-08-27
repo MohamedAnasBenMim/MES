@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ButtonModule, CardModule, GridModule, TooltipModule } from '@coreui/angular';
+import {
+  ButtonModule,
+  CardModule,
+  GridModule,
+  TooltipModule,
+} from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { TooltipsComponent } from './tooltips.component';
@@ -13,10 +18,16 @@ describe('TooltipsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [CardModule, GridModule, TooltipModule, ButtonModule, RouterTestingModule, TooltipsComponent],
-    providers: [IconSetService]
-})
-    .compileComponents();
+      imports: [
+        CardModule,
+        GridModule,
+        TooltipModule,
+        ButtonModule,
+        RouterTestingModule,
+        TooltipsComponent,
+      ],
+      providers: [IconSetService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

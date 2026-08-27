@@ -4,9 +4,7 @@
       <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body p-4 p-md-5">
           <div class="text-center mb-4">
-            <h3 class="fw-bold mb-2">
-              Edit Profile
-            </h3>
+            <h3 class="fw-bold mb-2">Edit Profile</h3>
 
             <p class="text-muted mb-0">
               Update your personal information and account security.
@@ -35,16 +33,11 @@
                   class="rounded-circle border shadow-sm mx-auto d-flex align-items-center justify-content-center bg-light"
                   style="width: 120px; height: 120px"
                 >
-                  <span class="text-muted">
-                    No Image
-                  </span>
+                  <span class="text-muted"> No Image </span>
                 </div>
               </div>
 
-              <label
-                for="imageUpload"
-                class="form-label fw-semibold"
-              >
+              <label for="imageUpload" class="form-label fw-semibold">
                 Profile Image
               </label>
 
@@ -60,17 +53,10 @@
 
             <hr class="my-4" />
 
-            <h5 class="fw-bold mb-3">
-              Personal Information
-            </h5>
+            <h5 class="fw-bold mb-3">Personal Information</h5>
 
             <div class="mb-3">
-              <label
-                for="username"
-                class="form-label"
-              >
-                Username
-              </label>
+              <label for="username" class="form-label"> Username </label>
 
               <input
                 type="text"
@@ -84,12 +70,7 @@
             </div>
 
             <div class="mb-3">
-              <label
-                for="email"
-                class="form-label"
-              >
-                Email
-              </label>
+              <label for="email" class="form-label"> Email </label>
 
               <input
                 type="email"
@@ -101,18 +82,11 @@
                 readonly
               />
 
-              <small class="text-muted">
-                Email cannot be changed.
-              </small>
+              <small class="text-muted"> Email cannot be changed. </small>
             </div>
 
             <div class="mb-3">
-              <label
-                for="phoneLocalNumber"
-                class="form-label"
-              >
-                Phone
-              </label>
+              <label for="phoneLocalNumber" class="form-label"> Phone </label>
 
               <div class="input-group">
                 <select
@@ -124,10 +98,7 @@
                   [disabled]="countriesLoading"
                   required
                 >
-                  <option
-                    value="+216"
-                    *ngIf="countriesLoading"
-                  >
+                  <option value="+216" *ngIf="countriesLoading">
                     Loading countries...
                   </option>
 
@@ -152,27 +123,19 @@
                   autocomplete="tel"
                 />
               </div>
-
-
             </div>
 
             <hr class="my-4" />
 
-            <h5 class="fw-bold mb-2">
-              Change Password
-            </h5>
+            <h5 class="fw-bold mb-2">Change Password</h5>
 
             <p class="text-muted small mb-3">
-              Leave these fields empty if you do not want to change your password.
+              Leave these fields empty if you do not want to change your
+              password.
             </p>
 
             <div class="mb-3">
-              <label
-                for="oldPassword"
-                class="form-label"
-              >
-                Old Password
-              </label>
+              <label for="oldPassword" class="form-label"> Old Password </label>
 
               <input
                 type="password"
@@ -186,12 +149,7 @@
             </div>
 
             <div class="mb-3">
-              <label
-                for="newPassword"
-                class="form-label"
-              >
-                New Password
-              </label>
+              <label for="newPassword" class="form-label"> New Password </label>
 
               <input
                 type="password"
@@ -205,10 +163,7 @@
             </div>
 
             <div class="mb-3">
-              <label
-                for="confirmNewPassword"
-                class="form-label"
-              >
+              <label for="confirmNewPassword" class="form-label">
                 Confirm New Password
               </label>
 
@@ -227,31 +182,16 @@
               <button
                 type="submit"
                 class="btn text-white px-4"
-                style="
-                  background-color: #00aeef;
-                  border-color: #00aeef
-                "
+                style="background-color: #00aeef; border-color: #00aeef"
                 [disabled]="
-                  isSaving ||
-                  isSendingVerificationCode ||
-                  isVerifyingCode
+                  isSaving || isSendingVerificationCode || isVerifyingCode
                 "
               >
-                <span
-                  *ngIf="
-                    !isSaving &&
-                    !isSendingVerificationCode
-                  "
-                >
+                <span *ngIf="!isSaving && !isSendingVerificationCode">
                   Save Changes
                 </span>
 
-                <span
-                  *ngIf="
-                    isSaving ||
-                    isSendingVerificationCode
-                  "
-                >
+                <span *ngIf="isSaving || isSendingVerificationCode">
                   Processing...
                 </span>
               </button>
@@ -261,9 +201,7 @@
                 class="btn btn-secondary px-4"
                 (click)="goBack()"
                 [disabled]="
-                  isSaving ||
-                  isSendingVerificationCode ||
-                  isVerifyingCode
+                  isSaving || isSendingVerificationCode || isVerifyingCode
                 "
               >
                 Cancel
@@ -277,27 +215,18 @@
 </div>
 
 <!-- Password verification modal -->
-<div
-  *ngIf="verificationModalVisible"
-  class="profile-modal-backdrop"
->
+<div *ngIf="verificationModalVisible" class="profile-modal-backdrop">
   <div
     class="profile-modal-box"
     role="dialog"
     aria-modal="true"
     aria-labelledby="password-verification-title"
   >
-    <div class="modal-icon verification-icon">
-      ✉
-    </div>
+    <div class="modal-icon verification-icon">✉</div>
 
-    <h3 id="password-verification-title">
-      Verify Password Change
-    </h3>
+    <h3 id="password-verification-title">Verify Password Change</h3>
 
-    <p class="modal-description">
-      We sent a 6-digit verification code to:
-    </p>
+    <p class="modal-description">We sent a 6-digit verification code to:</p>
 
     <p class="verification-email">
       {{ verificationEmail }}
@@ -309,10 +238,7 @@
       minutes.
     </p>
 
-    <label
-      for="verificationCode"
-      class="verification-label"
-    >
+    <label for="verificationCode" class="verification-label">
       Verification Code
     </label>
 
@@ -344,16 +270,9 @@
         type="button"
         class="modal-primary-button"
         (click)="verifyPasswordCode()"
-        [disabled]="
-          isVerifyingCode ||
-          verificationCode.length !== 6
-        "
+        [disabled]="isVerifyingCode || verificationCode.length !== 6"
       >
-        {{
-          isVerifyingCode
-            ? 'Verifying...'
-            : 'Verify Code'
-        }}
+        {{ isVerifyingCode ? "Verifying..." : "Verify Code" }}
       </button>
     </div>
 
@@ -361,65 +280,29 @@
       type="button"
       class="resend-code-button"
       (click)="resendVerificationCode()"
-      [disabled]="
-        isVerifyingCode ||
-        isSendingVerificationCode
-      "
+      [disabled]="isVerifyingCode || isSendingVerificationCode"
     >
       {{
-        isSendingVerificationCode
-          ? 'Sending...'
-          : 'Resend verification code'
+        isSendingVerificationCode ? "Sending..." : "Resend verification code"
       }}
     </button>
   </div>
 </div>
 
 <!-- Confirmation, success and error modal -->
-<div
-  *ngIf="messageModalVisible"
-  class="profile-modal-backdrop"
->
-  <div
-    class="profile-modal-box"
-    role="alertdialog"
-    aria-modal="true"
-  >
+<div *ngIf="messageModalVisible" class="profile-modal-backdrop">
+  <div class="profile-modal-box" role="alertdialog" aria-modal="true">
     <div
       class="modal-icon"
-      [class.success-icon]="
-        messageModalType === 'success'
-      "
-      [class.error-icon]="
-        messageModalType === 'error'
-      "
-      [class.info-icon]="
-        messageModalType === 'info'
-      "
+      [class.success-icon]="messageModalType === 'success'"
+      [class.error-icon]="messageModalType === 'error'"
+      [class.info-icon]="messageModalType === 'info'"
     >
-      <span
-        *ngIf="
-          messageModalType === 'success'
-        "
-      >
-        ✓
-      </span>
+      <span *ngIf="messageModalType === 'success'"> ✓ </span>
 
-      <span
-        *ngIf="
-          messageModalType === 'error'
-        "
-      >
-        !
-      </span>
+      <span *ngIf="messageModalType === 'error'"> ! </span>
 
-      <span
-        *ngIf="
-          messageModalType === 'info'
-        "
-      >
-        i
-      </span>
+      <span *ngIf="messageModalType === 'info'"> i </span>
     </div>
 
     <h3>
@@ -435,11 +318,7 @@
       class="modal-primary-button full-width-button"
       (click)="closeMessageModal()"
     >
-      {{
-        redirectToLoginAfterMessage
-          ? 'Go to Login'
-          : 'OK'
-      }}
+      {{ redirectToLoginAfterMessage ? "Go to Login" : "OK" }}
     </button>
   </div>
 </div>

@@ -12,37 +12,59 @@
           <c-accordion [alwaysOpen]="false" class="shadow rounded-2">
             <c-accordion-item #item0="cAccordionItem" [visible]="false">
               <ng-template cTemplateId="accordionHeaderTemplate">
-                <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton cBgColor="info">
+                <button
+                  (click)="item0.toggleItem()"
+                  [collapsed]="!item0.visible"
+                  cAccordionButton
+                  cBgColor="info"
+                >
                   Accordion item #0
                 </button>
               </ng-template>
               <ng-template cTemplateId="accordionBodyTemplate">
-                <div [innerHTML]="getAccordionBodyText('first')" cBgColor="info" class="accordion-body" [gradient]="true"></div>
+                <div
+                  [innerHTML]="getAccordionBodyText('first')"
+                  cBgColor="info"
+                  class="accordion-body"
+                  [gradient]="true"
+                ></div>
               </ng-template>
             </c-accordion-item>
             <c-accordion-item #item1="cAccordionItem" [visible]="false">
               <ng-template cTemplateId="accordionHeaderTemplate">
-                <button (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
+                <button
+                  (click)="item1.toggleItem()"
+                  [collapsed]="!item1.visible"
+                  cAccordionButton
+                >
                   Accordion item #1
                 </button>
               </ng-template>
               <ng-template cTemplateId="accordionBodyTemplate">
                 <div class="accordion-body">
-                  <strong>This is the
+                  <strong
+                    >This is the
                     <mark>#second</mark>
-                    item accordion body.</strong> It is hidden by
-                  default, until the collapse plugin adds the appropriate classes that we use to
-                  style each element. These classes control the overall appearance, as well as
-                  the showing and hiding via CSS transitions. You can modify any of this with
-                  custom CSS or overriding our default variables. It&#39;s also worth noting
-                  that just about any HTML can go within the <code>.accordion-body</code>,
-                  though the transition does limit overflow.
+                    item accordion body.</strong
+                  >
+                  It is hidden by default, until the collapse plugin adds the
+                  appropriate classes that we use to style each element. These
+                  classes control the overall appearance, as well as the showing
+                  and hiding via CSS transitions. You can modify any of this
+                  with custom CSS or overriding our default variables. It&#39;s
+                  also worth noting that just about any HTML can go within the
+                  <code>.accordion-body</code>, though the transition does limit
+                  overflow.
                 </div>
               </ng-template>
             </c-accordion-item>
             <c-accordion-item #item2="cAccordionItem" [visible]="false">
               <ng-template cTemplateId="accordionHeaderTemplate">
-                <button (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
+                <button
+                  (click)="item2.toggleItem()"
+                  [collapsed]="!item2.visible"
+                  cAccordionButton
+                >
                   Accordion item #2
                 </button>
               </ng-template>
@@ -57,14 +79,12 @@
       </c-card-body>
     </c-card>
     <c-card class="mb-4">
-      <c-card-header>
-        <strong>Angular Accordion</strong> flush
-      </c-card-header>
+      <c-card-header> <strong>Angular Accordion</strong> flush </c-card-header>
       <c-card-body>
         <p class="text-body-secondary small">
-          Add <code>flush</code> to remove the default <code>background-color</code>, some
-          borders, and some rounded corners to render accordions edge-to-edge with their parent
-          container.
+          Add <code>flush</code> to remove the default
+          <code>background-color</code>, some borders, and some rounded corners
+          to render accordions edge-to-edge with their parent container.
         </p>
         <app-docs-example href="components/accordion#flush">
           <c-accordion [flush]="true">
@@ -102,18 +122,20 @@
       </c-card-header>
       <c-card-body>
         <p class="text-body-secondary small">
-          Add <code>alwaysOpen</code> property to make accordion items stay open when another
-          item is opened.
+          Add <code>alwaysOpen</code> property to make accordion items stay open
+          when another item is opened.
         </p>
         <app-docs-example href="components/accordion#always-open">
           <c-accordion alwaysOpen class="shadow accordion-custom rounded-2">
-            @for(item of items; track item; let i = $index;) {
-              <c-accordion-item [visible]="i===1">
+            @for (item of items; track item; let i = $index) {
+              <c-accordion-item [visible]="i === 1">
                 <ng-template cTemplateId="accordionHeader">
                   Custom Accordion item #{{ i }}
                 </ng-template>
                 <ng-template cTemplateId="accordionBody">
-                  <small><i>{{ i }}.</i></small>
+                  <small
+                    ><i>{{ i }}.</i></small
+                  >
                   <span [innerHTML]="getAccordionBodyText(i)"></span>
                 </ng-template>
               </c-accordion-item>

@@ -55,7 +55,7 @@ export class MaterialConsumptionPopupComponent implements OnInit {
   constructor(
     private apiService: ApiGetMaterials,
     private ApiInitiateMaterials: ApiInitiateMaterials,
-    private router: Router
+    private router: Router,
   ) {}
 
   close() {
@@ -93,8 +93,8 @@ export class MaterialConsumptionPopupComponent implements OnInit {
 
     if (this.materialFilter) {
       const filter = this.materialFilter.toLowerCase();
-      filtered = filtered.filter((item: MaterialItem) =>
-        item.Item?.toLowerCase().includes(filter)
+      filtered = filtered.filter(
+        (item: MaterialItem) => item.Item?.toLowerCase().includes(filter),
       );
     }
 
@@ -107,8 +107,8 @@ export class MaterialConsumptionPopupComponent implements OnInit {
 
     if (this.materialFilter) {
       const filter = this.materialFilter.toLowerCase();
-      filtered = filtered.filter((item: MaterialItem) =>
-        item.Item?.toLowerCase().includes(filter)
+      filtered = filtered.filter(
+        (item: MaterialItem) => item.Item?.toLowerCase().includes(filter),
       );
     }
 
