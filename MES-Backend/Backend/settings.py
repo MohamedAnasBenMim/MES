@@ -1,186 +1,31 @@
-# import os
-# from pathlib import Path
-# import dj_database_url
-
-
-# # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# # Quick-start development settings - unsuitable for production
-# # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-_0hafal#t73@!b0ori-!e(gq*l$!_9hqzr+838q1!=#g@govx0'
-
-# # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://localhost:8000']
-
-
-# # Application definition
-
-# INSTALLED_APPS = [
-#     'django.contrib.admin',
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-#     'corsheaders',
-#     'rest_framework',
-#     'auth_app',
-#     'Backend',
-
-
-#     # 'Backend.auth_app',
-#     # 'auth_app',
-#     # 'auth_app.apps.AuthAppConfig'
-
-# ]
-
-# MIDDLEWARE = [
-#     'django.middleware.security.SecurityMiddleware',
-#     'django.contrib.sessions.middleware.SessionMiddleware',
-#     'django.middleware.common.CommonMiddleware',
-#     'django.middleware.csrf.CsrfViewMiddleware',
-#     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#     'django.contrib.messages.middleware.MessageMiddleware',
-#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#     'corsheaders.middleware.CorsMiddleware',
-
-
-# ]
-
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:4200",  # Angular development server
-#     "http://mes-smart-factory.tn",
-
-
-# ]
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:4200',
-#     "http://mes-smart-factory.tn",
-
-# ]
-# ROOT_URLCONF = 'Backend.urls'
-# # REMOVE THIS (conflicting and insecure):
-# # CORS_ALLOW_ALL_ORIGINS = True
-
-
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#         },
-#     },
-# ]
-
-# WSGI_APPLICATION = 'Backend.wsgi.application'
-
-
-# # Database
-# # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# (Removed duplicate/mis-indented DATABASES block)
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('postgresql://postgres_user:uJePobnIwLqdR7pSIyinrhnKDsdSzE66@dpg-d1n8bo8dl3ps7383np40-a.oregon-postgres.render.com/postgresdb_1o28')
-#     )
-# }
-
-# # render database
-# # DATABASES = {
-# #     'default': {
-# #         'ENGINE': 'django.db.backends.postgresql',
-# #         'NAME': 'postgresdb_1o28',
-# #         'USER': 'postgres_user',
-# #         'PASSWORD': 'uJePobnIwLqdR7pSIyinrhnKDsdSzE66',
-# #         'HOST': 'dpg-d1n8bo8dl3ps7383np40-a.oregon-postgres.render.com',
-# #         'PORT': '5432',
-# #     }
-# # }
-
-
-# # Password validation
-# # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
-
-
-# # Internationalization
-# # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-# LANGUAGE_CODE = 'en-us'
-
-# TIME_ZONE = 'UTC'
-
-# USE_I18N = True
-
-# USE_TZ = True
-
-
-# # Static files (CSS, JavaScript, Images)
-# # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-# STATIC_URL = 'static/'
-
-# # Default primary key field type
-# # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# AUTH_USER_MODEL = 'auth_app.User'
-
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-
-# EMAIL_HOST_USER ='mehdiabbes02@gmail.com'
-# EMAIL_HOST_PASSWORD = 'kfuh wmri gfms scyu    '
-
-# DEFAULT_FROM_EMAIL = 'Karim Atigui <karim01atigui@gmail.com>'
-
-
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
 import os
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
+
+
+def env_bool(name, default=False):
+    return os.getenv(name, str(default)).strip().lower() in ("1", "true", "yes", "on")
+
+
+def env_list(name, default=""):
+    return [
+        item.strip() for item in os.getenv(name, default).split(",") if item.strip()
+    ]
+
 
 # ---------------------------------------------------------
 # BASE SETTINGS
 # ---------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-_0hafal#t73@!b0ori-!e(gq*l$!_9hqzr+838q1!=#g@govx0"
-DEBUG = True
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-key-change-me")
+DEBUG = env_bool("DEBUG", False)
 
-ALLOWED_HOSTS = ["*"]
+if not DEBUG and SECRET_KEY == "dev-only-secret-key-change-me":
+    raise ImproperlyConfigured("SECRET_KEY must be set when DEBUG is False.")
+
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1")
 
 # ---------------------------------------------------------
 # INSTALLED APPS
@@ -215,13 +60,12 @@ MIDDLEWARE = [
 # ---------------------------------------------------------
 # CORS
 # ---------------------------------------------------------
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = env_list(
+    "CORS_ALLOWED_ORIGINS",
     "http://localhost:4200",
-]
+)
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:4200",
-]
+CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 
 # ---------------------------------------------------------
 # ROOT URLS & WSGI
@@ -235,9 +79,9 @@ WSGI_APPLICATION = "Backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "mes_anas"),
-        "USER": os.getenv("DB_USER", "medanas"),
-        "PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "NAME": os.getenv("DB_NAME", "mes_db"),
+        "USER": os.getenv("DB_USER", "mes_user"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "mes_password"),
         "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", "5432"),
     }
@@ -295,12 +139,12 @@ AUTH_USER_MODEL = "auth_app.User"
 # EMAIL (LOCAL DEV / Gmail)
 # ---------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "mehdiabbes02@gmail.com"
-EMAIL_HOST_PASSWORD = "kfuh wmri gfms scyu"
-DEFAULT_FROM_EMAIL = "Mehdi Abbes <mehdiabbes02@gmail.com>"
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", True)
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 
 
 # ---------------------------------------------------------
