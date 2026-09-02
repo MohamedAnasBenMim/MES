@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # 1. PostgreSQL Database Service
   db:
     image: postgres:15-alpine
     container_name: mes_db
@@ -11,34 +8,51 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-mes_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mes_password}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./mes_backup.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # 2. Django Backend Service
   backend:
     build:
       context: ./MES-Backend
       dockerfile: Dockerfile
     container_name: mes_backend
     restart: always
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     environment:
-      DB_NAME: ${POSTGRES_DB:-mes_db}
-      DB_USER: ${POSTGRES_USER:-mes_user}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-mes_password}
+      DB_NAME: ${DB_NAME:-mes_db}
+      DB_USER: ${DB_USER:-mes_user}
+      DB_PASSWORD: ${DB_PASSWORD:-mes_password}
       DB_HOST: db
       DB_PORT: 5432
-      SECRET_KEY: ${SECRET_KEY:-django-insecure-secret-key-change-in-prod}
-      DEBUG: "True"
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:4200}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-http://localhost:4200}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             gunicorn --bind 0.0.0.0:8000 Backend.wsgi:application"
     volumes:
       - ./MES-Backend/media:/app/media
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/', timeout=5)\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-  # 3. Angular + Nginx Frontend Service
   frontend:
     build:
       context: ./MES-Frontend
@@ -48,7 +62,13 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 volumes:
   postgres_data:

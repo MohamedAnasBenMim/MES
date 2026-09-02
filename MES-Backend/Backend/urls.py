@@ -27,6 +27,7 @@ from .views.get_user_data import get_user_data
 from .views.get_users import get_users
 from .views.get_warehouse_filter_options import get_warehouse_filter_options
 from .views.get_warehouses import get_warehouses
+from .views.health import health_check
 from .views.idm_configuration import idm_configuration_detail, idm_configurations
 from .views.login_user import login_user
 from .views.mes_devices import (
@@ -69,6 +70,7 @@ from .views.user_settings import user_settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/health/", health_check),
     # Core APIs
     path("api/operations/", get_operations),
     path("api/get-token/", get_token),
