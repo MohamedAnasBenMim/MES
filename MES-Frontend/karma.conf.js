@@ -43,6 +43,10 @@ module.exports = function (config) {
         base: "Chrome",
         flags: ["--disable-search-engine-choice-screen"],
       },
+      ChromeHeadlessCI: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox", "--disable-dev-shm-usage"],
+      },
     },
     singleRun: false,
     restartOnFileChange: true,

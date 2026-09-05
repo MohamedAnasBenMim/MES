@@ -119,13 +119,7 @@ jobs:
       - name: Run Angular Tests
         run: |
           cd MES-Frontend
-          npm test -- --watch=false --browsers=ChromeHeadless
-
-      - name: Build Angular Application
-        run: |
-          cd MES-Frontend
-          npm run build -- --configuration production
-
+          npm test -- --watch=false --browsers=ChromeHeadlessCI
 
       - name: Build Angular Application
         run: |
