@@ -39,7 +39,7 @@ def get_operations(request):
 
     # Step 3: Prepare headers
     headers = {
-        "Authorization": f"Bearer {access_token}",
+        "Authorization": f"Bearer {token}",
         "Accept": "application/json",
         "X-Infor-LnCompany": company_code,
     }
