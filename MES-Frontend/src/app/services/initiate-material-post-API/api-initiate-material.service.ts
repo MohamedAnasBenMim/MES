@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class ApiInitiateMaterials {
   // private backendUrl =
-  //   'http://localhost:8000/post_initiate_materials/'; // Renamed URL
+  //   '/post_initiate_materials/'; // Renamed URL
 
-  private baseurl = 'http://localhost:8000/';
+  private baseurl = '/';
   private api = 'api/post_initiate_materials/';
   private backendUrl = this.baseurl + this.api;
 

@@ -27,7 +27,7 @@ export interface PasswordChangeVerificationRequest {
   providedIn: 'root',
 })
 export class CreateUserApiService {
-  private readonly baseurl = 'http://localhost:8000/api/';
+  private readonly baseurl = '/api/';
 
   constructor(private readonly http: HttpClient) {}
 

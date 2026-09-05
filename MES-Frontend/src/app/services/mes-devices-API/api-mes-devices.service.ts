@@ -41,7 +41,7 @@ export interface MesDeviceDisablePayload {
   providedIn: 'root',
 })
 export class ApiMesDevicesService {
-  private baseUrl = 'http://localhost:8000/api/mes-devices/';
+  private baseUrl = '/api/mes-devices/';
 
   constructor(private http: HttpClient) {}
 

@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiServiceCompleteOperation {
-  // private backendUrl = 'http://localhost:8000/report_operation/';
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/report_operation/';
+  private baseurl = '/';
   private api = 'api/report_operation/';
   private backendUrl = this.baseurl + this.api;
 

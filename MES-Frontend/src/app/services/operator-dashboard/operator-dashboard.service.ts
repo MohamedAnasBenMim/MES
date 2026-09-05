@@ -66,7 +66,7 @@ export interface OperatorDashboardResponse {
   providedIn: 'root',
 })
 export class OperatorDashboardService {
-  private readonly url = 'http://localhost:8000/api/operator-dashboard/';
+  private readonly url = '/api/operator-dashboard/';
 
   constructor(private readonly http: HttpClient) {}
 

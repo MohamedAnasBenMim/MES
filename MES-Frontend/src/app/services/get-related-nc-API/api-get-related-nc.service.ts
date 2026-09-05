@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiGetRelatedNC {
-  // private backendUrl = 'http://localhost:8000/get_related_nc_data/'; // Renamed URL
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/get_related_nc_data/'; // Renamed URL
+  private baseurl = '/';
   private api = 'api/get_related_nc_data/';
   private backendUrl = this.baseurl + this.api;
 

@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ApiGetItems {
-  // private backendUrl = 'http://localhost:8000/get_items/'; // Renamed URL
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/get_items/'; // Renamed URL
+  private baseurl = '/';
   private api = 'api/get_items/';
   private backendUrl = this.baseurl + this.api;
 

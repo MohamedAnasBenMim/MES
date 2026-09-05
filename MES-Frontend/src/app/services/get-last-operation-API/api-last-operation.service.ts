@@ -6,8 +6,8 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiServiceLastOperation {
-  // private backendUrl = 'http://localhost:8000/get_operation_data/';
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/get_operation_data/';
+  private baseurl = '/';
   private api = 'api/get_operation_data/';
   private backendUrl = this.baseurl + this.api;
   constructor(private http: HttpClient) {}

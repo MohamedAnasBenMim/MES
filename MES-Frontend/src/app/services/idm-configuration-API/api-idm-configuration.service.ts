@@ -40,7 +40,7 @@ export interface IdmConfigurationPayload {
   providedIn: 'root',
 })
 export class ApiIdmConfigurationService {
-  private baseUrl = 'http://localhost:8000/api/idm-configurations/';
+  private baseUrl = '/api/idm-configurations/';
 
   constructor(private http: HttpClient) {}
 

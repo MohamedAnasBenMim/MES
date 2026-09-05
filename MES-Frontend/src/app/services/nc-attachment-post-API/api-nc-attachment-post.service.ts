@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AttachmentApiService {
-  // private backendUrl = 'http://localhost:8000/post_nc_attachment/'; // Renamed URL
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/post_nc_attachment/'; // Renamed URL
+  private baseurl = '/';
   private api = 'api/post_nc_attachment/';
   private backendUrl = this.baseurl + this.api;
 

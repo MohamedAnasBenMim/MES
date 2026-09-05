@@ -20,7 +20,7 @@ export interface ActiveOperation {
   providedIn: 'root',
 })
 export class GetActiveListService {
-  private baseurl = 'http://localhost:8000/';
+  private baseurl = '/';
   private api = 'api/get_operation_active_list/';
   private backendUrl = this.baseurl + this.api;
 

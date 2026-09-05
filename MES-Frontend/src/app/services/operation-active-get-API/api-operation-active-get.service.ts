@@ -21,7 +21,7 @@ export interface ActiveOperationItem {
   providedIn: 'root',
 })
 export class ApiOperationActiveGetService {
-  private baseUrl = 'http://localhost:8000/api/operations/active/';
+  private baseUrl = '/api/operations/active/';
 
   constructor(private http: HttpClient) {}
 

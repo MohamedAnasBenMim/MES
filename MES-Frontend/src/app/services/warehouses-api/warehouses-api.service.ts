@@ -41,10 +41,9 @@ export interface WarehouseFilterOptionsResponse {
   providedIn: 'root',
 })
 export class WarehousesApiService {
-  private readonly backendUrl = 'http://localhost:8000/api/get_warehouses/';
+  private readonly backendUrl = '/api/get_warehouses/';
 
-  private readonly filterOptionsUrl =
-    'http://localhost:8000/api/get_warehouse_filter_options/';
+  private readonly filterOptionsUrl = '/api/get_warehouse_filter_options/';
 
   constructor(private readonly http: HttpClient) {}
 

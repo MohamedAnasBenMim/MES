@@ -22,8 +22,8 @@ export interface UserSettings {
 //   providedIn: 'root',
 // })
 // export class UserApiService {
-//   // private backendUrl = 'http://localhost:8000/get_users/';
-//   private baseurl = 'http://localhost:8000/';
+//   // private backendUrl = '/get_users/';
+//   private baseurl = '/';
 //   private api = 'api/get_users/';
 //   private backendUrl = this.baseurl + this.api;
 //   constructor(private http: HttpClient) {}
@@ -33,36 +33,36 @@ export interface UserSettings {
 //   }
 //   getUserById(id: number): Observable<any> {
 //     return this.http.get<any>(
-//       `http://localhost:8000/get_user_data/${id}/`
+//       `/get_user_data/${id}/`
 //     );
 //   }
 
 //   postData(data: any): Observable<any> {
 //     return this.http.post(
-//       'http://localhost:8000/create_user/',
+//       '/create_user/',
 //       data
 //     );
 //   }
 
 //   deleteUser(id: number): Observable<any> {
 //     return this.http.delete(
-//       `http://localhost:8000/delete_user/${id}/`
+//       `/delete_user/${id}/`
 //     );
 //   }
 //   updateUser(id: number, data: any): Observable<any> {
 //     return this.http.post(
-//       `http://localhost:8000/update_user/${id}/`,
+//       `/update_user/${id}/`,
 //       data
 //     );
 //   }
 //   editUser(id: number, data: FormData): Observable<any> {
 //     return this.http.post(
-//       `http://localhost:8000/update_user/${id}/`,
+//       `/update_user/${id}/`,
 //       data
 //     );
 //   }
 //   loginUser(data: any): Observable<any> {
-//     return this.http.post('http://localhost:8000/login/', data);
+//     return this.http.post('/login/', data);
 //   }
 // }
 import { Injectable } from '@angular/core';
@@ -73,7 +73,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserApiService {
-  private baseurl = 'http://localhost:8000/api/';
+  private baseurl = '/api/';
 
   constructor(private http: HttpClient) {}
 

@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiGetMaterials {
-  // private backendUrl = 'http://localhost:8000/get_materials/'; // Renamed URL
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/get_materials/'; // Renamed URL
+  private baseurl = '/';
   private api = 'api/get_materials/';
   private backendUrl = this.baseurl + this.api;
 

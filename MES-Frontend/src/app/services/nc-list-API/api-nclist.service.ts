@@ -7,8 +7,8 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ApiService {
-  // private backendUrl = 'http://localhost:8000/nc-data/';
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/nc-data/';
+  private baseurl = '/';
   private api = 'api/nc-data/';
   private backendUrl = this.baseurl + this.api;
 

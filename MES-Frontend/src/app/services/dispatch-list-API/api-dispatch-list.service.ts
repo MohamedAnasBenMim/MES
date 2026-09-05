@@ -6,7 +6,7 @@ import { Observable, map, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseurl = 'http://localhost:8000/';
+  private baseurl = '/';
   private api = 'api/dispatch-data/';
   private backendUrl = this.baseurl + this.api;
 

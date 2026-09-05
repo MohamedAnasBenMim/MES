@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ConfigApiService {
-  private baseurl = 'http://localhost:8000/';
+  private baseurl = '/';
   private api = 'api/create_ionapi_credentials/';
   private backendUrl = this.baseurl + this.api;
 

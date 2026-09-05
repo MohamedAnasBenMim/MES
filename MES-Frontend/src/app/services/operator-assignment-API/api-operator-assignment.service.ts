@@ -47,7 +47,7 @@ export interface OperatorAssignmentResponse {
   providedIn: 'root',
 })
 export class ApiOperatorAssignmentService {
-  private baseUrl = 'http://localhost:8000/api/operator-assignments/';
+  private baseUrl = '/api/operator-assignments/';
 
   constructor(private http: HttpClient) {}
 

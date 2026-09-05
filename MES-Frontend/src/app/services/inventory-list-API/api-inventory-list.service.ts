@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  // private backendUrl = 'http://localhost:8000/get_inventory/'; // Renamed URL
-  private baseurl = 'http://localhost:8000/';
+  // private backendUrl = '/get_inventory/'; // Renamed URL
+  private baseurl = '/';
   private api = 'api/get_inventory/';
   private backendUrl = this.baseurl + this.api;
 

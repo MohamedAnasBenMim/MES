@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class activeListService {
-  private baseurl = 'http://localhost:8000/';
+  private baseurl = '/';
   private api = 'api/post_operation_active_list/';
   private backendUrl = this.baseurl + this.api;
 

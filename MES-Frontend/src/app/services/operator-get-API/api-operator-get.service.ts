@@ -45,7 +45,7 @@ export interface ActiveOperationItem {
   providedIn: 'root',
 })
 export class ApiOperatorGetService {
-  private baseUrl = 'http://localhost:8000/api/operators/';
+  private baseUrl = '/api/operators/';
 
   constructor(private http: HttpClient) {}
 

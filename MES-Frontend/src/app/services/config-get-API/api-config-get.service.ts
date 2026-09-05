@@ -27,8 +27,8 @@ export interface IonAPICredential {
   providedIn: 'root',
 })
 export class IonapiService {
-  // private apiUrl = 'http://localhost:8000/get_ionapi_credential/'; // Adjust base URL as needed
-  private baseurl = 'http://localhost:8000/';
+  // private apiUrl = '/get_ionapi_credential/'; // Adjust base URL as needed
+  private baseurl = '/';
   private api = 'api/get_ionapi_credential/';
   private backendUrl = this.baseurl + this.api;
   constructor(private http: HttpClient) {}
