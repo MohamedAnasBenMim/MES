@@ -40,12 +40,21 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff
+          pip install ruff black isort
           pip install -r MES-Backend/requirements.txt
 
       - name: Lint Code with Ruff
         run: |
-          ruff check MES-Backend/ --exit-zero
+          ruff check MES-Backend/
+      - name: Check Python Formatting with Black
+        run: |
+          black --check MES-Backend/
+
+      - name: Check Python Import Order with Isort
+        run: |
+          isort --check-only --profile black MES-Backend/
+
+
 
       - name: Run Django System Checks
         env:
@@ -58,6 +67,34 @@ jobs:
         run: |
           cd MES-Backend
           python manage.py check
+
+      - name: Check Django Migrations
+        env:
+          DB_NAME: mes_test_db
+          DB_USER: mes_user
+          DB_PASSWORD: mes_password
+          DB_HOST: localhost
+          DB_PORT: 5432
+          SECRET_KEY: test-secret-key
+          DEBUG: "True"
+        run: |
+          cd MES-Backend
+          python manage.py makemigrations --check --dry-run
+
+      - name: Run Django Tests
+        env:
+          DB_NAME: mes_test_db
+          DB_USER: mes_user
+          DB_PASSWORD: mes_password
+          DB_HOST: localhost
+          DB_PORT: 5432
+          SECRET_KEY: test-secret-key
+          DEBUG: "True"
+        run: |
+          cd MES-Backend
+          python manage.py test
+
+
 
   frontend-tests:
     name: Angular Frontend CI
@@ -78,6 +115,17 @@ jobs:
         run: |
           cd MES-Frontend
           npm ci
+
+      - name: Run Angular Tests
+        run: |
+          cd MES-Frontend
+          npm test -- --watch=false --browsers=ChromeHeadless
+
+      - name: Build Angular Application
+        run: |
+          cd MES-Frontend
+          npm run build -- --configuration production
+
 
       - name: Build Angular Application
         run: |
