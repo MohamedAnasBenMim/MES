@@ -40,7 +40,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff black isort
+          pip install ruff black==24.4.2 isort==5.13.2
           pip install -r MES-Backend/requirements.txt
 
       - name: Lint Code with Ruff
