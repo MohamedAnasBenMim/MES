@@ -1328,7 +1328,7 @@ export class GlobalUiTranslationService implements OnDestroy {
   }
 
   private currentLanguage(): SupportedLanguage {
-    const language = (this.translate.currentLang ||
+    const language = (this.translate.currentLang() ||
       this.translate.getCurrentLang?.() ||
       'en') as SupportedLanguage;
     return ['en', 'fr', 'de', 'nl'].includes(language) ? language : 'en';

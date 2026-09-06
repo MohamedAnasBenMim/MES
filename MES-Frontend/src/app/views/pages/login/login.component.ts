@@ -76,7 +76,6 @@ import { UserApiService } from '../../../services/user-get-API/api-user-get.serv
 import { setAuthSession } from '../../../utils/auth-storage';
 import { getDeviceId } from '../../../utils/device-identity';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language/language.service';
 
 import {
@@ -118,7 +117,6 @@ import {
     IconDirective,
     FormControlDirective,
     ButtonDirective,
-    TranslateModule,
   ],
 })
 export class LoginComponent {
