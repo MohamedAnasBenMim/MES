@@ -1,6 +1,9 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import {
   AvatarModule,
   BadgeModule,
@@ -40,7 +43,15 @@ describe('DefaultHeaderComponent', () => {
         ReactiveFormsModule,
         DefaultHeaderComponent,
       ],
-      providers: [IconSetService],
+      providers: [
+        IconSetService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateService({
+          fallbackLang: 'en',
+          lang: 'en',
+        }),
+      ],
     }).compileComponents();
   });
 
