@@ -1,19 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
-import { MaterialPopupComponent } from './material-popup.component';
+import { MaterialConsumptionPopupComponent } from './material-popup.component';
 
 describe('MaterialPopupComponent', () => {
-  let component: MaterialPopupComponent;
-  let fixture: ComponentFixture<MaterialPopupComponent>;
+  let component: MaterialConsumptionPopupComponent;
+  let fixture: ComponentFixture<MaterialConsumptionPopupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialPopupComponent],
+      imports: [MaterialConsumptionPopupComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MaterialPopupComponent);
+    fixture = TestBed.createComponent(MaterialConsumptionPopupComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
