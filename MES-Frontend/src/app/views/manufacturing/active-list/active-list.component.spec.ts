@@ -14,10 +14,16 @@ describe('ActiveListComponent', () => {
       'user',
       JSON.stringify({ id: 1, username: 'test.operator' }),
     );
+    window.history.replaceState(
+      { selectedItem: { companyId: 'COMP01' } },
+      '',
+      '/',
+    );
   });
 
   afterEach(() => {
     sessionStorage.removeItem('user');
+    window.history.replaceState(null, '', '/');
   });
 
   beforeEach(async () => {
