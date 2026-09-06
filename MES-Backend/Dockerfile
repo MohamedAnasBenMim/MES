@@ -1,25 +1,21 @@
-# Base Python image
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies for PostgreSQL and building packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk upgrade --no-cache \
+    && apk add --no-cache libpq
 
-# Install Python requirements
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && python -m pip install --no-cache-dir -r requirements.txt \
+    && python -m pip uninstall -y pip setuptools wheel \
+    && rm -rf /usr/local/lib/python3.11/ensurepip
 
-# Copy backend application source code
 COPY . .
 
 EXPOSE 8000
 
-# Start server using Gunicorn WSGI
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "Backend.wsgi:application"]
