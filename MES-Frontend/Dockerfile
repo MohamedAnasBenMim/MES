@@ -12,6 +12,8 @@ RUN npm run build -- --configuration production
 # Stage 2: Serve using Nginx
 FROM nginx:alpine
 
+RUN apk upgrade --no-cache
+
 # Copy built Angular static assets to Nginx web root
 COPY --from=build /app/dist/coreui-free-angular-admin-template/browser /usr/share/nginx/html
 

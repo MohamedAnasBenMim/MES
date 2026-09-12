@@ -18,7 +18,9 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   dependency-scan:
     name: Dependency Scan with Pip Audit and NPM Audit
@@ -71,6 +73,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: mes-backend:test
+          scanners: vuln
           severity: HIGH,CRITICAL
           exit-code: "1"
 
@@ -81,5 +84,6 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: mes-frontend:test
+          scanners: vuln
           severity: HIGH,CRITICAL
           exit-code: "1"

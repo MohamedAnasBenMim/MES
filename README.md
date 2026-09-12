@@ -33,7 +33,7 @@ flowchart LR
 
 | Layer | Technology |
 | --- | --- |
-| Frontend | Angular 19, TypeScript, CoreUI, Angular Material, Chart.js |
+| Frontend | Angular 21, TypeScript, CoreUI, Angular Material, Chart.js |
 | Backend | Python 3.11, Django, Django REST Framework, Gunicorn |
 | Database | PostgreSQL 15 |
 | Integration | Infor ION API, LN OData/SOAP, IDM |
