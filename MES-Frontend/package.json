@@ -22,7 +22,7 @@
     "@angular/animations": "^21.2.22",
     "@angular/cdk": "^21.2.14",
     "@angular/common": "^21.2.22",
-    "@angular/compiler": "^21.2.22",
+    "@angular/compiler": "^22.1.5",
     "@angular/core": "^21.2.22",
     "@angular/forms": "^21.2.22",
     "@angular/language-service": "^21.2.22",
